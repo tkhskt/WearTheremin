@@ -25,7 +25,7 @@
             android:value="true" />
 
         <service
-            android:name=".MainService"
+            android:name=".MessageService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
@@ -35,6 +35,8 @@
                     android:scheme="wear" />
             </intent-filter>
         </service>
+
+<!--        <service android:name=".SensorService" />-->
 
         <activity
             android:name=".MainActivity"

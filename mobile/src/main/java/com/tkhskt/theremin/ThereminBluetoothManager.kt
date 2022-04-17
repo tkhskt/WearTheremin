@@ -23,15 +23,21 @@ import kotlinx.coroutines.delay
 import java.util.UUID
 import kotlin.experimental.and
 
-class BluetoothManager(
+@SuppressLint("MissingPermission")
+class ThereminBluetoothManager(
     private val context: Context,
+    private val bleManager: BluetoothManager,
+    private val bleAdapter: BluetoothAdapter,
 ) {
 
     companion object {
+        private const val UUID_LIFF_VALUE_SIZE: Int = 500
+        private const val UUID_LIFF_SERVICE_STR: String = "a9d158bb-9007-4fe3-b5d2-d3696a3eb067"
+
         private val UUID_LIFF_PSDI_SERVICE: UUID =
             UUID.fromString("e625601e-9e55-4597-a598-76018a0d293d")
         private val UUID_LIFF_PSDI: UUID = UUID.fromString("26e2b12b-85f0-4f3f-9fdd-91d114270e6e")
-        private val UUID_LIFF_SERVICE_STR = "a9d158bb-9007-4fe3-b5d2-d3696a3eb067"
+
 
         private val UUID_LIFF_SERVICE: UUID = UUID.fromString(UUID_LIFF_SERVICE_STR)
         private val UUID_LIFF_NOTIFY: UUID = UUID.fromString("52dc2803-7e98-4fc2-908a-66161b5959b0")
@@ -42,11 +48,6 @@ class BluetoothManager(
     /*
    BLUETOOTH
     */
-    val mBleManager: BluetoothManager? = null
-    val mBleAdapter: BluetoothAdapter? = null
-
-    var btAdvertiser: BluetoothLeAdvertiser? = null
-
     private val mPsdiCharacteristic: BluetoothGattCharacteristic = BluetoothGattCharacteristic(
         UUID_LIFF_PSDI,
         BluetoothGattCharacteristic.PROPERTY_READ,
@@ -61,20 +62,19 @@ class BluetoothManager(
         BluetoothGattService(UUID_LIFF_PSDI_SERVICE, BluetoothGattService.SERVICE_TYPE_PRIMARY)
     private val btGattService: BluetoothGattService =
         BluetoothGattService(UUID_LIFF_SERVICE, BluetoothGattService.SERVICE_TYPE_PRIMARY)
-    private val mBtGattServer: BluetoothGattServer? = null
-    private val mConnectedDevice: BluetoothDevice? = null
+
+    private val mBtGattServer: BluetoothGattServer by lazy {
+        bleManager.openGattServer(context, mGattServerCallback)
+    }
+    private var connectedDevice: BluetoothDevice? = null
 
 
-    private val UUID_LIFF_VALUE_SIZE = 500
-
-    @SuppressLint("MissingPermission")
     suspend fun prepareBle() {
-        btAdvertiser = mBleAdapter?.bluetoothLeAdvertiser
+        val btAdvertiser = bleAdapter.bluetoothLeAdvertiser
         if (btAdvertiser == null) {
             Toast.makeText(context, "BLE Peripheralモードが使用できません。", Toast.LENGTH_SHORT).show()
             return
         }
-        mBtGattServer = mBleManager!!.openGattServer(context, mGattServerCallback)
 
         btPsdiService.addCharacteristic(mPsdiCharacteristic)
 
@@ -89,11 +89,10 @@ class BluetoothManager(
         mNotifyCharacteristic.addDescriptor(dataDescriptor)
         mBtGattServer.addService(btGattService)
         delay(200)
-        startBleAdvertising()
+        startBleAdvertising(btAdvertiser)
     }
 
-    @SuppressLint("MissingPermission")
-    private fun startBleAdvertising() {
+    private fun startBleAdvertising(advertiser: BluetoothLeAdvertiser) {
         val dataBuilder = AdvertiseData.Builder().apply {
             setIncludeTxPowerLevel(true)
             addServiceUuid(ParcelUuid.fromString(UUID_LIFF_SERVICE_STR))
@@ -107,7 +106,7 @@ class BluetoothManager(
         val respBuilder = AdvertiseData.Builder().apply {
             setIncludeDeviceName(true)
         }
-        btAdvertiser!!.startAdvertising(
+        advertiser.startAdvertising(
             settingsBuilder.build(),
             dataBuilder.build(),
             respBuilder.build(),
@@ -138,7 +137,7 @@ class BluetoothManager(
             ) {
                 Log.d("bleperi", "onConnectionStateChange")
                 if (newState == BluetoothProfile.STATE_CONNECTED) {
-                    mConnectedDevice = device
+                    connectedDevice = device
                     Log.d("bleperi", "STATE_CONNECTED:$device")
                 } else {
                     Log.d("bleperi", "Unknown STATE:$newState")
@@ -200,7 +199,6 @@ class BluetoothManager(
 //                }
             }
 
-            @SuppressLint("MissingPermission")
             override fun onCharacteristicWriteRequest(
                 device: BluetoothDevice,
                 requestId: Int,
@@ -215,7 +213,7 @@ class BluetoothManager(
                         var len: Int = value.size
                         if (offset + len > charValue.size) len = charValue.size - offset
                         System.arraycopy(value, 0, charValue, offset, len)
-                        mBtGattServer!!.sendResponse(
+                        mBtGattServer.sendResponse(
                             device,
                             requestId,
                             BluetoothGatt.GATT_SUCCESS,
@@ -231,11 +229,11 @@ class BluetoothManager(
                             null
                         )
                     }
-                    if (notifyDescValue[0] and 0x01 !== 0x00) {
+                    if (notifyDescValue[0] and 0x01.toByte() != 0x00.toByte()) {
                         if (offset == 0 && value[0] == 0xff.toByte()) {
-                            mNotifyCharacteristic!!.value = charValue
-                            mBtGattServer!!.notifyCharacteristicChanged(
-                                mConnectedDevice,
+                            mNotifyCharacteristic.value = charValue
+                            mBtGattServer.notifyCharacteristicChanged(
+                                connectedDevice,
                                 mNotifyCharacteristic,
                                 false
                             )
@@ -243,7 +241,7 @@ class BluetoothManager(
                         }
                     }
                 } else {
-                    mBtGattServer!!.sendResponse(
+                    mBtGattServer.sendResponse(
                         device,
                         requestId,
                         BluetoothGatt.GATT_FAILURE,
@@ -253,7 +251,6 @@ class BluetoothManager(
                 }
             }
 
-            @SuppressLint("MissingPermission")
             override fun onDescriptorReadRequest(
                 device: BluetoothDevice,
                 requestId: Int,

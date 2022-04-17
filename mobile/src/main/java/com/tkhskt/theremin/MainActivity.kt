@@ -1,8 +1,16 @@
 package com.tkhskt.theremin
 
+import android.Manifest
+import android.Manifest.permission.BLUETOOTH
+import android.R
+import android.bluetooth.BluetoothManager
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.wearable.Wearable
 import kotlinx.coroutines.CancellationException
@@ -25,19 +34,26 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.time.Duration
 
+
 class MainActivity : AppCompatActivity() {
 
-    private val dataClient by lazy { Wearable.getDataClient(this) }
     private val messageClient by lazy { Wearable.getMessageClient(this) }
-    private val capabilityClient by lazy { Wearable.getCapabilityClient(this) }
     private val nodeClient by lazy { Wearable.getNodeClient(this) }
-
 
     private val viewModel by viewModels<MainViewModel>()
 
+    private var bluetoothManager: ThereminBluetoothManager? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        requestPermission()
+
+        val bleManager = getSystemService(BLUETOOTH_SERVICE) as BluetoothManager
+        val bleAdapter = bleManager.adapter
+        bluetoothManager = ThereminBluetoothManager(applicationContext, bleManager, bleAdapter)
+
+
         setContent {
             val state = viewModel.events.collectAsState()
             Column(
@@ -57,8 +73,75 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        dataClient.addListener(viewModel)
         messageClient.addListener(viewModel)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>, grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    startBle()
+                } else {
+                    Toast.makeText(this, "Please grant permissions", Toast.LENGTH_SHORT).show()
+                }
+                return
+            }
+            else -> {
+                // Ignore all other requests.
+            }
+        }
+    }
+
+    private fun requestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.BLUETOOTH_CONNECT
+                ) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.BLUETOOTH_ADVERTISE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                startBle()
+                return
+            }
+            requestPermissions(
+                arrayOf(
+                    Manifest.permission.BLUETOOTH_CONNECT,
+                    Manifest.permission.BLUETOOTH_ADVERTISE
+                ),
+                PERMISSION_REQUEST_CODE
+            )
+        } else {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    BLUETOOTH
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                startBle()
+                return
+            }
+            requestPermissions(
+                arrayOf(
+                    BLUETOOTH,
+                ),
+                PERMISSION_REQUEST_CODE
+            )
+        }
+
+    }
+
+    private fun startBle() {
+        lifecycleScope.launch {
+            bluetoothManager?.prepareBle()
+        }
     }
 
     private fun startWearableActivity() {
@@ -71,7 +154,6 @@ class MainActivity : AppCompatActivity() {
                             .await()
                     }
                 }.awaitAll()
-
                 Log.d(TAG, "Starting activity requests sent successfully")
             } catch (cancellationException: CancellationException) {
                 throw cancellationException
@@ -92,6 +174,9 @@ class MainActivity : AppCompatActivity() {
         private const val COUNT_KEY = "count"
         private const val CAMERA_CAPABILITY = "camera"
 
+        private const val PERMISSION_REQUEST_CODE = 1000
+
         private val countInterval = Duration.ofSeconds(5)
     }
+
 }
