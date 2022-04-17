@@ -86,7 +86,6 @@ export default {
     ble_connect() {
       return this.requestDevice(UUID_ANDROID_SERVICE)
         .then((name) => {
-          this.progress_open()
           this.ble_devicename = name
           return bluetoothDevice.gatt
             .connect()
