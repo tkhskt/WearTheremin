@@ -99,8 +99,8 @@ export default {
               console.log('Execute : getCharacteristic')
               characteristics.clear()
               return Promise.all([
-                this.setCharacteristic(service, UUID_ANDROID_WRITE),
-                this.setCharacteristic(service, UUID_ANDROID_READ),
+                // this.setCharacteristic(service, UUID_ANDROID_WRITE),
+                // this.setCharacteristic(service, UUID_ANDROID_READ),
                 this.setCharacteristic(service, UUID_ANDROID_NOTIFY),
               ])
             })
@@ -118,7 +118,7 @@ export default {
               alert(error)
             })
             .finally(() => {
-              this.progress_close()
+              // this.progress_close()
             })
         })
         .catch((error) => {
