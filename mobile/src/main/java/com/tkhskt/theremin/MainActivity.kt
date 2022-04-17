@@ -47,12 +47,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        requestPermission()
-
         val bleManager = getSystemService(BLUETOOTH_SERVICE) as BluetoothManager
         val bleAdapter = bleManager.adapter
         bluetoothManager = ThereminBluetoothManager(applicationContext, bleManager, bleAdapter)
 
+        requestPermission()
 
         setContent {
             val state = viewModel.events.collectAsState()

@@ -53,7 +53,7 @@ class ThereminBluetoothManager(
         BluetoothGattCharacteristic.PROPERTY_READ,
         BluetoothGattCharacteristic.PERMISSION_READ
     )
-    private val mNotifyCharacteristic: BluetoothGattCharacteristic = BluetoothGattCharacteristic(
+    private val notifyCharacteristic: BluetoothGattCharacteristic = BluetoothGattCharacteristic(
         UUID_LIFF_NOTIFY,
         BluetoothGattCharacteristic.PROPERTY_NOTIFY,
         BluetoothGattCharacteristic.PERMISSION_READ
@@ -81,12 +81,12 @@ class ThereminBluetoothManager(
         mBtGattServer.addService(btPsdiService)
         delay(200)
 
-        btGattService.addCharacteristic(mNotifyCharacteristic)
+        btGattService.addCharacteristic(notifyCharacteristic)
         val dataDescriptor = BluetoothGattDescriptor(
             UUID_LIFF_DESC,
             BluetoothGattDescriptor.PERMISSION_WRITE or BluetoothGattDescriptor.PERMISSION_READ
         )
-        mNotifyCharacteristic.addDescriptor(dataDescriptor)
+        notifyCharacteristic.addDescriptor(dataDescriptor)
         mBtGattServer.addService(btGattService)
         delay(200)
         startBleAdvertising(btAdvertiser)
@@ -150,53 +150,7 @@ class ThereminBluetoothManager(
                 offset: Int,
                 characteristic: BluetoothGattCharacteristic
             ) {
-//                Log.d("bleperi", "onCharacteristicReadRequest")
-//                if (characteristic.uuid.compareTo(UUID_LIFF_PSDI) == 0) {
-//                    mBtGattServer!!.sendResponse(
-//                        device,
-//                        requestId,
-//                        BluetoothGatt.GATT_SUCCESS,
-//                        offset,
-//                        psdiValue
-//                    )
-//                } else if (characteristic.uuid.compareTo(UUID_LIFF_READ) == 0) {
-//                    handler.sendUIMessage(MSG_ID_OBJ_BASE, 1, R.id.txt_access, "Read")
-//                    handler.sendUIMessage(
-//                        MSG_ID_OBJ_BASE,
-//                        1,
-//                        R.id.txt_offset,
-//                        Integer.toString(offset)
-//                    )
-//                    handler.sendUIMessage(MSG_ID_OBJ_BASE, 1, R.id.txt_length, "")
-//                    handler.sendUIMessage(MSG_ID_OBJ_BASE, 1, R.id.txt_value, "")
-//                    if (offset > charValue.size) {
-//                        mBtGattServer!!.sendResponse(
-//                            device,
-//                            requestId,
-//                            BluetoothGatt.GATT_FAILURE,
-//                            offset,
-//                            null
-//                        )
-//                    } else {
-//                        val value = ByteArray(charValue.size - offset)
-//                        System.arraycopy(charValue, offset, value, 0, value.size)
-//                        mBtGattServer!!.sendResponse(
-//                            device,
-//                            requestId,
-//                            BluetoothGatt.GATT_SUCCESS,
-//                            offset,
-//                            value
-//                        )
-//                    }
-//                } else {
-//                    mBtGattServer!!.sendResponse(
-//                        device,
-//                        requestId,
-//                        BluetoothGatt.GATT_FAILURE,
-//                        offset,
-//                        null
-//                    )
-//                }
+                Log.d("bleperi", "onCharacteristicReadRequest")
             }
 
             override fun onCharacteristicWriteRequest(
@@ -231,10 +185,10 @@ class ThereminBluetoothManager(
                     }
                     if (notifyDescValue[0] and 0x01.toByte() != 0x00.toByte()) {
                         if (offset == 0 && value[0] == 0xff.toByte()) {
-                            mNotifyCharacteristic.value = charValue
+                            notifyCharacteristic.value = "notify!!".toByteArray()
                             mBtGattServer.notifyCharacteristicChanged(
                                 connectedDevice,
-                                mNotifyCharacteristic,
+                                notifyCharacteristic,
                                 false
                             )
                             // notified
@@ -257,9 +211,9 @@ class ThereminBluetoothManager(
                 offset: Int,
                 descriptor: BluetoothGattDescriptor
             ) {
-                Log.d("bleperi", "onDescriptorReadRequest");
+                Log.d("bleperi", "onDescriptorReadRequest")
 
-                if (descriptor.uuid.compareTo(UUID_LIFF_DESC) == 0) {
+                if (descriptor.uuid != UUID_LIFF_DESC) {
                     mBtGattServer.sendResponse(
                         device,
                         requestId,
@@ -279,7 +233,23 @@ class ThereminBluetoothManager(
                 offset: Int,
                 value: ByteArray
             ) {
-
+                if (descriptor.uuid != UUID_LIFF_DESC) {
+                    notifyDescValue[0] = value[0]
+                    notifyDescValue[1] = value[1]
+                    mBtGattServer.sendResponse(
+                        device,
+                        requestId,
+                        BluetoothGatt.GATT_SUCCESS,
+                        offset,
+                        null
+                    )
+                    notifyCharacteristic.value = "notify!!".toByteArray()
+                    mBtGattServer.notifyCharacteristicChanged(
+                        connectedDevice,
+                        notifyCharacteristic,
+                        false
+                    )
+                }
             }
         }
 
