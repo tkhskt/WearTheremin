@@ -38,7 +38,6 @@ class ThereminBluetoothManager(
             UUID.fromString("e625601e-9e55-4597-a598-76018a0d293d")
         private val UUID_LIFF_PSDI: UUID = UUID.fromString("26e2b12b-85f0-4f3f-9fdd-91d114270e6e")
 
-
         private val UUID_LIFF_SERVICE: UUID = UUID.fromString(UUID_LIFF_SERVICE_STR)
         private val UUID_LIFF_NOTIFY: UUID = UUID.fromString("52dc2803-7e98-4fc2-908a-66161b5959b0")
         private val UUID_LIFF_WRITE = UUID.fromString("52dc2801-7e98-4fc2-908a-66161b5959b0")
@@ -123,7 +122,6 @@ class ThereminBluetoothManager(
 
     private val mGattServerCallback: BluetoothGattServerCallback =
         object : BluetoothGattServerCallback() {
-            private val psdiValue = ByteArray(8)
             private val notifyDescValue = ByteArray(2)
             private val charValue = ByteArray(UUID_LIFF_VALUE_SIZE) /* max 512 */
             override fun onMtuChanged(device: BluetoothDevice, mtu: Int) {
@@ -213,7 +211,7 @@ class ThereminBluetoothManager(
             ) {
                 Log.d("bleperi", "onDescriptorReadRequest")
 
-                if (descriptor.uuid != UUID_LIFF_DESC) {
+                if (descriptor.uuid.compareTo(UUID_LIFF_DESC) == 0) {
                     mBtGattServer.sendResponse(
                         device,
                         requestId,
@@ -233,7 +231,7 @@ class ThereminBluetoothManager(
                 offset: Int,
                 value: ByteArray
             ) {
-                if (descriptor.uuid != UUID_LIFF_DESC) {
+                if (descriptor.uuid.compareTo(UUID_LIFF_DESC) == 0) {
                     notifyDescValue[0] = value[0]
                     notifyDescValue[1] = value[1]
                     mBtGattServer.sendResponse(
