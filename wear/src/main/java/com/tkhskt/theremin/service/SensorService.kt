@@ -26,6 +26,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
+// Not Used
 class SensorService : Service() {
 
     private val sensorManager = applicationContext.getSystemService(SENSOR_SERVICE) as SensorManager
@@ -37,7 +38,6 @@ class SensorService : Service() {
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d(TAG, "sdfsdfsdfsdf")
         scope = CoroutineScope(Dispatchers.IO + Job())
         setupNotification()
         startSensor()
