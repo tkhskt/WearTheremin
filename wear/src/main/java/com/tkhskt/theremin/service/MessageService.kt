@@ -1,8 +1,9 @@
-package com.tkhskt.theremin
+package com.tkhskt.theremin.service
 
 import android.content.Intent
 import com.google.android.gms.wearable.MessageEvent
 import com.google.android.gms.wearable.WearableListenerService
+import com.tkhskt.theremin.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -24,7 +25,6 @@ class MessageService : WearableListenerService() {
             }
         }
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
