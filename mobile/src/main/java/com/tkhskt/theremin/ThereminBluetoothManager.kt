@@ -67,6 +67,7 @@ class ThereminBluetoothManager(
     }
     private var connectedDevice: BluetoothDevice? = null
 
+    private var gattSucceeded = false
 
     suspend fun prepareBle() {
         val btAdvertiser = bleAdapter.bluetoothLeAdvertiser
@@ -241,6 +242,7 @@ class ThereminBluetoothManager(
                         offset,
                         null
                     )
+                    gattSucceeded = true
                     notifyCharacteristic.value = "notify!!".toByteArray()
                     mBtGattServer.notifyCharacteristicChanged(
                         connectedDevice,
@@ -251,4 +253,13 @@ class ThereminBluetoothManager(
             }
         }
 
+    fun sendAxis(x: String) {
+        if (!gattSucceeded) return
+        notifyCharacteristic.value = x.toByteArray()
+        mBtGattServer.notifyCharacteristicChanged(
+            connectedDevice,
+            notifyCharacteristic,
+            false
+        )
+    }
 }

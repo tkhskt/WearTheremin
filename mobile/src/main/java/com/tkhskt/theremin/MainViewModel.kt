@@ -23,7 +23,6 @@ class MainViewModel :
     override fun onMessageReceived(messageEvent: MessageEvent) {
         scope.launch {
             _events.value = Event(String(messageEvent.data))
-
         }
     }
 

@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
 
         requestPermission()
 
+        observeAxis()
         setContent {
             val state = viewModel.events.collectAsState()
             Column(
@@ -93,6 +94,14 @@ class MainActivity : AppCompatActivity() {
             }
             else -> {
                 // Ignore all other requests.
+            }
+        }
+    }
+
+    private fun observeAxis() {
+        lifecycleScope.launch {
+            viewModel.events.collect {
+                bluetoothManager?.sendAxis(it.text)
             }
         }
     }
