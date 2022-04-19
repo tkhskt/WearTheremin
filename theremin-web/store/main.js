@@ -5,7 +5,7 @@ export const state = () => ({
   },
   isMobile: false,
   soundEnabled: false,
-  freq: 440,
+  freq: 440.0,
 })
 
 export const actions = {
@@ -28,6 +28,7 @@ export const mutations = {
     state.isMobile = value.width < 1025
   },
   setFreq(state, value) {
+    console.log('valll ' + value)
     state.freq = state.freq + value * 10
   },
 }

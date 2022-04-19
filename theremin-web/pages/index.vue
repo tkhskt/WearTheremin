@@ -137,13 +137,12 @@ export default {
       this.ble_connected = false
     },
     onDataChanged(event) {
-      console.log('onDataChanged')
-
       const characteristic = event.target
       // const packet = uint8arrayToArray(characteristic.value)
 
       if (characteristic.uuid === UUID_ANDROID_NOTIFY) {
         const str = new TextDecoder().decode(characteristic.value)
+        console.log(parseFloat(str))
         this.$store.dispatch('main/onReceiveAcceleration', parseFloat(str))
         this.ble_notify_value = str // bytes2hexs(packet, '')
       }
