@@ -28,6 +28,7 @@ export const mutations = {
     state.isMobile = value.width < 1025
   },
   setFrequency(state, value) {
+    console.log(value)
     state.frequency = value
   },
 }
