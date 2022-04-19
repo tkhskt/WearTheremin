@@ -174,7 +174,7 @@ export default {
       return characteristics.get(uuid).stopNotifications()
     },
     calcFrequency(acceleration) {
-      if (Number.isNaN(acceleration)) return
+      if (Number.isNaN(acceleration)) return this.frequency
       this.frequency = this.frequency + acceleration * 10
     },
   },
