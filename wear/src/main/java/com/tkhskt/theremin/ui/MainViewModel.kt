@@ -59,7 +59,7 @@ class MainViewModel @Inject constructor(
     private fun startSensor() {
         viewModelScope.launch {
             sensorEventFlow(sensor, sensorManager).collect {
-                val x = it.values.getOrNull(0) ?: return@collect
+                val x = it.values.getOrNull(1) ?: return@collect
                 thereminRepository.sendAcceleration(x)
             }
         }
@@ -82,7 +82,7 @@ class MainViewModel @Inject constructor(
                 }
             }
             try {
-                manager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+                manager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_FASTEST)
                 awaitClose()
             } finally {
                 manager.unregisterListener(listener, sensor)

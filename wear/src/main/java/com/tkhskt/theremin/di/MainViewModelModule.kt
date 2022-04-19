@@ -35,7 +35,7 @@ object MainViewModelModule {
 
     @Provides
     fun provideSensor(manager: SensorManager): Sensor =
-        manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        manager.getDefaultSensor(Sensor.TYPE_GRAVITY)
 
     @Provides
     fun provideThereminRepository(
