@@ -16,6 +16,8 @@
       readonly
     ></textarea>
 
+    <theremin-sound />
+
     <div class="modal fade" id="progress">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -52,9 +54,7 @@ export default {
       ble_notify_value: '',
     }
   },
-  created() {
-    // proc_load()
-  },
+  created() {},
   computed: {},
   methods: {
     ble_connect() {
@@ -103,8 +103,6 @@ export default {
       return navigator.bluetooth
         .requestDevice({
           filters: [{ services: [serviceUUID] }],
-          //      acceptAllDevices: true,
-          //      optionalServices: [service_uuid]
         })
         .then((device) => {
           console.log('requestDevice OK')
@@ -146,6 +144,7 @@ export default {
 
       if (characteristic.uuid === UUID_ANDROID_NOTIFY) {
         const str = new TextDecoder().decode(characteristic.value)
+        this.$store.dispatch('main/onReceiveAcceleration', parseFloat(str))
         this.ble_notify_value = str // bytes2hexs(packet, '')
       }
     },
@@ -169,23 +168,6 @@ export default {
     },
   },
 }
-
-// function bytes2hexs(bytes, sep = ' ') {
-//   return bytes
-//     .map(function (b) {
-//       const s = b.toString(16)
-//       return b < 0x10 ? '0' + s : s
-//     })
-//     .join(sep)
-//     .toUpperCase()
-// }
-
-// function uint8arrayToArray(array) {
-//   const result = new Array(array.byteLength)
-//   for (let i = 0; i < array.byteLength; i++) result[i] = array.getUint8(i)
-
-//   return result
-// }
 
 function waitAsync(timeout) {
   return new Promise((resolve, reject) => {
