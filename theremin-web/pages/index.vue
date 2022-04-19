@@ -175,7 +175,9 @@ export default {
     },
     calcFrequency(acceleration) {
       if (Number.isNaN(acceleration)) return this.frequency
-      return this.frequency + acceleration * 10
+      if (Math.abs(acceleration) < 1) return this.frequency
+      if (this.frequency + acceleration < 0) return this.frequency
+      return this.frequency + acceleration
     },
   },
 }
