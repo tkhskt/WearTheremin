@@ -58,8 +58,12 @@ export default {
   computed: {
     ...mapState('main', ['frequency']),
   },
-  created() {},
-  computed: {},
+  mounted() {
+    // window.onmousemove = (e) => {
+    //   const pointerX = e.pageX
+    //   this.$store.dispatch('main/onChangeFrequency', 440 + pointerX * 0.5)
+    // }
+  },
   methods: {
     ble_connect() {
       return this.requestDevice(UUID_ANDROID_SERVICE)
@@ -170,6 +174,7 @@ export default {
       return characteristics.get(uuid).stopNotifications()
     },
     calcFrequency(acceleration) {
+      console.log(this.frequency + acceleration * 10)
       this.frequency = this.frequency + acceleration * 10
     },
   },

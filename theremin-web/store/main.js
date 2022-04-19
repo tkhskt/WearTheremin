@@ -15,8 +15,8 @@ export const actions = {
   onChangeHoverTop({ commit }, hover) {
     commit('setHoverTop', hover)
   },
-  onChangeFrequency({ commit }, acceleration) {
-    commit('setFrequency', acceleration)
+  onChangeFrequency({ commit }, value) {
+    commit('setFrequency', value)
   },
 }
 
@@ -28,6 +28,7 @@ export const mutations = {
     state.isMobile = value.width < 1025
   },
   setFrequency(state, value) {
+    console.log('setFreq' + value)
     state.frequency = value
   },
 }
