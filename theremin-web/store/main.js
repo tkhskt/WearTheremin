@@ -5,7 +5,7 @@ export const state = () => ({
   },
   isMobile: false,
   soundEnabled: false,
-  freq: 440.0,
+  frequency: 440.0,
 })
 
 export const actions = {
@@ -15,8 +15,8 @@ export const actions = {
   onChangeHoverTop({ commit }, hover) {
     commit('setHoverTop', hover)
   },
-  onReceiveAcceleration({ commit }, acceleration) {
-    commit('setFreq', acceleration)
+  onChangeFrequency({ commit }, acceleration) {
+    commit('setFrequency', acceleration)
   },
 }
 
@@ -27,7 +27,7 @@ export const mutations = {
   setIsMobile(state, value) {
     state.isMobile = value.width < 1025
   },
-  setFreq(state, value) {
-    state.freq = state.freq + value * 10
+  setFrequency(state, value) {
+    state.frequency = value
   },
 }

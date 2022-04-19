@@ -18,10 +18,10 @@ export default {
     }
   },
   computed: {
-    ...mapState('main', ['freq']),
+    ...mapState('main', ['frequency']),
   },
   watch: {
-    freq(newValue) {
+    frequency(newValue) {
       console.log('freqqq!' + newValue)
       if (!this.oscillator) return
       console.log(newValue)

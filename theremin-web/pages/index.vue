@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 const UUID_ANDROID_SERVICE = 'a9d158bb-9007-4fe3-b5d2-d3696a3eb067'
 const UUID_ANDROID_NOTIFY = '52dc2803-7e98-4fc2-908a-66161b5959b0'
 
@@ -53,6 +54,9 @@ export default {
       ble_devicename: '',
       ble_notify_value: '',
     }
+  },
+  computed: {
+    ...mapState('main', ['frequency']),
   },
   created() {},
   computed: {},
@@ -142,7 +146,8 @@ export default {
 
       if (characteristic.uuid === UUID_ANDROID_NOTIFY) {
         const str = new TextDecoder().decode(characteristic.value)
-        this.$store.dispatch('main/onReceiveAcceleration', parseFloat(str))
+        const newFreq = this.calcFrequency(parseFloat(str))
+        this.$store.dispatch('main/onChangeFrequency', newFreq)
         this.ble_notify_value = str // bytes2hexs(packet, '')
       }
     },
@@ -163,6 +168,9 @@ export default {
 
       console.log('Execute : stopNotifications')
       return characteristics.get(uuid).stopNotifications()
+    },
+    calcFrequency(acceleration) {
+      this.frequency = this.frequency + acceleration * 10
     },
   },
 }
