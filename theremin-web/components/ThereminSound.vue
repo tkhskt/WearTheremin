@@ -22,9 +22,7 @@ export default {
   },
   watch: {
     frequency(newValue) {
-      console.log('freqqq!' + newValue)
       if (!this.oscillator) return
-      console.log(newValue)
       this.oscillator.frequency.value = newValue
     },
   },

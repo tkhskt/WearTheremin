@@ -174,7 +174,8 @@ export default {
       return characteristics.get(uuid).stopNotifications()
     },
     calcFrequency(acceleration) {
-      console.log(this.frequency + acceleration * 10)
+      console.log('aaaaa ' + this.frequency)
+      console.log('bbbbb ' + acceleration * 10)
       this.frequency = this.frequency + acceleration * 10
     },
   },
