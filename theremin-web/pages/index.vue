@@ -174,8 +174,7 @@ export default {
       return characteristics.get(uuid).stopNotifications()
     },
     calcFrequency(acceleration) {
-      console.log('aaaaa ' + this.frequency)
-      console.log('bbbbb ' + acceleration * 10)
+      if (Number.isNaN(acceleration)) return
       this.frequency = this.frequency + acceleration * 10
     },
   },
