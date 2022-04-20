@@ -4,9 +4,11 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tkhskt.theremin.data.ThereminRepository
+import com.tkhskt.theremin.domain.GetPositionUseCase
 import com.tkhskt.theremin.ui.model.MainEvent
 import com.tkhskt.theremin.ui.model.MainState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +26,7 @@ class MainViewModel @Inject constructor(
     private val thereminRepository: ThereminRepository,
     private val sensorManager: SensorManager,
     private val sensor: Sensor,
+    private val getPositionUseCase: GetPositionUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainState.Empty)
@@ -31,6 +34,7 @@ class MainViewModel @Inject constructor(
         get() = _state
 
     private val event = MutableSharedFlow<MainEvent>()
+
 
     init {
         viewModelScope.launch {
@@ -59,8 +63,8 @@ class MainViewModel @Inject constructor(
     private fun startSensor() {
         viewModelScope.launch {
             sensorEventFlow(sensor, sensorManager).collect {
-                val x = it.values.getOrNull(1) ?: return@collect
-                thereminRepository.sendAcceleration(x)
+                val y = it.values.getOrNull(1) ?: return@collect
+                thereminRepository.sendAcceleration(y)
             }
         }
     }

@@ -176,8 +176,10 @@ export default {
     calcFrequency(acceleration) {
       if (Number.isNaN(acceleration)) return this.frequency
       // if (Math.abs(acceleration) < 1) return this.frequency
-      if (538 + (acceleration + 4) * 200 < 0) return this.frequency
-      return 538 + (acceleration + 4) * 200
+      const newFreq = 269.292 + (acceleration + 4) * 50.49
+      if (newFreq < 269.292) return this.frequency
+      if (newFreq > 1077.167) return this.frequency
+      return newFreq
     },
   },
 }

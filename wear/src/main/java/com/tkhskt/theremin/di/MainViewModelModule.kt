@@ -7,8 +7,12 @@ import android.hardware.SensorManager
 import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.NodeClient
 import com.google.android.gms.wearable.Wearable
+import com.tkhskt.theremin.data.DistanceRepository
+import com.tkhskt.theremin.data.DistanceRepositoryImpl
 import com.tkhskt.theremin.data.ThereminRepository
 import com.tkhskt.theremin.data.ThereminRepositoryImpl
+import com.tkhskt.theremin.domain.GetPositionUseCase
+import com.tkhskt.theremin.domain.GetPositionUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,6 +40,13 @@ object MainViewModelModule {
     @Provides
     fun provideSensor(manager: SensorManager): Sensor =
         manager.getDefaultSensor(Sensor.TYPE_GRAVITY)
+
+    @Provides
+    fun provideDistanceRepository(): DistanceRepository = DistanceRepositoryImpl()
+
+    @Provides
+    fun provideGetPositionUseCase(repository: DistanceRepository): GetPositionUseCase =
+        GetPositionUseCaseImpl(repository)
 
     @Provides
     fun provideThereminRepository(
