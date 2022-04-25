@@ -22,10 +22,6 @@ class MainViewModel : ViewModel(), MessageClient.OnMessageReceivedListener {
             _events.value = Event(String(messageEvent.data))
         }
     }
-
-    companion object {
-        private const val AXIS_PATH = "/axis"
-    }
 }
 
 /**
