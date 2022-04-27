@@ -35,7 +35,6 @@ class MainViewModel @Inject constructor(
 
     private val event = MutableSharedFlow<MainEvent>()
 
-
     init {
         viewModelScope.launch {
             event.collect {
@@ -63,6 +62,7 @@ class MainViewModel @Inject constructor(
     private fun startSensor() {
         viewModelScope.launch {
             sensorEventFlow(sensor, sensorManager).collect {
+                if (!state.value.started) return@collect
                 val y = it.values.getOrNull(1) ?: return@collect
                 thereminRepository.sendAcceleration(y)
             }

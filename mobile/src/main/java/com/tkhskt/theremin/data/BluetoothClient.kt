@@ -1,7 +1,6 @@
-package com.tkhskt.theremin
+package com.tkhskt.theremin.data
 
 import android.annotation.SuppressLint
-import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
@@ -24,10 +23,9 @@ import java.util.UUID
 import kotlin.experimental.and
 
 @SuppressLint("MissingPermission")
-class ThereminBluetoothManager(
+class BluetoothClient(
     private val context: Context,
     private val bleManager: BluetoothManager,
-    private val bleAdapter: BluetoothAdapter,
 ) {
 
     companion object {
@@ -44,10 +42,11 @@ class ThereminBluetoothManager(
         private val UUID_LIFF_DESC: UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")
     }
 
-    /*
-   BLUETOOTH
-    */
-    private val mPsdiCharacteristic: BluetoothGattCharacteristic = BluetoothGattCharacteristic(
+    private var connectedDevice: BluetoothDevice? = null
+
+    private var gattSucceeded = false
+
+    private val psdiCharacteristic: BluetoothGattCharacteristic = BluetoothGattCharacteristic(
         UUID_LIFF_PSDI,
         BluetoothGattCharacteristic.PROPERTY_READ,
         BluetoothGattCharacteristic.PERMISSION_READ
@@ -62,66 +61,11 @@ class ThereminBluetoothManager(
     private val btGattService: BluetoothGattService =
         BluetoothGattService(UUID_LIFF_SERVICE, BluetoothGattService.SERVICE_TYPE_PRIMARY)
 
-    private val mBtGattServer: BluetoothGattServer by lazy {
-        bleManager.openGattServer(context, mGattServerCallback)
-    }
-    private var connectedDevice: BluetoothDevice? = null
-
-    private var gattSucceeded = false
-
-    suspend fun prepareBle() {
-        val btAdvertiser = bleAdapter.bluetoothLeAdvertiser
-        if (btAdvertiser == null) {
-            Toast.makeText(context, "BLE Peripheralモードが使用できません。", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        btPsdiService.addCharacteristic(mPsdiCharacteristic)
-
-        mBtGattServer.addService(btPsdiService)
-        delay(200)
-
-        btGattService.addCharacteristic(notifyCharacteristic)
-        val dataDescriptor = BluetoothGattDescriptor(
-            UUID_LIFF_DESC,
-            BluetoothGattDescriptor.PERMISSION_WRITE or BluetoothGattDescriptor.PERMISSION_READ
-        )
-        notifyCharacteristic.addDescriptor(dataDescriptor)
-        mBtGattServer.addService(btGattService)
-        delay(200)
-        startBleAdvertising(btAdvertiser)
+    private val btGattServer: BluetoothGattServer by lazy {
+        bleManager.openGattServer(context, gattServerCallback)
     }
 
-    private fun startBleAdvertising(advertiser: BluetoothLeAdvertiser) {
-        val dataBuilder = AdvertiseData.Builder().apply {
-            setIncludeTxPowerLevel(true)
-            addServiceUuid(ParcelUuid.fromString(UUID_LIFF_SERVICE_STR))
-        }
-        val settingsBuilder = AdvertiseSettings.Builder().apply {
-            setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED)
-            setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
-            setTimeout(0)
-            setConnectable(true)
-        }
-        val respBuilder = AdvertiseData.Builder().apply {
-            setIncludeDeviceName(true)
-        }
-        advertiser.startAdvertising(
-            settingsBuilder.build(),
-            dataBuilder.build(),
-            respBuilder.build(),
-            object : AdvertiseCallback() {
-                override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {
-                    Log.d("bleperi", "onStartSuccess")
-                }
-
-                override fun onStartFailure(errorCode: Int) {
-                    Log.d("bleperi", "onStartFailure")
-                }
-            })
-    }
-
-    private val mGattServerCallback: BluetoothGattServerCallback =
+    private val gattServerCallback: BluetoothGattServerCallback =
         object : BluetoothGattServerCallback() {
             private val notifyDescValue = ByteArray(2)
             private val charValue = ByteArray(UUID_LIFF_VALUE_SIZE) /* max 512 */
@@ -166,7 +110,7 @@ class ThereminBluetoothManager(
                         var len: Int = value.size
                         if (offset + len > charValue.size) len = charValue.size - offset
                         System.arraycopy(value, 0, charValue, offset, len)
-                        mBtGattServer.sendResponse(
+                        btGattServer.sendResponse(
                             device,
                             requestId,
                             BluetoothGatt.GATT_SUCCESS,
@@ -174,7 +118,7 @@ class ThereminBluetoothManager(
                             null
                         )
                     } else {
-                        mBtGattServer.sendResponse(
+                        btGattServer.sendResponse(
                             device,
                             requestId,
                             BluetoothGatt.GATT_FAILURE,
@@ -185,7 +129,7 @@ class ThereminBluetoothManager(
                     if (notifyDescValue[0] and 0x01.toByte() != 0x00.toByte()) {
                         if (offset == 0 && value[0] == 0xff.toByte()) {
                             notifyCharacteristic.value = "notify!!".toByteArray()
-                            mBtGattServer.notifyCharacteristicChanged(
+                            btGattServer.notifyCharacteristicChanged(
                                 connectedDevice,
                                 notifyCharacteristic,
                                 false
@@ -194,7 +138,7 @@ class ThereminBluetoothManager(
                         }
                     }
                 } else {
-                    mBtGattServer.sendResponse(
+                    btGattServer.sendResponse(
                         device,
                         requestId,
                         BluetoothGatt.GATT_FAILURE,
@@ -213,7 +157,7 @@ class ThereminBluetoothManager(
                 Log.d("bleperi", "onDescriptorReadRequest")
 
                 if (descriptor.uuid.compareTo(UUID_LIFF_DESC) == 0) {
-                    mBtGattServer.sendResponse(
+                    btGattServer.sendResponse(
                         device,
                         requestId,
                         BluetoothGatt.GATT_SUCCESS,
@@ -235,7 +179,7 @@ class ThereminBluetoothManager(
                 if (descriptor.uuid.compareTo(UUID_LIFF_DESC) == 0) {
                     notifyDescValue[0] = value[0]
                     notifyDescValue[1] = value[1]
-                    mBtGattServer.sendResponse(
+                    btGattServer.sendResponse(
                         device,
                         requestId,
                         BluetoothGatt.GATT_SUCCESS,
@@ -244,7 +188,7 @@ class ThereminBluetoothManager(
                     )
                     gattSucceeded = true
                     notifyCharacteristic.value = "notify!!".toByteArray()
-                    mBtGattServer.notifyCharacteristicChanged(
+                    btGattServer.notifyCharacteristicChanged(
                         connectedDevice,
                         notifyCharacteristic,
                         false
@@ -253,13 +197,65 @@ class ThereminBluetoothManager(
             }
         }
 
-    fun sendAxis(x: String) {
+    suspend fun prepare() {
+        val btAdvertiser = bleManager.adapter.bluetoothLeAdvertiser
+        if (btAdvertiser == null) {
+            Toast.makeText(context, "BLE Peripheralモードが使用できません。", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        btPsdiService.addCharacteristic(psdiCharacteristic)
+
+        btGattServer.addService(btPsdiService)
+        delay(200)
+
+        btGattService.addCharacteristic(notifyCharacteristic)
+        val dataDescriptor = BluetoothGattDescriptor(
+            UUID_LIFF_DESC,
+            BluetoothGattDescriptor.PERMISSION_WRITE or BluetoothGattDescriptor.PERMISSION_READ
+        )
+        notifyCharacteristic.addDescriptor(dataDescriptor)
+        btGattServer.addService(btGattService)
+        delay(200)
+        startBleAdvertising(btAdvertiser)
+    }
+
+    fun notify(value: String) {
         if (!gattSucceeded) return
-        notifyCharacteristic.value = x.toByteArray()
-        mBtGattServer.notifyCharacteristicChanged(
+        notifyCharacteristic.value = value.toByteArray()
+        btGattServer.notifyCharacteristicChanged(
             connectedDevice,
             notifyCharacteristic,
             false
         )
+    }
+
+    private fun startBleAdvertising(advertiser: BluetoothLeAdvertiser) {
+        val dataBuilder = AdvertiseData.Builder().apply {
+            setIncludeTxPowerLevel(true)
+            addServiceUuid(ParcelUuid.fromString(UUID_LIFF_SERVICE_STR))
+        }
+        val settingsBuilder = AdvertiseSettings.Builder().apply {
+            setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED)
+            setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
+            setTimeout(0)
+            setConnectable(true)
+        }
+        val respBuilder = AdvertiseData.Builder().apply {
+            setIncludeDeviceName(true)
+        }
+        advertiser.startAdvertising(
+            settingsBuilder.build(),
+            dataBuilder.build(),
+            respBuilder.build(),
+            object : AdvertiseCallback() {
+                override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {
+                    Log.d("bleperi", "onStartSuccess")
+                }
+
+                override fun onStartFailure(errorCode: Int) {
+                    Log.d("bleperi", "onStartFailure")
+                }
+            })
     }
 }
