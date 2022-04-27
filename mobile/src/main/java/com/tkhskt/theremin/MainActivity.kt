@@ -5,7 +5,6 @@ import android.Manifest.permission.BLUETOOTH
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -24,6 +23,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -140,11 +140,11 @@ class MainActivity : AppCompatActivity() {
                             .await()
                     }
                 }.awaitAll()
-                Log.d(TAG, "Starting activity requests sent successfully")
+                Timber.d(TAG, "Starting activity requests sent successfully")
             } catch (cancellationException: CancellationException) {
                 throw cancellationException
             } catch (exception: Exception) {
-                Log.d(TAG, "Starting activity failed: $exception")
+                Timber.d(TAG, "Starting activity failed: $exception")
             }
         }
     }

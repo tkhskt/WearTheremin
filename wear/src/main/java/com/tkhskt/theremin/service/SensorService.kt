@@ -8,7 +8,6 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.IBinder
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.android.gms.wearable.Wearable
 import com.tkhskt.theremin.MainActivity
@@ -25,6 +24,7 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 // Not Used
 class SensorService : Service() {
@@ -97,11 +97,11 @@ class SensorService : Service() {
                     }
                 }.awaitAll()
 
-                Log.d(TAG, "Starting activity requests sent successfully")
+                Timber.d(TAG, "Starting activity requests sent successfully")
             } catch (cancellationException: CancellationException) {
                 throw cancellationException
             } catch (exception: Exception) {
-                Log.d(TAG, "Starting activity failed: $exception")
+                Timber.e(TAG, exception)
             }
         }
     }

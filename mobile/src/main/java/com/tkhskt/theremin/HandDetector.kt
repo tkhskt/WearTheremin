@@ -2,7 +2,6 @@ package com.tkhskt.theremin
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -13,6 +12,7 @@ import com.google.mediapipe.solutions.hands.HandLandmark
 import com.google.mediapipe.solutions.hands.Hands
 import com.google.mediapipe.solutions.hands.HandsOptions
 import com.google.mediapipe.solutions.hands.HandsResult
+import timber.log.Timber
 
 class HandDetector : DefaultLifecycleObserver {
 
@@ -47,10 +47,7 @@ class HandDetector : DefaultLifecycleObserver {
                 .build()
         ).apply {
             setErrorListener { message: String, _: RuntimeException? ->
-                Log.e(
-                    TAG,
-                    "MediaPipe Hands error:$message"
-                )
+                Timber.e(TAG, "MediaPipe Hands error:$message")
             }
             setResultListener { handsResult: HandsResult ->
                 logWristLandmark(handsResult)
@@ -100,7 +97,7 @@ class HandDetector : DefaultLifecycleObserver {
     private fun logWristLandmark(result: HandsResult) {
         if (result.multiHandLandmarks().isEmpty()) return
         val wristLandmark = result.multiHandLandmarks()[0].landmarkList[HandLandmark.WRIST]
-        Log.i(
+        Timber.i(
             TAG, String.format(
                 "MediaPipe Hand wrist world coordinates (in meters with the origin at the hand's"
                         + " approximate geometric center): x=%f m, y=%f m, z=%f m",

@@ -58,12 +58,18 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1"
     implementation "androidx.work:work-runtime-ktx:2.7.1"
 
+    // Jetpack Compose
     implementation "androidx.activity:activity-compose:1.4.0"
     implementation "androidx.wear.compose:compose-foundation:1.0.0-alpha21"
     implementation "androidx.wear.compose:compose-material:1.0.0-alpha21"
     implementation "androidx.wear.compose:compose-navigation:1.0.0-alpha21"
 
+    // hilt
     implementation "com.google.dagger:hilt-android:2.41"
     kapt "com.google.dagger:hilt-android-compiler:2.41"
+
+    // timber
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+
     wearApp project(":wear")
 }
