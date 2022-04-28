@@ -7,10 +7,10 @@ import android.hardware.SensorManager
 import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.NodeClient
 import com.google.android.gms.wearable.Wearable
-import com.tkhskt.theremin.data.DistanceRepository
-import com.tkhskt.theremin.data.DistanceRepositoryImpl
-import com.tkhskt.theremin.data.ThereminRepository
-import com.tkhskt.theremin.data.ThereminRepositoryImpl
+import com.tkhskt.theremin.data.repository.DistanceRepository
+import com.tkhskt.theremin.data.repository.DistanceRepositoryImpl
+import com.tkhskt.theremin.data.repository.ThereminRepository
+import com.tkhskt.theremin.data.repository.ThereminRepositoryImpl
 import com.tkhskt.theremin.domain.GetPositionUseCase
 import com.tkhskt.theremin.domain.GetPositionUseCaseImpl
 import dagger.Module

@@ -1,4 +1,4 @@
-package com.tkhskt.theremin.data
+package com.tkhskt.theremin.data.source
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice

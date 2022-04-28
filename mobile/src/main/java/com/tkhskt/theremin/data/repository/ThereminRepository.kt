@@ -1,5 +1,6 @@
-package com.tkhskt.theremin.data
+package com.tkhskt.theremin.data.repository
 
+import com.tkhskt.theremin.data.source.BluetoothClient
 import com.tkhskt.theremin.data.model.ThereminParameter
 
 interface ThereminRepository {

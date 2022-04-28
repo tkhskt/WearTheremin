@@ -4,8 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.MessageEvent
-import com.tkhskt.theremin.HandDetector
-import com.tkhskt.theremin.data.ThereminRepository
+import com.tkhskt.theremin.data.repository.ThereminRepository
 import com.tkhskt.theremin.data.model.ThereminParameter
 import com.tkhskt.theremin.ui.model.MainEvent
 import com.tkhskt.theremin.ui.model.MainState

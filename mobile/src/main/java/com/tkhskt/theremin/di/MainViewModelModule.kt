@@ -3,9 +3,9 @@ package com.tkhskt.theremin.di
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Context.BLUETOOTH_SERVICE
-import com.tkhskt.theremin.data.BluetoothClient
-import com.tkhskt.theremin.data.ThereminRepository
-import com.tkhskt.theremin.data.ThereminRepositoryImpl
+import com.tkhskt.theremin.data.source.BluetoothClient
+import com.tkhskt.theremin.data.repository.ThereminRepository
+import com.tkhskt.theremin.data.repository.ThereminRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

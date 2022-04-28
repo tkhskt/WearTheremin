@@ -1,4 +1,4 @@
-package com.tkhskt.theremin.data
+package com.tkhskt.theremin.data.repository
 
 import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.NodeClient

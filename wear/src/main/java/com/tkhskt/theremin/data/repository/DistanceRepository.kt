@@ -1,4 +1,4 @@
-package com.tkhskt.theremin.data
+package com.tkhskt.theremin.data.repository
 
 interface DistanceRepository {
     fun getTime(): Int

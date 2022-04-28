@@ -6,7 +6,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tkhskt.theremin.data.ThereminRepository
+import com.tkhskt.theremin.data.repository.ThereminRepository
 import com.tkhskt.theremin.domain.GetPositionUseCase
 import com.tkhskt.theremin.ui.model.MainEvent
 import com.tkhskt.theremin.ui.model.MainState
