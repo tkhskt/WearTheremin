@@ -186,7 +186,6 @@ class BluetoothClient(
                         null
                     )
                     gattSucceeded = true
-                    notifyCharacteristic.value = "notify!!".toByteArray()
                     btGattServer.notifyCharacteristicChanged(
                         connectedDevice,
                         notifyCharacteristic,
