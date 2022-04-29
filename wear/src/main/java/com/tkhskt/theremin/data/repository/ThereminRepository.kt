@@ -7,7 +7,7 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 interface ThereminRepository {
-    suspend fun sendAcceleration(x: Float)
+    suspend fun sendGravity(y: Float)
 }
 
 class ThereminRepositoryImpl(
@@ -15,21 +15,21 @@ class ThereminRepositoryImpl(
     private val nodeClient: NodeClient,
 ) : ThereminRepository {
 
-    override suspend fun sendAcceleration(x: Float) {
+    override suspend fun sendGravity(y: Float) {
         val nodes = nodeClient.connectedNodes.await()
 
        withContext(Dispatchers.IO) {
            nodes.forEach { node ->
                messageClient.sendMessage(
                    node.id,
-                   ACCELERATION_PATH,
-                   x.toString().toByteArray()
+                   GRAVITY_PATH,
+                   y.toString().toByteArray()
                ).await()
            }
        }
     }
 
     companion object {
-        private const val ACCELERATION_PATH = "/acceleration"
+        private const val GRAVITY_PATH = "/gravity"
     }
 }

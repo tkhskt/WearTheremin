@@ -1,4 +1,4 @@
-package com.tkhskt.theremin
+package com.tkhskt.theremin.ui
 
 import android.app.Activity
 import android.content.Context

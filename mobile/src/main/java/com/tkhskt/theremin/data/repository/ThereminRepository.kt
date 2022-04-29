@@ -17,6 +17,6 @@ class ThereminRepositoryImpl(
     }
 
     override suspend fun sendParameter(parameter: ThereminParameter) {
-        bluetoothClient.notify("${parameter.acceleration}")
+        bluetoothClient.notify("${parameter.gravity},${parameter.distance}")
     }
 }

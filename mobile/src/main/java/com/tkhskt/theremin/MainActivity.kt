@@ -1,19 +1,16 @@
 package com.tkhskt.theremin
 
-import android.Manifest
-import android.Manifest.permission.BLUETOOTH
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.wearable.Wearable
+import com.tkhskt.theremin.ui.HandDetector
 import com.tkhskt.theremin.ui.MainScreen
 import com.tkhskt.theremin.ui.MainViewModel
 import com.tkhskt.theremin.ui.model.MainEvent
@@ -38,7 +35,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         collectEvent()
-        requestPermission()
+        if (bluetoothPermissionGranted()) {
+            viewModel.dispatchEvent(MainEvent.InitializeBle)
+        } else {
+            requestBluetoothPermission(PERMISSION_REQUEST_CODE)
+        }
         lifecycle.addObserver(handDetector)
         setContent {
             MainScreen(viewModel = viewModel)
@@ -56,19 +57,13 @@ class MainActivity : AppCompatActivity() {
         permissions: Array<String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            PERMISSION_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED
-                ) {
-                    viewModel.dispatchEvent(MainEvent.InitializeBle)
-                } else {
-                    Toast.makeText(this, "Please grant permissions", Toast.LENGTH_SHORT).show()
-                }
-                return
-            }
-            else -> {
-                // Ignore all other requests.
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED
+            ) {
+                viewModel.dispatchEvent(MainEvent.InitializeBle)
+            } else {
+                Toast.makeText(this, "Please grant permissions", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -90,43 +85,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-        }
-    }
-
-    private fun requestPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.BLUETOOTH_CONNECT
-                ) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.BLUETOOTH_ADVERTISE
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                viewModel.dispatchEvent(MainEvent.InitializeBle)
-                return
-            }
-            requestPermissions(
-                arrayOf(
-                    Manifest.permission.BLUETOOTH_CONNECT,
-                    Manifest.permission.BLUETOOTH_ADVERTISE
-                ),
-                PERMISSION_REQUEST_CODE
-            )
-        } else {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    BLUETOOTH
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                viewModel.dispatchEvent(MainEvent.InitializeBle)
-                return
-            }
-            requestPermissions(
-                arrayOf(BLUETOOTH),
-                PERMISSION_REQUEST_CODE
-            )
         }
     }
 
@@ -155,8 +113,5 @@ class MainActivity : AppCompatActivity() {
         private const val START_ACTIVITY_PATH = "/start-activity"
 
         private const val PERMISSION_REQUEST_CODE = 1000
-
-        private const val RUN_ON_GPU = true
     }
-
 }

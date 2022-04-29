@@ -1,11 +1,11 @@
 package com.tkhskt.theremin.ui.model
 
 data class MainState(
-    val acceleration: String,
+    val gravity: String,
 ) {
     companion object {
         val Empty = MainState(
-            acceleration = "",
+            gravity = "",
         )
     }
 }

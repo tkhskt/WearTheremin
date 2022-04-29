@@ -29,7 +29,6 @@ class MainViewModel @Inject constructor(
     val events: SharedFlow<MainEvent>
         get() = _events
 
-
     init {
         viewModelScope.launch {
             events.collect {
@@ -48,7 +47,7 @@ class MainViewModel @Inject constructor(
     override fun onMessageReceived(messageEvent: MessageEvent) {
         viewModelScope.launch {
             _state.value = state.value.copy(
-                acceleration = String(messageEvent.data),
+                gravity = String(messageEvent.data),
             )
             thereminRepository.sendParameter(ThereminParameter(String(messageEvent.data), ""))
         }

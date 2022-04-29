@@ -63,7 +63,7 @@ class MainViewModel @Inject constructor(
             sensorEventFlow(sensor, sensorManager).collect {
                 if (!state.value.started) return@collect
                 val y = it.values.getOrNull(1) ?: return@collect
-                thereminRepository.sendAcceleration(y)
+                thereminRepository.sendGravity(y)
             }
         }
     }
