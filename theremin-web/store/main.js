@@ -6,6 +6,7 @@ export const state = () => ({
   isMobile: false,
   soundEnabled: false,
   frequency: 440.0,
+  volume: 0.5,
 })
 
 export const actions = {
@@ -18,6 +19,9 @@ export const actions = {
   onChangeFrequency({ commit }, value) {
     commit('setFrequency', value)
   },
+  onChangeVolume({ commit }, value) {
+    commit('setVolume', value)
+  },
 }
 
 export const mutations = {
@@ -28,7 +32,9 @@ export const mutations = {
     state.isMobile = value.width < 1025
   },
   setFrequency(state, value) {
-    console.log(value)
     state.frequency = value
+  },
+  setVolume(state, value) {
+    state.volume = value
   },
 }

@@ -18,12 +18,16 @@ export default {
     }
   },
   computed: {
-    ...mapState('main', ['frequency']),
+    ...mapState('main', ['frequency', 'volume']),
   },
   watch: {
     frequency(newValue) {
       if (!this.oscillator) return
       this.oscillator.frequency.value = newValue
+    },
+    volume(newValue) {
+      if (!this.gainNode) return
+      this.gainNode.gain.value = newValue
     },
   },
   mounted() {

@@ -146,13 +146,15 @@ export default {
     },
     onDataChanged(event) {
       const characteristic = event.target
-      // const packet = uint8arrayToArray(characteristic.value)
 
       if (characteristic.uuid === UUID_ANDROID_NOTIFY) {
-        const str = new TextDecoder().decode(characteristic.value)
-        const newFreq = this.calcFrequency(parseFloat(str))
+        const values = new TextDecoder().decode(characteristic.value).split(',')
+        const gravity = values[0]
+        // const distance = values[1]
+        const newFreq = this.calcFrequency(parseFloat(gravity))
         this.$store.dispatch('main/onChangeFrequency', newFreq)
-        this.ble_notify_value = str // bytes2hexs(packet, '')
+        this.$store.dispatch('main/onChangeVolume', newFreq)
+        this.ble_notify_value = gravity
       }
     },
     startNotify(uuid) {
@@ -173,14 +175,15 @@ export default {
       console.log('Execute : stopNotifications')
       return characteristics.get(uuid).stopNotifications()
     },
-    calcFrequency(acceleration) {
-      if (Number.isNaN(acceleration)) return this.frequency
+    calcFrequency(gravity) {
+      if (Number.isNaN(gravity)) return this.frequency
       // if (Math.abs(acceleration) < 1) return this.frequency
-      const newFreq = 269.292 + (acceleration + 4) * 50.49
+      const newFreq = 269.292 + (gravity + 4) * 50.49
       if (newFreq < 269.292) return this.frequency
       if (newFreq > 1077.167) return this.frequency
       return newFreq
     },
+    calcVolume(distance) {},
   },
 }
 
