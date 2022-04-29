@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         collectEvent()
-        if (bluetoothPermissionGranted()) {
+        if (bluetoothPermissionGranted) {
             viewModel.dispatchEvent(MainEvent.InitializeBle)
         } else {
             requestBluetoothPermission(PERMISSION_REQUEST_CODE)
