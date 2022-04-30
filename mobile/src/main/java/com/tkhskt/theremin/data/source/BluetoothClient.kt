@@ -27,20 +27,6 @@ class BluetoothClient(
     private val bleManager: BluetoothManager,
 ) {
 
-    companion object {
-        private const val UUID_LIFF_VALUE_SIZE: Int = 500
-        private const val UUID_LIFF_SERVICE_STR: String = "a9d158bb-9007-4fe3-b5d2-d3696a3eb067"
-
-        private val UUID_LIFF_PSDI_SERVICE: UUID =
-            UUID.fromString("e625601e-9e55-4597-a598-76018a0d293d")
-        private val UUID_LIFF_PSDI: UUID = UUID.fromString("26e2b12b-85f0-4f3f-9fdd-91d114270e6e")
-
-        private val UUID_LIFF_SERVICE: UUID = UUID.fromString(UUID_LIFF_SERVICE_STR)
-        private val UUID_LIFF_NOTIFY: UUID = UUID.fromString("52dc2803-7e98-4fc2-908a-66161b5959b0")
-        private val UUID_LIFF_WRITE = UUID.fromString("52dc2801-7e98-4fc2-908a-66161b5959b0")
-        private val UUID_LIFF_DESC: UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")
-    }
-
     private var connectedDevice: BluetoothDevice? = null
 
     private var gattSucceeded = false
@@ -255,5 +241,19 @@ class BluetoothClient(
                     Timber.d("bleperi", "onStartFailure")
                 }
             })
+    }
+
+    companion object {
+        private const val UUID_LIFF_VALUE_SIZE: Int = 500
+        private const val UUID_LIFF_SERVICE_STR: String = "a9d158bb-9007-4fe3-b5d2-d3696a3eb067"
+
+        private val UUID_LIFF_PSDI_SERVICE: UUID =
+            UUID.fromString("e625601e-9e55-4597-a598-76018a0d293d")
+        private val UUID_LIFF_PSDI: UUID = UUID.fromString("26e2b12b-85f0-4f3f-9fdd-91d114270e6e")
+
+        private val UUID_LIFF_SERVICE: UUID = UUID.fromString(UUID_LIFF_SERVICE_STR)
+        private val UUID_LIFF_NOTIFY: UUID = UUID.fromString("52dc2803-7e98-4fc2-908a-66161b5959b0")
+        private val UUID_LIFF_WRITE = UUID.fromString("52dc2801-7e98-4fc2-908a-66161b5959b0")
+        private val UUID_LIFF_DESC: UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")
     }
 }
