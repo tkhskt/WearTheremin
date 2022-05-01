@@ -12,7 +12,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.tkhskt.theremin.ui.HandDetector
 import com.tkhskt.theremin.ui.MainScreen
 import com.tkhskt.theremin.ui.MainViewModel
-import com.tkhskt.theremin.ui.model.MainEvent
+import com.tkhskt.theremin.ui.model.MainAction
+import com.tkhskt.theremin.ui.model.MainEffect
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -25,9 +26,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        collectEvent()
+        collectEffect()
         if (bluetoothPermissionGranted) {
-            viewModel.dispatchEvent(MainEvent.InitializeBle)
+            viewModel.dispatch(MainAction.InitializeBle)
         } else {
             requestBluetoothPermission(PERMISSION_REQUEST_CODE)
         }
@@ -52,19 +53,21 @@ class MainActivity : AppCompatActivity() {
             if (grantResults.isNotEmpty() &&
                 grantResults[0] == PackageManager.PERMISSION_GRANTED
             ) {
-                viewModel.dispatchEvent(MainEvent.InitializeBle)
+                viewModel.dispatch(MainAction.InitializeBle)
             } else {
                 Toast.makeText(this, "Please grant permissions", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun collectEvent() {
+    private fun collectEffect() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.events.collect { event ->
-                    if (event is MainEvent.ClickCameraButton) {
-                        handDetector.setupStreamingModePipeline()
+                viewModel.sideEffect.collect { effect ->
+                    when (effect) {
+                        is MainEffect.StartCamera -> {
+                            handDetector.setupStreamingModePipeline()
+                        }
                     }
                 }
             }

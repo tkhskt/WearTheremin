@@ -1,4 +1,4 @@
-package com.tkhskt.theremin.domain
+package com.tkhskt.theremin.domain.usecase
 
 import androidx.core.math.MathUtils
 

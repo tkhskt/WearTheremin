@@ -1,15 +1,15 @@
-package com.tkhskt.theremin.domain
+package com.tkhskt.theremin.domain.usecase
 
 import androidx.core.math.MathUtils
 
 interface CalcFrequencyUseCase {
-    operator fun invoke(gravity: String): Float
+    operator fun invoke(gravity: Float): Float
 }
 
 class CalcFrequencyUseCaseImpl : CalcFrequencyUseCase {
 
-    override fun invoke(gravity: String): Float {
-        val freq = MIN_FREQ + (gravity.toFloat() + 4f) * 50.49f
+    override fun invoke(gravity: Float): Float {
+        val freq = MIN_FREQ + (gravity + 4f) * 50.49f
         return MathUtils.clamp(freq, MIN_FREQ, MAX_FREQ)
     }
 

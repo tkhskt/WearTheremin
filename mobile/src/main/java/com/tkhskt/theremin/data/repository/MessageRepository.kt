@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 
 interface MessageRepository {
-    fun getGravity(): Flow<String>
+    fun getGravity(): Flow<Float>
 }
 
 class MessageRepositoryImpl(
@@ -15,7 +15,7 @@ class MessageRepositoryImpl(
 
     override fun getGravity() = channelFlow {
         val listener = MessageClient.OnMessageReceivedListener {
-            trySend(String(it.data))
+            trySend(String(it.data).toFloat())
         }
         messageClient.addListener(listener)
         awaitClose {

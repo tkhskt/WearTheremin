@@ -1,4 +1,4 @@
-package com.tkhskt.theremin.domain
+package com.tkhskt.theremin.domain.usecase
 
 import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.NodeClient

@@ -12,33 +12,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.tkhskt.theremin.ui.model.MainEvent
-import com.tkhskt.theremin.ui.model.MainState
+import com.tkhskt.theremin.ui.model.MainAction
+import com.tkhskt.theremin.ui.model.MainViewState
 
 @Composable
 fun MainScreen(
     viewModel: MainViewModel,
 ) {
-    val state = viewModel.state.collectAsState()
-    MainScreen(state.value, viewModel::dispatchEvent)
+    val state = viewModel.viewState.collectAsState()
+    MainScreen(state.value, viewModel::dispatch)
 }
 
 @Composable
 fun MainScreen(
-    uiState: MainState,
-    dispatcher: (MainEvent) -> Unit,
+    uiState: MainViewState,
+    dispatcher: (MainAction) -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Button(
-            onClick = { dispatcher(MainEvent.ClickStartWearableButton) }
+            onClick = { dispatcher(MainAction.ClickStartWearableButton) }
         ) {
             Text(text = "Start Wearable")
         }
         Button(
-            onClick = { dispatcher(MainEvent.ClickCameraButton) }
+            onClick = { dispatcher(MainAction.ClickCameraButton) }
         ) {
             Text(text = "Start Camera")
         }

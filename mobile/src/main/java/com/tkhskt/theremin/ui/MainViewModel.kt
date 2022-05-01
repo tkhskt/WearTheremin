@@ -1,87 +1,64 @@
 package com.tkhskt.theremin.ui
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tkhskt.theremin.data.repository.ThereminRepository
-import com.tkhskt.theremin.domain.CalcFrequencyUseCase
-import com.tkhskt.theremin.domain.CalcVolumeUseCase
-import com.tkhskt.theremin.domain.GetGravityUseCase
-import com.tkhskt.theremin.domain.OpenWearAppUseCase
-import com.tkhskt.theremin.domain.SendThereminParametersUseCase
-import com.tkhskt.theremin.ui.model.MainEvent
 import com.tkhskt.theremin.ui.model.MainState
+import com.tkhskt.theremin.domain.usecase.GetGravityUseCase
+import com.tkhskt.theremin.redux.ReduxViewModel
+import com.tkhskt.theremin.redux.Store
+import com.tkhskt.theremin.ui.model.MainAction
+import com.tkhskt.theremin.ui.model.MainEffect
+import com.tkhskt.theremin.ui.model.MainViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val thereminRepository: ThereminRepository,
-    private val sendThereminParametersUseCase: SendThereminParametersUseCase,
+    private val store: Store<MainAction, MainState, MainEffect>,
     private val getGravityUseCase: GetGravityUseCase,
-    private val calcFrequencyUseCase: CalcFrequencyUseCase,
-    private val calcVolumeUseCase: CalcVolumeUseCase,
-    private val openWearAppUseCase: OpenWearAppUseCase,
-) : ViewModel() {
+) : ReduxViewModel<MainAction, MainViewState, MainEffect>() {
 
     val onChangeDistanceListener = { distance: Float ->
         Timber.d(distance.toString())
-        val volume = calcVolumeUseCase(distance)
-        dispatchEvent(MainEvent.ChangeVolume(volume))
+        dispatch(MainAction.ChangeDistance(distance))
     }
 
-    private val _state = MutableStateFlow(MainState.Empty)
-    val state: StateFlow<MainState>
-        get() = _state
+    override val sideEffect: SharedFlow<MainEffect>
+        get() = store.sideEffect.shareIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+        )
 
-    private val _events = MutableSharedFlow<MainEvent>()
-    val events: SharedFlow<MainEvent>
-        get() = _events
+    override val viewState: StateFlow<MainViewState>
+        get() = store.state.map { state ->
+            MainViewState(
+                frequency = state.frequency.toString(),
+                volume = state.volume.toString(),
+            )
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+            initialValue = MainViewState.Initial,
+        )
 
     init {
         viewModelScope.launch {
-            events.collect {
-                when (it) {
-                    is MainEvent.InitializeBle -> {
-                        thereminRepository.initialize()
-                    }
-                    is MainEvent.ClickStartWearableButton -> {
-                        openWearAppUseCase()
-                    }
-                    is MainEvent.ChangeFrequency -> {
-                        _state.value = state.value.copy(
-                            frequency = it.frequency.toString()
-                        )
-                        sendThereminParametersUseCase(it.frequency.toString(), "")
-                    }
-                    is MainEvent.ChangeVolume -> {
-                        _state.value = state.value.copy(
-                            volume = it.volume.toString()
-                        )
-                        sendThereminParametersUseCase("", it.volume.toString())
-                    }
-                    else -> {
-                        // no-op
-                    }
-                }
-            }
-        }
-        viewModelScope.launch {
-            getGravityUseCase().collect {
-                val frequency = calcFrequencyUseCase(it)
-                dispatchEvent(MainEvent.ChangeFrequency(frequency))
+            getGravityUseCase().collect { gravity ->
+                dispatch(MainAction.ChangeGravity(gravity))
             }
         }
     }
 
-    fun dispatchEvent(event: MainEvent) {
+    override fun dispatch(action: MainAction) {
         viewModelScope.launch {
-            _events.emit(event)
+            store.dispatch(action)
         }
     }
 }
