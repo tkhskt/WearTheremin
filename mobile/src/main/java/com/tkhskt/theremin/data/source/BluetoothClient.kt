@@ -55,7 +55,7 @@ class BluetoothClient(
             private val notifyDescValue = ByteArray(2)
             private val charValue = ByteArray(UUID_LIFF_VALUE_SIZE) /* max 512 */
             override fun onMtuChanged(device: BluetoothDevice, mtu: Int) {
-                Timber.d("bleperi", "onMtuChanged($mtu)")
+                Timber.d("onMtuChanged($mtu)")
             }
 
             override fun onConnectionStateChange(
@@ -63,12 +63,12 @@ class BluetoothClient(
                 status: Int,
                 newState: Int
             ) {
-                Timber.d("bleperi", "onConnectionStateChange")
+                Timber.d("onConnectionStateChange")
                 if (newState == BluetoothProfile.STATE_CONNECTED) {
                     connectedDevice = device
-                    Timber.d("bleperi", "STATE_CONNECTED:$device")
+                    Timber.d("STATE_CONNECTED:$device")
                 } else {
-                    Timber.d("bleperi", "Unknown STATE:$newState")
+                    Timber.d("Unknown STATE:$newState")
                 }
             }
 
@@ -78,7 +78,7 @@ class BluetoothClient(
                 offset: Int,
                 characteristic: BluetoothGattCharacteristic
             ) {
-                Timber.d("bleperi", "onCharacteristicReadRequest")
+                Timber.d("onCharacteristicReadRequest")
             }
 
             override fun onCharacteristicWriteRequest(
@@ -113,7 +113,7 @@ class BluetoothClient(
                     }
                     if (notifyDescValue[0] and 0x01.toByte() != 0x00.toByte()) {
                         if (offset == 0 && value[0] == 0xff.toByte()) {
-                            notifyCharacteristic.value = "notify!!".toByteArray()
+                            notifyCharacteristic.value = "start".toByteArray()
                             btGattServer.notifyCharacteristicChanged(
                                 connectedDevice,
                                 notifyCharacteristic,
@@ -139,7 +139,7 @@ class BluetoothClient(
                 offset: Int,
                 descriptor: BluetoothGattDescriptor
             ) {
-                Timber.d("bleperi", "onDescriptorReadRequest")
+                Timber.d("onDescriptorReadRequest")
 
                 if (descriptor.uuid.compareTo(UUID_LIFF_DESC) == 0) {
                     btGattServer.sendResponse(
@@ -171,6 +171,7 @@ class BluetoothClient(
                         offset,
                         null
                     )
+                    Timber.d("ppppp")
                     gattSucceeded = true
                     btGattServer.notifyCharacteristicChanged(
                         connectedDevice,
@@ -184,7 +185,7 @@ class BluetoothClient(
     suspend fun prepare() {
         val btAdvertiser = bleManager.adapter.bluetoothLeAdvertiser
         if (btAdvertiser == null) {
-            Timber.w("bleperi", "Cannot use BLE Peripheral mode")
+            Timber.w("Cannot use BLE Peripheral mode")
             return
         }
 
@@ -234,11 +235,11 @@ class BluetoothClient(
             respBuilder.build(),
             object : AdvertiseCallback() {
                 override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {
-                    Timber.d("bleperi", "onStartSuccess")
+                    Timber.d("onStartSuccess")
                 }
 
                 override fun onStartFailure(errorCode: Int) {
-                    Timber.d("bleperi", "onStartFailure")
+                    Timber.d("onStartFailure")
                 }
             })
     }

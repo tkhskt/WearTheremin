@@ -2,6 +2,7 @@ package com.tkhskt.theremin
 
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -20,12 +21,15 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val handDetector = HandDetector(this)
-
     private val viewModel by viewModels<MainViewModel>()
+
+    private val handDetector by lazy {
+        HandDetector(this, viewModel.onChangeDistanceListener)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         collectEffect()
         if (bluetoothPermissionGranted) {
             viewModel.dispatch(MainAction.InitializeBle)
@@ -36,11 +40,6 @@ class MainActivity : AppCompatActivity() {
         setContent {
             MainScreen(viewModel = viewModel)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        handDetector.init(viewModel.onChangeDistanceListener)
     }
 
     override fun onRequestPermissionsResult(
@@ -66,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                 viewModel.sideEffect.collect { effect ->
                     when (effect) {
                         is MainEffect.StartCamera -> {
-                            handDetector.setupStreamingModePipeline()
+                            handDetector.startHandDetection()
                         }
                     }
                 }

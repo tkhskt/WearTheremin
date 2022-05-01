@@ -149,12 +149,13 @@ export default {
 
       if (characteristic.uuid === UUID_ANDROID_NOTIFY) {
         const values = new TextDecoder().decode(characteristic.value).split(',')
-        const gravity = values[0]
+        const freq = parseFloat(values[0])
+        const volume = parseFloat(values[1])
         // const distance = values[1]
-        const newFreq = this.calcFrequency(parseFloat(gravity))
-        this.$store.dispatch('main/onChangeFrequency', newFreq)
-        this.$store.dispatch('main/onChangeVolume', newFreq)
-        this.ble_notify_value = gravity
+        // const newFreq = this.calcFrequency(parseFloat(gravity))
+        this.$store.dispatch('main/onChangeFrequency', freq)
+        this.$store.dispatch('main/onChangeVolume', volume)
+        this.ble_notify_value = freq
       }
     },
     startNotify(uuid) {

@@ -16,31 +16,27 @@ import timber.log.Timber
 
 class HandDetector(
     private val activity: Activity,
+    private val onChangeDistanceListener: (Float) -> Unit,
 ) : DefaultLifecycleObserver {
 
     private var hands: Hands? = null
 
     private var cameraInput: CameraInput? = null
 
-    private var onChangeDistanceListener: ((Float) -> Unit)? = null
+    override fun onResume(owner: LifecycleOwner) {
+        super.onResume(owner)
+        init()
+    }
 
     override fun onPause(owner: LifecycleOwner) {
         super.onPause(owner)
+        cameraInput?.close()
+        hands?.close()
         cameraInput = null
         hands = null
     }
 
-    fun init(onChangeDistanceListener: (Float) -> Unit) {
-        cameraInput = CameraInput(activity).apply {
-            setNewFrameListener { textureFrame: TextureFrame? ->
-                hands?.send(textureFrame)
-            }
-        }
-        this.onChangeDistanceListener = onChangeDistanceListener
-        startCamera(activity)
-    }
-
-    fun setupStreamingModePipeline() {
+    fun startHandDetection() {
         stopCurrentPipeline()
         // Initializes a new MediaPipe Hands solution instance in the streaming mode.
         hands = Hands(
@@ -52,15 +48,24 @@ class HandDetector(
                 .build()
         ).apply {
             setErrorListener { message: String, _: RuntimeException? ->
-                Timber.e(TAG, "MediaPipe Hands error:$message")
+                Timber.e("MediaPipe Hands error:$message")
             }
             setResultListener { handsResult: HandsResult ->
                 if (handsResult.multiHandLandmarks().isEmpty()) return@setResultListener
                 val wristLandmark =
                     handsResult.multiHandLandmarks()[0].landmarkList[HandLandmark.WRIST]
-                onChangeDistanceListener?.invoke(wristLandmark.y)
+                onChangeDistanceListener.invoke(wristLandmark.y)
             }
         }
+        cameraInput = CameraInput(activity).apply {
+            setNewFrameListener { textureFrame: TextureFrame? ->
+                hands?.send(textureFrame)
+            }
+        }
+        startCamera(activity)
+    }
+
+    private fun init() {
         cameraInput = CameraInput(activity).apply {
             setNewFrameListener { textureFrame: TextureFrame? ->
                 hands?.send(textureFrame)
@@ -78,9 +83,9 @@ class HandDetector(
     }
 
     private fun startCamera(activity: Activity) {
-        val wm = activity.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val windowMetrics = wm.currentWindowMetrics
-        val windowInsets: WindowInsets = windowMetrics.windowInsets
+        val windowManager = activity.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val windowMetrics = windowManager.currentWindowMetrics
+        val windowInsets = windowMetrics.windowInsets
 
         val insets = windowInsets.getInsetsIgnoringVisibility(
             WindowInsets.Type.navigationBars() or WindowInsets.Type.displayCutout()
@@ -98,12 +103,11 @@ class HandDetector(
             hands.glContext,
             CameraInput.CameraFacing.FRONT,
             width,
-            height
+            height,
         )
     }
 
     companion object {
-        private const val TAG = "MainViewModel"
         private const val RUN_ON_GPU = true
     }
 }
