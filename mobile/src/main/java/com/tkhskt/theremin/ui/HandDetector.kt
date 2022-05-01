@@ -14,11 +14,15 @@ import com.google.mediapipe.solutions.hands.HandsOptions
 import com.google.mediapipe.solutions.hands.HandsResult
 import timber.log.Timber
 
-class HandDetector : DefaultLifecycleObserver {
+class HandDetector(
+    private val activity: Activity,
+) : DefaultLifecycleObserver {
 
     private var hands: Hands? = null
 
     private var cameraInput: CameraInput? = null
+
+    private var onChangeDistanceListener: ((Float) -> Unit)? = null
 
     override fun onPause(owner: LifecycleOwner) {
         super.onPause(owner)
@@ -26,16 +30,17 @@ class HandDetector : DefaultLifecycleObserver {
         hands = null
     }
 
-    fun init(activity: Activity) {
+    fun init(onChangeDistanceListener: (Float) -> Unit) {
         cameraInput = CameraInput(activity).apply {
             setNewFrameListener { textureFrame: TextureFrame? ->
                 hands?.send(textureFrame)
             }
         }
+        this.onChangeDistanceListener = onChangeDistanceListener
         startCamera(activity)
     }
 
-    fun setupStreamingModePipeline(activity: Activity) {
+    fun setupStreamingModePipeline() {
         stopCurrentPipeline()
         // Initializes a new MediaPipe Hands solution instance in the streaming mode.
         hands = Hands(
@@ -50,7 +55,10 @@ class HandDetector : DefaultLifecycleObserver {
                 Timber.e(TAG, "MediaPipe Hands error:$message")
             }
             setResultListener { handsResult: HandsResult ->
-                logWristLandmark(handsResult)
+                if (handsResult.multiHandLandmarks().isEmpty()) return@setResultListener
+                val wristLandmark =
+                    handsResult.multiHandLandmarks()[0].landmarkList[HandLandmark.WRIST]
+                onChangeDistanceListener?.invoke(wristLandmark.y)
             }
         }
         cameraInput = CameraInput(activity).apply {
@@ -91,18 +99,6 @@ class HandDetector : DefaultLifecycleObserver {
             CameraInput.CameraFacing.FRONT,
             width,
             height
-        )
-    }
-
-    private fun logWristLandmark(result: HandsResult) {
-        if (result.multiHandLandmarks().isEmpty()) return
-        val wristLandmark = result.multiHandLandmarks()[0].landmarkList[HandLandmark.WRIST]
-        Timber.i(
-            TAG, String.format(
-                "MediaPipe Hand wrist world coordinates (in meters with the origin at the hand's"
-                        + " approximate geometric center): x=%f m, y=%f m, z=%f m",
-                wristLandmark.x, wristLandmark.y, wristLandmark.z
-            )
         )
     }
 

@@ -2,10 +2,12 @@ package com.tkhskt.theremin.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.wearable.MessageClient
-import com.google.android.gms.wearable.MessageEvent
 import com.tkhskt.theremin.data.repository.ThereminRepository
-import com.tkhskt.theremin.data.model.ThereminParameter
+import com.tkhskt.theremin.domain.CalcFrequencyUseCase
+import com.tkhskt.theremin.domain.CalcVolumeUseCase
+import com.tkhskt.theremin.domain.GetGravityUseCase
+import com.tkhskt.theremin.domain.OpenWearAppUseCase
+import com.tkhskt.theremin.domain.SendThereminParametersUseCase
 import com.tkhskt.theremin.ui.model.MainEvent
 import com.tkhskt.theremin.ui.model.MainState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,12 +16,24 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val thereminRepository: ThereminRepository,
-) : ViewModel(), MessageClient.OnMessageReceivedListener {
+    private val sendThereminParametersUseCase: SendThereminParametersUseCase,
+    private val getGravityUseCase: GetGravityUseCase,
+    private val calcFrequencyUseCase: CalcFrequencyUseCase,
+    private val calcVolumeUseCase: CalcVolumeUseCase,
+    private val openWearAppUseCase: OpenWearAppUseCase,
+) : ViewModel() {
+
+    val onChangeDistanceListener = { distance: Float ->
+        Timber.d(distance.toString())
+        val volume = calcVolumeUseCase(distance)
+        dispatchEvent(MainEvent.ChangeVolume(volume))
+    }
 
     private val _state = MutableStateFlow(MainState.Empty)
     val state: StateFlow<MainState>
@@ -36,20 +50,32 @@ class MainViewModel @Inject constructor(
                     is MainEvent.InitializeBle -> {
                         thereminRepository.initialize()
                     }
+                    is MainEvent.ClickStartWearableButton -> {
+                        openWearAppUseCase()
+                    }
+                    is MainEvent.ChangeFrequency -> {
+                        _state.value = state.value.copy(
+                            frequency = it.frequency.toString()
+                        )
+                        sendThereminParametersUseCase(it.frequency.toString(), "")
+                    }
+                    is MainEvent.ChangeVolume -> {
+                        _state.value = state.value.copy(
+                            volume = it.volume.toString()
+                        )
+                        sendThereminParametersUseCase("", it.volume.toString())
+                    }
                     else -> {
                         // no-op
                     }
                 }
             }
         }
-    }
-
-    override fun onMessageReceived(messageEvent: MessageEvent) {
         viewModelScope.launch {
-            _state.value = state.value.copy(
-                gravity = String(messageEvent.data),
-            )
-            thereminRepository.sendParameter(ThereminParameter(String(messageEvent.data), ""))
+            getGravityUseCase().collect {
+                val frequency = calcFrequencyUseCase(it)
+                dispatchEvent(MainEvent.ChangeFrequency(frequency))
+            }
         }
     }
 

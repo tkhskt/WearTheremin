@@ -1,26 +1,25 @@
 package com.tkhskt.theremin.data.repository
 
 import com.google.android.gms.wearable.MessageClient
-import com.google.android.gms.wearable.MessageEvent
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.launch
 
 interface MessageRepository {
-
+    fun getGravity(): Flow<String>
 }
 
-class MessageRepositoryImpl : MessageRepository, MessageClient.OnMessageReceivedListener {
+class MessageRepositoryImpl(
+    private val messageClient: MessageClient,
+) : MessageRepository {
 
-    private fun messageFlow(): Flow<MessageEvent> {
-        return channelFlow {
-            val listener = MessageClient.OnMessageReceivedListener {
-                launch { send(it) }
-            }
+    override fun getGravity() = channelFlow {
+        val listener = MessageClient.OnMessageReceivedListener {
+            trySend(String(it.data))
         }
-    }
-
-    override fun onMessageReceived(p0: MessageEvent) {
-
+        messageClient.addListener(listener)
+        awaitClose {
+            messageClient.removeListener(listener)
+        }
     }
 }
