@@ -171,7 +171,6 @@ class BluetoothClient(
                         offset,
                         null
                     )
-                    Timber.d("ppppp")
                     gattSucceeded = true
                     btGattServer.notifyCharacteristicChanged(
                         connectedDevice,
@@ -245,7 +244,7 @@ class BluetoothClient(
     }
 
     companion object {
-        private const val UUID_LIFF_VALUE_SIZE: Int = 500
+        private const val UUID_LIFF_VALUE_SIZE: Int = 300
         private const val UUID_LIFF_SERVICE_STR: String = "a9d158bb-9007-4fe3-b5d2-d3696a3eb067"
 
         private val UUID_LIFF_PSDI_SERVICE: UUID =
