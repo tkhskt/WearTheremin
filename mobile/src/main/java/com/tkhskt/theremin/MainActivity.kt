@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         }
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.viewState.collect {
+                viewModel.uiState.collect {
                     changeFrequency(it.frequency)
                     changeVolume(it.volume)
                 }

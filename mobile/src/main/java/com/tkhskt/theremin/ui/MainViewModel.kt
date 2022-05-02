@@ -7,7 +7,7 @@ import com.tkhskt.theremin.redux.Store
 import com.tkhskt.theremin.ui.model.MainAction
 import com.tkhskt.theremin.ui.model.MainEffect
 import com.tkhskt.theremin.ui.model.MainState
-import com.tkhskt.theremin.ui.model.MainViewState
+import com.tkhskt.theremin.ui.model.MainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,7 +23,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val store: Store<MainAction, MainState, MainEffect>,
     private val getGravityUseCase: GetGravityUseCase,
-) : ReduxViewModel<MainAction, MainViewState, MainEffect>() {
+) : ReduxViewModel<MainAction, MainUiState, MainEffect>() {
 
     val onChangeDistanceListener = { distance: Float ->
         Timber.d(distance.toString())
@@ -36,16 +36,16 @@ class MainViewModel @Inject constructor(
             started = SharingStarted.Lazily,
         )
 
-    override val viewState: StateFlow<MainViewState>
+    override val uiState: StateFlow<MainUiState>
         get() = store.state.map { state ->
-            MainViewState(
+            MainUiState(
                 frequency = state.frequency,
                 volume = state.volume,
             )
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.Lazily,
-            initialValue = MainViewState.Initial,
+            initialValue = MainUiState.Initial,
         )
 
     init {

@@ -13,19 +13,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.tkhskt.theremin.ui.model.MainAction
-import com.tkhskt.theremin.ui.model.MainViewState
+import com.tkhskt.theremin.ui.model.MainUiState
 
 @Composable
 fun MainScreen(
     viewModel: MainViewModel,
 ) {
-    val state = viewModel.viewState.collectAsState()
+    val state = viewModel.uiState.collectAsState()
     MainScreen(state.value, viewModel::dispatch)
 }
 
 @Composable
 fun MainScreen(
-    uiState: MainViewState,
+    uiState: MainUiState,
     dispatcher: (MainAction) -> Unit,
 ) {
     Column(

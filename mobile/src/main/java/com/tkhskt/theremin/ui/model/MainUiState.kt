@@ -1,13 +1,13 @@
 package com.tkhskt.theremin.ui.model
 
-import com.tkhskt.theremin.redux.ViewState
+import com.tkhskt.theremin.redux.UiState
 
-data class MainViewState(
+data class MainUiState(
     val frequency: Float,
     val volume: Float,
-) : ViewState {
+) : UiState {
     companion object {
-        val Initial = MainViewState(
+        val Initial = MainUiState(
             frequency = 0f,
             volume = 0f,
         )
