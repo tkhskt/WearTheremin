@@ -25,15 +25,15 @@ class OscillatorManager : DefaultLifecycleObserver {
         destroyStream()
     }
 
-    private external fun createStream(): Int
-
-    private external fun destroyStream()
-
     external fun playSound(enable: Boolean): Int
 
     external fun changeFrequency(frequency: Float)
 
     external fun changeVolume(volume: Float)
+
+    private external fun createStream(): Int
+
+    private external fun destroyStream()
 
     companion object {
         init {
