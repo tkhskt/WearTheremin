@@ -18,6 +18,7 @@ import com.tkhskt.theremin.ui.model.MainAction
 import com.tkhskt.theremin.ui.model.MainEffect
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -78,6 +79,7 @@ class MainActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.viewState.collect {
                     changeFrequency(it.frequency)
+                    changeVolume(it.volume)
                 }
             }
         }
@@ -93,6 +95,8 @@ class MainActivity : AppCompatActivity() {
     private external fun playSound(enable: Boolean): Int
 
     private external fun changeFrequency(frequency: Float)
+
+    private external fun changeVolume(volume: Float)
 
     companion object {
         private const val PERMISSION_REQUEST_CODE = 1000

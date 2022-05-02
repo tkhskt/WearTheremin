@@ -73,5 +73,15 @@ Java_com_tkhskt_theremin_MainActivity_changeFrequency(
         oboePlayer->changeFrequency(frequency);
     }
 }
+JNIEXPORT void JNICALL
+Java_com_tkhskt_theremin_MainActivity_changeVolume(
+        JNIEnv * /* env */,
+        jobject  /* this */,
+        jfloat
+        volume) {
+    if (oboePlayer) {
+        oboePlayer->changeVolume(volume);
+    }
+}
 }
 

@@ -25,14 +25,6 @@
 
 #include <oboe/Oboe.h>
 
-/*
- * This class is responsible for creating an audio stream and starting it.
- * It specifies a callback function onAudioReady which is called each time
- * the audio stream needs more data.
- * Inside this callback either silence is rendered or if the isOn variable
- * is true a sine wave will be rendered.
- * The sine wave's frequency is hardcoded to 440Hz inside kFrequency.
- */
 class OboeSinePlayer : public oboe::AudioStreamCallback {
 public:
 
@@ -60,7 +52,7 @@ public:
             for (int i = 0; i < numFrames; ++i) {
                 float sampleValue = kAmplitude * sinf(mPhase);
                 for (int j = 0; j < channelCount; j++) {
-                    floatData[i * channelCount + j] = sampleValue;
+                    floatData[i * channelCount + j] = sampleValue * mVolume;
                 }
                 mPhase += mPhaseIncrement;
                 if (mPhase >= kTwoPi) mPhase -= kTwoPi;
@@ -80,6 +72,10 @@ public:
         mPhaseIncrement = frequency * kTwoPi / outStream->getSampleRate();
     }
 
+    void changeVolume(float volume) {
+        mVolume = volume;
+    }
+
 private:
     // ManagedStream will release audio resources when destroyed.
     oboe::ManagedStream outStream;
@@ -96,6 +92,8 @@ private:
 
     // Keeps track of where the wave is
     float mPhase = 0.0;
+
+    float mVolume = 1.0;
 
     static double constexpr
             kTwoPi = M_PI * 2;
