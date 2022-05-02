@@ -40,6 +40,8 @@ class MainActivity : AppCompatActivity() {
         setContent {
             MainScreen(viewModel = viewModel)
         }
+        createStream()
+        playSound(true)
     }
 
     override fun onRequestPermissionsResult(
@@ -73,7 +75,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Creates and starts Oboe stream to play audio
+    private external fun createStream() : Int
+
+    // Closes and destroys Oboe stream when app goes out of focus
+    private external fun destroyStream()
+
+    // Plays sound on user tap
+    private external fun playSound(enable: Boolean) : Int
+
     companion object {
         private const val PERMISSION_REQUEST_CODE = 1000
+
+        init {
+            System.loadLibrary("theremin")
+        }
     }
 }
