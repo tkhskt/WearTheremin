@@ -2,6 +2,8 @@ package com.tkhskt.theremin.di
 
 import android.bluetooth.BluetoothManager
 import android.content.Context
+import com.google.android.gms.wearable.MessageClient
+import com.google.android.gms.wearable.NodeClient
 import com.google.android.gms.wearable.Wearable
 import com.tkhskt.theremin.data.source.BluetoothClient
 import dagger.Module
@@ -31,11 +33,11 @@ object ApplicationModule {
     @Singleton
     fun provideMessageClient(
         @ApplicationContext context: Context,
-    ) = Wearable.getMessageClient(context)
+    ): MessageClient = Wearable.getMessageClient(context)
 
     @Provides
     @Singleton
     fun provideNodeClient(
         @ApplicationContext context: Context,
-    ) = Wearable.getNodeClient(context)
+    ): NodeClient = Wearable.getNodeClient(context)
 }
