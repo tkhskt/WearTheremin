@@ -7,7 +7,6 @@ import com.tkhskt.theremin.data.repository.MessageRepositoryImpl
 import com.tkhskt.theremin.data.repository.ThereminRepository
 import com.tkhskt.theremin.data.repository.ThereminRepositoryImpl
 import com.tkhskt.theremin.data.source.BluetoothClient
-import com.tkhskt.theremin.ui.model.MainState
 import com.tkhskt.theremin.domain.usecase.CalcFrequencyUseCase
 import com.tkhskt.theremin.domain.usecase.CalcFrequencyUseCaseImpl
 import com.tkhskt.theremin.domain.usecase.CalcVolumeUseCase
@@ -23,6 +22,7 @@ import com.tkhskt.theremin.redux.createStore
 import com.tkhskt.theremin.ui.middleware.MainMiddleware
 import com.tkhskt.theremin.ui.model.MainAction
 import com.tkhskt.theremin.ui.model.MainEffect
+import com.tkhskt.theremin.ui.model.MainState
 import com.tkhskt.theremin.ui.reducer.MainReducer
 import dagger.Module
 import dagger.Provides

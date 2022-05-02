@@ -240,7 +240,8 @@ class BluetoothClient(
                 override fun onStartFailure(errorCode: Int) {
                     Timber.d("onStartFailure")
                 }
-            })
+            }
+        )
     }
 
     companion object {

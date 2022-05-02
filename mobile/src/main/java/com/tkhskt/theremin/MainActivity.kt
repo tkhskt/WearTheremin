@@ -1,7 +1,6 @@
 package com.tkhskt.theremin
 
 import android.content.pm.PackageManager
-import android.media.AudioTrack
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
@@ -18,7 +17,6 @@ import com.tkhskt.theremin.ui.model.MainAction
 import com.tkhskt.theremin.ui.model.MainEffect
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

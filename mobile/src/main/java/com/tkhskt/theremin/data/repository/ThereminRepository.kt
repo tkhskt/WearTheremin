@@ -1,7 +1,7 @@
 package com.tkhskt.theremin.data.repository
 
-import com.tkhskt.theremin.data.source.BluetoothClient
 import com.tkhskt.theremin.data.model.ThereminParameter
+import com.tkhskt.theremin.data.source.BluetoothClient
 
 interface ThereminRepository {
     suspend fun initialize()

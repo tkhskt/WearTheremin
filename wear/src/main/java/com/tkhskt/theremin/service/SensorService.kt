@@ -36,7 +36,6 @@ class SensorService : Service() {
 
     private var scope = CoroutineScope(Dispatchers.IO + Job())
 
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         scope = CoroutineScope(Dispatchers.IO + Job())
         setupNotification()
@@ -71,7 +70,6 @@ class SensorService : Service() {
 
         startForeground(NOTIFICATION_ID, notification)
     }
-
 
     private fun startSensor() {
         val sensor: Sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
@@ -130,7 +128,6 @@ class SensorService : Service() {
             }
         }
     }
-
 
     companion object {
         const val CHANNEL_ID = "sensor"

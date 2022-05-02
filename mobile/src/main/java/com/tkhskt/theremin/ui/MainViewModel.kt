@@ -1,12 +1,12 @@
 package com.tkhskt.theremin.ui
 
 import androidx.lifecycle.viewModelScope
-import com.tkhskt.theremin.ui.model.MainState
 import com.tkhskt.theremin.domain.usecase.GetGravityUseCase
 import com.tkhskt.theremin.redux.ReduxViewModel
 import com.tkhskt.theremin.redux.Store
 import com.tkhskt.theremin.ui.model.MainAction
 import com.tkhskt.theremin.ui.model.MainEffect
+import com.tkhskt.theremin.ui.model.MainState
 import com.tkhskt.theremin.ui.model.MainViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharedFlow

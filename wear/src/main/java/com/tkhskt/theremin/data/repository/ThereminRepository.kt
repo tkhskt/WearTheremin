@@ -18,15 +18,15 @@ class ThereminRepositoryImpl(
     override suspend fun sendGravity(y: Float) {
         val nodes = nodeClient.connectedNodes.await()
 
-       withContext(Dispatchers.IO) {
-           nodes.forEach { node ->
-               messageClient.sendMessage(
-                   node.id,
-                   GRAVITY_PATH,
-                   y.toString().toByteArray()
-               ).await()
-           }
-       }
+        withContext(Dispatchers.IO) {
+            nodes.forEach { node ->
+                messageClient.sendMessage(
+                    node.id,
+                    GRAVITY_PATH,
+                    y.toString().toByteArray()
+                ).await()
+            }
+        }
     }
 
     companion object {

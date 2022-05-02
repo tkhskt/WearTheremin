@@ -18,11 +18,13 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        setContentView(ComposeView(this).apply {
-            setContent {
-                MainScreen(viewModel)
+        setContentView(
+            ComposeView(this).apply {
+                setContent {
+                    MainScreen(viewModel)
+                }
             }
-        })
+        )
         viewModel.dispatchEvent(MainEvent.Initialize)
     }
 }
