@@ -15,13 +15,6 @@ interface Action
 
 interface SideEffect
 
-abstract class ReduxViewModel<in ACTION : Action, out VIEW_STATE : ViewState, SIDE_EFFECT : SideEffect> :
-    ViewModel() {
-    abstract val viewState: StateFlow<VIEW_STATE>
-    abstract val sideEffect: SharedFlow<SIDE_EFFECT>
-    abstract fun dispatch(action: ACTION)
-}
-
 interface Reducer<ACTION : Action, STATE : State> {
     suspend fun reduce(action: ACTION, state: STATE): STATE
 }
@@ -32,6 +25,13 @@ interface Middleware<ACTION : Action, STATE : State, SIDE_EFFECT : SideEffect> {
     suspend fun dispatchBeforeReduce(action: ACTION, state: STATE): ACTION
 
     suspend fun dispatchAfterReduce(action: ACTION, state: STATE): ACTION
+}
+
+abstract class ReduxViewModel<in ACTION : Action, out VIEW_STATE : ViewState, SIDE_EFFECT : SideEffect> :
+    ViewModel() {
+    abstract val viewState: StateFlow<VIEW_STATE>
+    abstract val sideEffect: SharedFlow<SIDE_EFFECT>
+    abstract fun dispatch(action: ACTION)
 }
 
 class Store<ACTION : Action, STATE : State, SIDE_EFFECT : SideEffect>(
