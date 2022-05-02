@@ -38,7 +38,6 @@ class HandDetector(
 
     fun startHandDetection() {
         stopCurrentPipeline()
-        // Initializes a new MediaPipe Hands solution instance in the streaming mode.
         hands = Hands(
             activity,
             HandsOptions.builder()

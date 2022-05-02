@@ -13,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.tkhskt.theremin.ui.HandDetector
 import com.tkhskt.theremin.ui.MainScreen
 import com.tkhskt.theremin.ui.MainViewModel
+import com.tkhskt.theremin.ui.OscillatorManager
 import com.tkhskt.theremin.ui.model.MainAction
 import com.tkhskt.theremin.ui.model.MainEffect
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,6 +28,8 @@ class MainActivity : AppCompatActivity() {
         HandDetector(this, viewModel.onChangeDistanceListener)
     }
 
+    private val oscillatorManager = OscillatorManager()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -37,11 +40,10 @@ class MainActivity : AppCompatActivity() {
             requestBluetoothPermission(PERMISSION_REQUEST_CODE)
         }
         lifecycle.addObserver(handDetector)
+        lifecycle.addObserver(oscillatorManager)
         setContent {
             MainScreen(viewModel = viewModel)
         }
-        createStream()
-        playSound(true)
     }
 
     override fun onRequestPermissionsResult(
@@ -76,31 +78,16 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.uiState.collect {
-                    changeFrequency(it.frequency)
-                    changeVolume(it.volume)
+                    oscillatorManager.run {
+                        changeFrequency(it.frequency)
+                        changeVolume(it.volume)
+                    }
                 }
             }
         }
     }
 
-    // Creates and starts Oboe stream to play audio
-    private external fun createStream(): Int
-
-    // Closes and destroys Oboe stream when app goes out of focus
-    private external fun destroyStream()
-
-    // Plays sound on user tap
-    private external fun playSound(enable: Boolean): Int
-
-    private external fun changeFrequency(frequency: Float)
-
-    private external fun changeVolume(volume: Float)
-
     companion object {
         private const val PERMISSION_REQUEST_CODE = 1000
-
-        init {
-            System.loadLibrary("theremin")
-        }
     }
 }

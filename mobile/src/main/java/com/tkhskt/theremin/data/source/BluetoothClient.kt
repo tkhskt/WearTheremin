@@ -119,7 +119,6 @@ class BluetoothClient(
                                 notifyCharacteristic,
                                 false
                             )
-                            // notified
                         }
                     }
                 } else {

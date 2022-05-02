@@ -26,7 +26,7 @@ extern "C" {
  *          -1 - failed
  */
 JNIEXPORT jint JNICALL
-Java_com_tkhskt_theremin_MainActivity_createStream(
+Java_com_tkhskt_theremin_ui_OscillatorManager_createStream(
         JNIEnv * /* env */,
         jobject /* this */) {
     oboePlayer = new OboeSinePlayer();
@@ -34,7 +34,7 @@ Java_com_tkhskt_theremin_MainActivity_createStream(
     return oboePlayer ? 0 : -1;
 }
 JNIEXPORT void JNICALL
-Java_com_tkhskt_theremin_MainActivity_destroyStream(
+Java_com_tkhskt_theremin_ui_OscillatorManager_destroyStream(
         JNIEnv * /* env */,
         jobject /* this */) {
     if (oboePlayer) {
@@ -48,7 +48,7 @@ Java_com_tkhskt_theremin_MainActivity_destroyStream(
  *          -1  - failed (stream has not created yet )
  */
 JNIEXPORT jint JNICALL
-Java_com_tkhskt_theremin_MainActivity_playSound(
+Java_com_tkhskt_theremin_ui_OscillatorManager_playSound(
         JNIEnv * /* env */,
         jobject  /* this */,
         jboolean
@@ -64,7 +64,7 @@ Java_com_tkhskt_theremin_MainActivity_playSound(
             result;
 }
 JNIEXPORT void JNICALL
-Java_com_tkhskt_theremin_MainActivity_changeFrequency(
+Java_com_tkhskt_theremin_ui_OscillatorManager_changeFrequency(
         JNIEnv * /* env */,
         jobject  /* this */,
         jfloat
@@ -74,7 +74,7 @@ Java_com_tkhskt_theremin_MainActivity_changeFrequency(
     }
 }
 JNIEXPORT void JNICALL
-Java_com_tkhskt_theremin_MainActivity_changeVolume(
+Java_com_tkhskt_theremin_ui_OscillatorManager_changeVolume(
         JNIEnv * /* env */,
         jobject  /* this */,
         jfloat
