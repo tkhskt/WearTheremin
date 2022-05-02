@@ -40,7 +40,6 @@ class MainMiddleware(
                 action
             }
             is MainAction.ChangeGravity -> {
-                Timber.d(action.gravity.toString())
                 val frequency = calcFrequencyUseCase(action.gravity)
                 sendThereminParametersUseCase(state.frequency.toString(), state.volume.toString())
                 MainAction.FrequencyChanged(frequency)
