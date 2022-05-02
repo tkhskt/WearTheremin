@@ -73,16 +73,27 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.viewState.collect {
+                    if (it.frequency.isNotEmpty()) {
+                        changeFrequency(it.frequency.toFloat())
+                    }
+                }
+            }
+        }
     }
 
     // Creates and starts Oboe stream to play audio
-    private external fun createStream() : Int
+    private external fun createStream(): Int
 
     // Closes and destroys Oboe stream when app goes out of focus
     private external fun destroyStream()
 
     // Plays sound on user tap
-    private external fun playSound(enable: Boolean) : Int
+    private external fun playSound(enable: Boolean): Int
+
+    private external fun changeFrequency(frequency: Float)
 
     companion object {
         private const val PERMISSION_REQUEST_CODE = 1000

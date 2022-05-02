@@ -63,4 +63,15 @@ Java_com_tkhskt_theremin_MainActivity_playSound(
     return
             result;
 }
+JNIEXPORT void JNICALL
+Java_com_tkhskt_theremin_MainActivity_changeFrequency(
+        JNIEnv * /* env */,
+        jobject  /* this */,
+        jfloat
+        frequency) {
+    if (oboePlayer) {
+        oboePlayer->changeFrequency(frequency);
+    }
 }
+}
+

@@ -1,6 +1,7 @@
 package com.tkhskt.theremin
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.FragmentActivity
@@ -16,6 +17,7 @@ class MainActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setContentView(ComposeView(this).apply {
             setContent {
                 MainScreen(viewModel)
