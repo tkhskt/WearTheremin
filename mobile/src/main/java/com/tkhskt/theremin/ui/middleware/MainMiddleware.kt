@@ -1,7 +1,6 @@
 package com.tkhskt.theremin.ui.middleware
 
 import com.tkhskt.theremin.data.repository.ThereminRepository
-import com.tkhskt.theremin.ui.model.MainState
 import com.tkhskt.theremin.domain.usecase.CalcFrequencyUseCase
 import com.tkhskt.theremin.domain.usecase.CalcVolumeUseCase
 import com.tkhskt.theremin.domain.usecase.OpenWearAppUseCase
@@ -9,9 +8,9 @@ import com.tkhskt.theremin.domain.usecase.SendThereminParametersUseCase
 import com.tkhskt.theremin.redux.Middleware
 import com.tkhskt.theremin.ui.model.MainAction
 import com.tkhskt.theremin.ui.model.MainEffect
+import com.tkhskt.theremin.ui.model.MainState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import timber.log.Timber
 
 class MainMiddleware(
     private val thereminRepository: ThereminRepository,
