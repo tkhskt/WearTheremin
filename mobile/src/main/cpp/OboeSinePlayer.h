@@ -25,8 +25,6 @@
 
 #include <oboe/Oboe.h>
 
-#include <android/log.h>
-
 /*
  * This class is responsible for creating an audio stream and starting it.
  * It specifies a callback function onAudioReady which is called each time
@@ -56,7 +54,6 @@ public:
     // For more complicated callbacks create a separate class
     oboe::DataCallbackResult
     onAudioReady(oboe::AudioStream *oboeStream, void *audioData, int32_t numFrames) override {
-        __android_log_write(ANDROID_LOG_DEBUG, "タグ", "定まったメッセージ");
         float *floatData = static_cast<float *>(audioData);
         if (isOn) {
             // Generate sine wave values
@@ -93,15 +90,15 @@ private:
 
     // Wave params, these could be instance variables in order to modify at runtime
     static float constexpr
-    kAmplitude = 0.5f;
+            kAmplitude = 0.5f;
     static float constexpr
-    kFrequency = 440;
+            kFrequency = 440;
 
     // Keeps track of where the wave is
     float mPhase = 0.0;
 
     static double constexpr
-    kTwoPi = M_PI * 2;
+            kTwoPi = M_PI * 2;
 };
 
 #endif //HELLO_OBOE_OBOESINEPLAYER_H
