@@ -43,6 +43,6 @@ fun MainScreen(
             Text(text = "Start Camera")
         }
         Spacer(modifier = Modifier.size(48.dp))
-        Text(text = uiState.frequency, color = Color.White)
+        Text(text = uiState.frequency.toString(), color = Color.White)
     }
 }

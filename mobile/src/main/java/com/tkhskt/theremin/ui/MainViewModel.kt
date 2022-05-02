@@ -39,8 +39,8 @@ class MainViewModel @Inject constructor(
     override val viewState: StateFlow<MainViewState>
         get() = store.state.map { state ->
             MainViewState(
-                frequency = state.frequency.toString(),
-                volume = state.volume.toString(),
+                frequency = state.frequency,
+                volume = state.volume,
             )
         }.stateIn(
             scope = viewModelScope,

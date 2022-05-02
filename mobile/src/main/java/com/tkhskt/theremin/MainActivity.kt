@@ -1,6 +1,7 @@
 package com.tkhskt.theremin
 
 import android.content.pm.PackageManager
+import android.media.AudioTrack
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
@@ -76,9 +77,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.viewState.collect {
-                    if (it.frequency.isNotEmpty()) {
-                        changeFrequency(it.frequency.toFloat())
-                    }
+                    changeFrequency(it.frequency)
                 }
             }
         }
