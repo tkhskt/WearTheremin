@@ -17,8 +17,8 @@
  */
 
 
-#ifndef HELLO_OBOE_OBOESINEPLAYER_H
-#define HELLO_OBOE_OBOESINEPLAYER_H
+#ifndef THEREMIN_OBOESINEPLAYER_H
+#define THEREMIN_OBOESINEPLAYER_H
 
 #include <math.h>
 #include <algorithm>
@@ -101,4 +101,4 @@ private:
             kTwoPi = M_PI * 2;
 };
 
-#endif //HELLO_OBOE_OBOESINEPLAYER_H
+#endif //THEREMIN_OBOESINEPLAYER_H
