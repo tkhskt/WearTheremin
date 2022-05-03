@@ -1,12 +1,12 @@
 package com.tkhskt.theremin.ui.model
 
-import com.tkhskt.theremin.redux.State
+import com.tkhskt.theremin.redux.UiState
 
-data class MainState(
+data class MainUiState(
     val started: Boolean,
-) : State {
+) : UiState {
     companion object {
-        val INITIAL = MainState(
+        val Initial = MainUiState(
             started = false,
         )
     }

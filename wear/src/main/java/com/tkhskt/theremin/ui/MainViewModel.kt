@@ -1,95 +1,56 @@
 package com.tkhskt.theremin.ui
 
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.hardware.SensorManager
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tkhskt.theremin.data.repository.ThereminRepository
-import com.tkhskt.theremin.domain.GetPositionUseCase
-import com.tkhskt.theremin.ui.model.MainEvent
+import com.tkhskt.theremin.redux.ReduxViewModel
+import com.tkhskt.theremin.redux.Store
+import com.tkhskt.theremin.ui.model.MainAction
+import com.tkhskt.theremin.ui.model.MainEffect
 import com.tkhskt.theremin.ui.model.MainState
+import com.tkhskt.theremin.ui.model.MainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val thereminRepository: ThereminRepository,
-    private val sensorManager: SensorManager,
-    private val sensor: Sensor,
-    private val getPositionUseCase: GetPositionUseCase,
-) : ViewModel() {
+    private val store: Store<MainAction, MainState, MainEffect>
+) : ReduxViewModel<MainAction, MainUiState, MainEffect>() {
 
-    private val _state = MutableStateFlow(MainState.Empty)
-    val state: StateFlow<MainState>
-        get() = _state
+    override val sideEffect: SharedFlow<MainEffect>
+        get() = store.sideEffect.shareIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+        )
 
-    private val event = MutableSharedFlow<MainEvent>()
+    override val uiState: StateFlow<MainUiState>
+        get() = store.state.map {
+            MainUiState(
+                started = it.started,
+            )
+        }.stateIn(
+            scope = viewModelScope,
+            initialValue = MainUiState.Initial,
+            started = SharingStarted.Lazily,
+        )
 
     init {
         viewModelScope.launch {
-            event.collect {
-                when (it) {
-                    is MainEvent.Initialize -> {
-                        startSensor()
-                    }
-                    is MainEvent.ClickStartButton -> {
-                        _state.value = MainState(started = true)
-                    }
-                    is MainEvent.ClickStopButton -> {
-                        _state.value = MainState(started = false)
-                    }
-                }
+            sideEffect.collect {
+                Timber.d(it.toString())
             }
         }
     }
 
-    fun dispatchEvent(mainEvent: MainEvent) {
+    override fun dispatch(action: MainAction) {
         viewModelScope.launch {
-            event.emit(mainEvent)
-        }
-    }
-
-    private fun startSensor() {
-        viewModelScope.launch {
-            sensorEventFlow(sensor, sensorManager).collect {
-                if (!state.value.started) return@collect
-                val y = it.values.getOrNull(1) ?: return@collect
-                thereminRepository.sendGravity(y)
-            }
-        }
-    }
-
-    private fun sensorEventFlow(
-        sensor: Sensor,
-        manager: SensorManager,
-    ): Flow<SensorEvent> {
-        return channelFlow {
-            val listener = object : SensorEventListener {
-                override fun onSensorChanged(event: SensorEvent?) {
-                    if (event?.sensor?.type == sensor.type && state.value.started) {
-                        launch { send(event) }
-                    }
-                }
-
-                override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-                    // no-op
-                }
-            }
-            try {
-                manager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_FASTEST)
-                awaitClose()
-            } finally {
-                manager.unregisterListener(listener, sensor)
-            }
+            store.dispatch(action)
         }
     }
 }

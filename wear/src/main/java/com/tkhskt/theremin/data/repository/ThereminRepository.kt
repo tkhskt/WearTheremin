@@ -2,9 +2,7 @@ package com.tkhskt.theremin.data.repository
 
 import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.NodeClient
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 
 interface ThereminRepository {
     suspend fun sendGravity(y: Float)
@@ -17,15 +15,12 @@ class ThereminRepositoryImpl(
 
     override suspend fun sendGravity(y: Float) {
         val nodes = nodeClient.connectedNodes.await()
-
-        withContext(Dispatchers.IO) {
-            nodes.forEach { node ->
-                messageClient.sendMessage(
-                    node.id,
-                    GRAVITY_PATH,
-                    y.toString().toByteArray()
-                ).await()
-            }
+        nodes.forEach { node ->
+            messageClient.sendMessage(
+                node.id,
+                GRAVITY_PATH,
+                y.toString().toByteArray()
+            ).await()
         }
     }
 

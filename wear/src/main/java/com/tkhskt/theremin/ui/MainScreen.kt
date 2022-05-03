@@ -9,21 +9,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.ToggleButton
-import com.tkhskt.theremin.ui.model.MainEvent
-import com.tkhskt.theremin.ui.model.MainState
+import com.tkhskt.theremin.ui.model.MainAction
+import com.tkhskt.theremin.ui.model.MainUiState
 
 @Composable
 fun MainScreen(
     viewModel: MainViewModel,
 ) {
-    val state = viewModel.state.collectAsState()
-    MainScreen(state.value, viewModel::dispatchEvent)
+    val state = viewModel.uiState.collectAsState()
+    MainScreen(state.value, viewModel::dispatch)
 }
 
 @Composable
 fun MainScreen(
-    uiState: MainState,
-    dispatcher: (MainEvent) -> Unit,
+    uiState: MainUiState,
+    dispatcher: (MainAction) -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -31,7 +31,7 @@ fun MainScreen(
         verticalArrangement = Arrangement.Center,
     ) {
         ToggleButton(checked = uiState.started, onCheckedChange = {
-            val event = if (it) MainEvent.ClickStartButton else MainEvent.ClickStopButton
+            val event = if (it) MainAction.ClickStartButton else MainAction.ClickStopButton
             dispatcher(event)
         }) {
             Text(text = uiState.started.toString())
