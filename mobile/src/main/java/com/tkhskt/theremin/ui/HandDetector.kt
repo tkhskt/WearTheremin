@@ -92,9 +92,9 @@ class HandDetector(
         val insetsWidth = insets.right + insets.left
         val insetsHeight = insets.top + insets.bottom
 
-        val b = windowMetrics.bounds
-        val width = b.width() - insetsWidth
-        val height = b.height() - insetsHeight
+        val bounds = windowMetrics.bounds
+        val width = bounds.width() - insetsWidth
+        val height = bounds.height() - insetsHeight
 
         val hands = hands ?: return
         cameraInput?.start(
