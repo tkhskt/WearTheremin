@@ -63,7 +63,6 @@ class BluetoothClient(
                 status: Int,
                 newState: Int
             ) {
-                Timber.d("onConnectionStateChange")
                 if (newState == BluetoothProfile.STATE_CONNECTED) {
                     connectedDevice = device
                     Timber.d("STATE_CONNECTED:$device")
