@@ -34,12 +34,12 @@ class BluetoothClient(
     private val psdiCharacteristic: BluetoothGattCharacteristic = BluetoothGattCharacteristic(
         UUID_LIFF_PSDI,
         BluetoothGattCharacteristic.PROPERTY_READ,
-        BluetoothGattCharacteristic.PERMISSION_READ
+        BluetoothGattCharacteristic.PERMISSION_READ,
     )
     private val notifyCharacteristic: BluetoothGattCharacteristic = BluetoothGattCharacteristic(
         UUID_LIFF_NOTIFY,
         BluetoothGattCharacteristic.PROPERTY_NOTIFY,
-        BluetoothGattCharacteristic.PERMISSION_READ
+        BluetoothGattCharacteristic.PERMISSION_READ,
     )
     private val btPsdiService: BluetoothGattService =
         BluetoothGattService(UUID_LIFF_PSDI_SERVICE, BluetoothGattService.SERVICE_TYPE_PRIMARY)
@@ -61,7 +61,7 @@ class BluetoothClient(
             override fun onConnectionStateChange(
                 device: BluetoothDevice,
                 status: Int,
-                newState: Int
+                newState: Int,
             ) {
                 if (newState == BluetoothProfile.STATE_CONNECTED) {
                     connectedDevice = device
@@ -75,7 +75,7 @@ class BluetoothClient(
                 device: BluetoothDevice,
                 requestId: Int,
                 offset: Int,
-                characteristic: BluetoothGattCharacteristic
+                characteristic: BluetoothGattCharacteristic,
             ) {
                 Timber.d("onCharacteristicReadRequest")
             }
@@ -87,7 +87,7 @@ class BluetoothClient(
                 preparedWrite: Boolean,
                 responseNeeded: Boolean,
                 offset: Int,
-                value: ByteArray
+                value: ByteArray,
             ) {
                 if (characteristic.uuid.compareTo(UUID_LIFF_WRITE) == 0) {
                     if (offset < charValue.size) {
@@ -99,7 +99,7 @@ class BluetoothClient(
                             requestId,
                             BluetoothGatt.GATT_SUCCESS,
                             offset,
-                            null
+                            null,
                         )
                     } else {
                         btGattServer.sendResponse(
@@ -107,7 +107,7 @@ class BluetoothClient(
                             requestId,
                             BluetoothGatt.GATT_FAILURE,
                             offset,
-                            null
+                            null,
                         )
                     }
                     if (notifyDescValue[0] and 0x01.toByte() != 0x00.toByte()) {
@@ -116,7 +116,7 @@ class BluetoothClient(
                             btGattServer.notifyCharacteristicChanged(
                                 connectedDevice,
                                 notifyCharacteristic,
-                                false
+                                false,
                             )
                         }
                     }
@@ -126,7 +126,7 @@ class BluetoothClient(
                         requestId,
                         BluetoothGatt.GATT_FAILURE,
                         offset,
-                        null
+                        null,
                     )
                 }
             }
@@ -145,7 +145,7 @@ class BluetoothClient(
                         requestId,
                         BluetoothGatt.GATT_SUCCESS,
                         offset,
-                        notifyDescValue
+                        notifyDescValue,
                     )
                 }
             }
@@ -157,7 +157,7 @@ class BluetoothClient(
                 preparedWrite: Boolean,
                 responseNeeded: Boolean,
                 offset: Int,
-                value: ByteArray
+                value: ByteArray,
             ) {
                 if (descriptor.uuid.compareTo(UUID_LIFF_DESC) == 0) {
                     notifyDescValue[0] = value[0]
@@ -167,13 +167,13 @@ class BluetoothClient(
                         requestId,
                         BluetoothGatt.GATT_SUCCESS,
                         offset,
-                        null
+                        null,
                     )
                     gattSucceeded = true
                     btGattServer.notifyCharacteristicChanged(
                         connectedDevice,
                         notifyCharacteristic,
-                        false
+                        false,
                     )
                 }
             }
@@ -208,7 +208,7 @@ class BluetoothClient(
         btGattServer.notifyCharacteristicChanged(
             connectedDevice,
             notifyCharacteristic,
-            false
+            false,
         )
     }
 

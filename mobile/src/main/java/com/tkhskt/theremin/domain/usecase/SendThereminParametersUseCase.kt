@@ -10,7 +10,7 @@ interface SendThereminParametersUseCase {
 }
 
 class SendThereminParametersUseCaseImpl(
-    private val thereminRepository: ThereminRepository
+    private val thereminRepository: ThereminRepository,
 ) : SendThereminParametersUseCase {
     override suspend fun invoke(frequency: Float, volume: Float) {
         withContext(Dispatchers.IO) {

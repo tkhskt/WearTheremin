@@ -12,7 +12,7 @@ class CalcVolumeUseCaseImpl : CalcVolumeUseCase {
         return MathUtils.clamp(
             distance - 0.7f,
             MIN_DISTANCE,
-            MAX_DISTANCE
+            MAX_DISTANCE,
         ) * MAX_DISTANCE_RECIPROCAL
     }
 
