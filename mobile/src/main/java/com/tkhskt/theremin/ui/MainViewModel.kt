@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,7 +25,6 @@ class MainViewModel @Inject constructor(
 ) : ReduxViewModel<MainAction, MainUiState, MainEffect>() {
 
     val onChangeDistanceListener = { distance: Float ->
-        Timber.d(distance.toString())
         dispatch(MainAction.ChangeDistance(distance))
     }
 

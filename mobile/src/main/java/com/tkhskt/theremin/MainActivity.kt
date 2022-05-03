@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.tkhskt.theremin.ui.HandDetector
+import com.tkhskt.theremin.ui.JankStatsManager
 import com.tkhskt.theremin.ui.MainScreen
 import com.tkhskt.theremin.ui.MainViewModel
 import com.tkhskt.theremin.ui.OscillatorManager
@@ -30,19 +31,24 @@ class MainActivity : AppCompatActivity() {
 
     private val oscillatorManager = OscillatorManager()
 
+    private val jankStatsManager = JankStatsManager()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        collectEffect()
-        if (bluetoothPermissionGranted) {
-            viewModel.dispatch(MainAction.InitializeBle)
-        } else {
-            requestBluetoothPermission(PERMISSION_REQUEST_CODE)
+        lifecycle.apply {
+            addObserver(handDetector)
+            addObserver(oscillatorManager)
+            addObserver(jankStatsManager)
         }
-        lifecycle.addObserver(handDetector)
-        lifecycle.addObserver(oscillatorManager)
+        collectEffect()
+        initBluetooth()
+        jankStatsManager.startMeasure(
+            stateName = MainActivity::class.java.simpleName,
+            window = window,
+        )
         setContent {
-            MainScreen(viewModel = viewModel)
+            MainScreen()
         }
     }
 
@@ -84,6 +90,14 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private fun initBluetooth() {
+        if (bluetoothPermissionGranted) {
+            viewModel.dispatch(MainAction.InitializeBle)
+        } else {
+            requestBluetoothPermission(PERMISSION_REQUEST_CODE)
         }
     }
 
