@@ -4,15 +4,15 @@ import com.tkhskt.theremin.data.model.ThereminParameter
 import com.tkhskt.theremin.data.repository.ThereminRepository
 
 interface SendThereminParametersUseCase {
-    suspend operator fun invoke(frequency: String, volume: String)
+    suspend operator fun invoke(frequency: Float, volume: Float)
 }
 
 class SendThereminParametersUseCaseImpl(
     private val thereminRepository: ThereminRepository
 ) : SendThereminParametersUseCase {
-    override suspend fun invoke(frequency: String, volume: String) {
+    override suspend fun invoke(frequency: Float, volume: Float) {
         thereminRepository.sendParameter(
-            ThereminParameter(frequency, volume)
+            ThereminParameter(frequency.toString(), volume.toString())
         )
     }
 }

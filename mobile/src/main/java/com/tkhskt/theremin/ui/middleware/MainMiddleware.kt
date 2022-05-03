@@ -40,12 +40,12 @@ class MainMiddleware(
             }
             is MainAction.ChangeGravity -> {
                 val frequency = calcFrequencyUseCase(action.gravity)
-                sendThereminParametersUseCase(state.frequency.toString(), state.volume.toString())
+                sendThereminParametersUseCase(state.frequency, state.volume)
                 MainAction.FrequencyChanged(frequency)
             }
             is MainAction.ChangeDistance -> {
                 val volume = calcVolumeUseCase(action.distance)
-                sendThereminParametersUseCase(state.frequency.toString(), volume.toString())
+                sendThereminParametersUseCase(state.frequency, volume)
                 MainAction.VolumeChanged(volume)
             }
             else -> {
