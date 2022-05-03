@@ -203,7 +203,7 @@ class BluetoothClient(
         startBleAdvertising(btAdvertiser)
     }
 
-    suspend fun notify(value: String) {
+    fun notify(value: String) {
         if (!gattSucceeded) return
         notifyCharacteristic.value = value.toByteArray()
         btGattServer.notifyCharacteristicChanged(
