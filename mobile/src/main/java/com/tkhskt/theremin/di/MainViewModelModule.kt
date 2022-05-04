@@ -2,6 +2,8 @@ package com.tkhskt.theremin.di
 
 import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.NodeClient
+import com.tkhskt.theremin.data.repository.AudioRepository
+import com.tkhskt.theremin.data.repository.AudioRepositoryImpl
 import com.tkhskt.theremin.data.repository.MessageRepository
 import com.tkhskt.theremin.data.repository.MessageRepositoryImpl
 import com.tkhskt.theremin.data.repository.ThereminRepository
@@ -13,8 +15,12 @@ import com.tkhskt.theremin.domain.usecase.CalcVolumeUseCase
 import com.tkhskt.theremin.domain.usecase.CalcVolumeUseCaseImpl
 import com.tkhskt.theremin.domain.usecase.GetGravityUseCase
 import com.tkhskt.theremin.domain.usecase.GetGravityUseCaseImpl
+import com.tkhskt.theremin.domain.usecase.GetVolumeUseCase
+import com.tkhskt.theremin.domain.usecase.GetVolumeUseCaseImpl
 import com.tkhskt.theremin.domain.usecase.OpenWearAppUseCase
 import com.tkhskt.theremin.domain.usecase.OpenWearAppUseCaseImpl
+import com.tkhskt.theremin.domain.usecase.SaveVolumeUseCase
+import com.tkhskt.theremin.domain.usecase.SaveVolumeUseCaseImpl
 import com.tkhskt.theremin.domain.usecase.SendThereminParametersUseCase
 import com.tkhskt.theremin.domain.usecase.SendThereminParametersUseCaseImpl
 import com.tkhskt.theremin.redux.Store
@@ -34,16 +40,6 @@ import dagger.hilt.android.components.ViewModelComponent
 object MainViewModelModule {
 
     @Provides
-    fun provideThereminRepository(
-        bluetoothClient: BluetoothClient,
-    ): ThereminRepository = ThereminRepositoryImpl(bluetoothClient)
-
-    @Provides
-    fun provideMessageRepository(
-        messageClient: MessageClient,
-    ): MessageRepository = MessageRepositoryImpl(messageClient)
-
-    @Provides
     fun provideGetFrequencyUseCase(
         messageRepository: MessageRepository
     ): GetGravityUseCase = GetGravityUseCaseImpl(messageRepository)
@@ -53,6 +49,16 @@ object MainViewModelModule {
 
     @Provides
     fun provideCalcVolumeUseCase(): CalcVolumeUseCase = CalcVolumeUseCaseImpl()
+
+    @Provides
+    fun provideGetVolumeUseCase(
+        audioRepository: AudioRepository,
+    ): GetVolumeUseCase = GetVolumeUseCaseImpl(audioRepository)
+
+    @Provides
+    fun provideSaveVolumeUseCaseImpl(
+        audioRepository: AudioRepository,
+    ): SaveVolumeUseCase = SaveVolumeUseCaseImpl(audioRepository)
 
     @Provides
     fun provideSendThereminParametersUseCase(
@@ -75,12 +81,16 @@ object MainViewModelModule {
         calcFrequencyUseCase: CalcFrequencyUseCase,
         calcVolumeUseCase: CalcVolumeUseCase,
         openWearAppUseCase: OpenWearAppUseCase,
+        getVolumeUseCase: GetVolumeUseCase,
+        saveVolumeUseCase: SaveVolumeUseCase,
     ): MainMiddleware = MainMiddleware(
         thereminRepository = thereminRepository,
         sendThereminParametersUseCase = sendThereminParametersUseCase,
         calcFrequencyUseCase = calcFrequencyUseCase,
         calcVolumeUseCase = calcVolumeUseCase,
-        openWearAppUseCase = openWearAppUseCase
+        openWearAppUseCase = openWearAppUseCase,
+        getVolumeUseCase = getVolumeUseCase,
+        saveVolumeUseCase = saveVolumeUseCase,
     )
 
     @Provides

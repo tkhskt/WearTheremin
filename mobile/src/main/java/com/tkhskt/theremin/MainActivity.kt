@@ -18,7 +18,10 @@ import com.tkhskt.theremin.ui.OscillatorManager
 import com.tkhskt.theremin.ui.model.MainAction
 import com.tkhskt.theremin.ui.model.MainEffect
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -88,9 +91,21 @@ class MainActivity : AppCompatActivity() {
                 viewModel.uiState.collect {
                     oscillatorManager.run {
                         changeFrequency(it.frequency)
-                        changeVolume(it.volume)
+//                        changeVolume(it.volume)
+                        lerp(it.lerpVolume)
                     }
                 }
+            }
+        }
+    }
+
+    private var job: Job = Job()
+
+    private fun lerp(volumes: List<Float>) {
+        job.cancel()
+        job = lifecycleScope.launch {
+            volumes.forEach { volume ->
+                oscillatorManager.changeVolume(volume)
             }
         }
     }

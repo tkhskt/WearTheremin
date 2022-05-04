@@ -33,6 +33,7 @@ class MainViewModel @Inject constructor(
         MainUiState(
             frequency = state.frequency,
             volume = state.volume,
+            lerpVolume = state.lerpVolume,
         )
     }.stateIn(
         scope = viewModelScope,

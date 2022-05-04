@@ -15,7 +15,7 @@ class MainReducer : Reducer<MainAction, MainState> {
                 state.copy(frequency = action.frequency)
             }
             is MainAction.VolumeChanged -> {
-                state.copy(volume = action.volume)
+                state.copy(volume = action.volume, lerpVolume = action.lerpVolume)
             }
             else -> {
                 state

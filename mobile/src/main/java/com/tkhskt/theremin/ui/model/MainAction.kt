@@ -9,5 +9,5 @@ sealed interface MainAction : Action {
     data class ChangeGravity(val gravity: Float) : MainAction
     data class ChangeDistance(val distance: Float) : MainAction
     data class FrequencyChanged(val frequency: Float) : MainAction
-    data class VolumeChanged(val volume: Float) : MainAction
+    data class VolumeChanged(val volume: Float, val lerpVolume: List<Float>) : MainAction
 }

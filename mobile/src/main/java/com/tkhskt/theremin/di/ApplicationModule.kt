@@ -5,6 +5,12 @@ import android.content.Context
 import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.NodeClient
 import com.google.android.gms.wearable.Wearable
+import com.tkhskt.theremin.data.repository.AudioRepository
+import com.tkhskt.theremin.data.repository.AudioRepositoryImpl
+import com.tkhskt.theremin.data.repository.MessageRepository
+import com.tkhskt.theremin.data.repository.MessageRepositoryImpl
+import com.tkhskt.theremin.data.repository.ThereminRepository
+import com.tkhskt.theremin.data.repository.ThereminRepositoryImpl
 import com.tkhskt.theremin.data.source.BluetoothClient
 import dagger.Module
 import dagger.Provides
@@ -40,4 +46,20 @@ object ApplicationModule {
     fun provideNodeClient(
         @ApplicationContext context: Context,
     ): NodeClient = Wearable.getNodeClient(context)
+
+    @Provides
+    @Singleton
+    fun provideThereminRepository(
+        bluetoothClient: BluetoothClient,
+    ): ThereminRepository = ThereminRepositoryImpl(bluetoothClient)
+
+    @Provides
+    @Singleton
+    fun provideMessageRepository(
+        messageClient: MessageClient,
+    ): MessageRepository = MessageRepositoryImpl(messageClient)
+
+    @Provides
+    @Singleton
+    fun provideAudioRepository(): AudioRepository = AudioRepositoryImpl()
 }
