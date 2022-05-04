@@ -21,8 +21,7 @@ class MainMiddleware(
 ) : Middleware<MainAction, MainState, MainEffect> {
 
     private val _sideEffect = MutableSharedFlow<MainEffect>()
-    override val sideEffect: SharedFlow<MainEffect>
-        get() = _sideEffect
+    override val sideEffect: SharedFlow<MainEffect> = _sideEffect
 
     override suspend fun dispatchBeforeReduce(action: MainAction, state: MainState): MainAction {
         return when (action) {
