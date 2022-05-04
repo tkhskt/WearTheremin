@@ -26,7 +26,9 @@ class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel>()
 
     private val handDetector by lazy {
-        HandDetector(this, viewModel.onChangeDistanceListener)
+        HandDetector(this) { distance: Float ->
+            viewModel.dispatch(MainAction.ChangeDistance(distance))
+        }
     }
 
     private val oscillatorManager = OscillatorManager()

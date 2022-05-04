@@ -24,27 +24,21 @@ class MainViewModel @Inject constructor(
     private val getGravityUseCase: GetGravityUseCase,
 ) : ReduxViewModel<MainAction, MainUiState, MainEffect>() {
 
-    val onChangeDistanceListener = { distance: Float ->
-        dispatch(MainAction.ChangeDistance(distance))
-    }
+    override val sideEffect: SharedFlow<MainEffect> = store.sideEffect.shareIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+    )
 
-    override val sideEffect: SharedFlow<MainEffect>
-        get() = store.sideEffect.shareIn(
-            scope = viewModelScope,
-            started = SharingStarted.Lazily,
+    override val uiState: StateFlow<MainUiState> = store.state.map { state ->
+        MainUiState(
+            frequency = state.frequency,
+            volume = state.volume,
         )
-
-    override val uiState: StateFlow<MainUiState>
-        get() = store.state.map { state ->
-            MainUiState(
-                frequency = state.frequency,
-                volume = state.volume,
-            )
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Lazily,
-            initialValue = MainUiState.Initial,
-        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = MainUiState.Initial,
+    )
 
     init {
         viewModelScope.launch {
