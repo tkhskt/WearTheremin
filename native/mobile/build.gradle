@@ -87,6 +87,9 @@ dependencies {
     implementation libs.oboe
     ktlint libs.ktlint
 
+    // theremin-core(local maven)
+    implementation libs.theremin.core
+
     testImplementation libs.test.junit
     androidTestImplementation libs.test.junit.ext
     androidTestImplementation libs.test.espresso

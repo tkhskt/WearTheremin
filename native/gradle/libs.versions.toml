@@ -53,6 +53,9 @@ mediapipe-hands = { module = "com.google.mediapipe:hands", version.ref = "mediap
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 
+# theremin-core(local maven)
+theremin-core = { module = "com.tkhskt.theremin:core", version = "1.0.0" }
+
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 oboe = { module = "com.google.oboe:oboe", version = "1.6.1" }
 ktlint = { module = "com.pinterest:ktlint", version = "0.43.1" }
