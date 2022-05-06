@@ -3,7 +3,7 @@ package com.tkhskt.theremin.ui
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 
-class OscillatorManager : DefaultLifecycleObserver {
+class OscillatorController : DefaultLifecycleObserver {
 
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)

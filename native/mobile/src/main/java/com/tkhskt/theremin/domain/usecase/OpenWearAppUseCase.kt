@@ -33,7 +33,7 @@ class OpenWearAppUseCaseImpl(
             } catch (cancellationException: CancellationException) {
                 throw cancellationException
             } catch (exception: Exception) {
-                Timber.d("Starting activity failed: $exception")
+                Timber.e("Starting activity failed: $exception")
             }
         }
     }

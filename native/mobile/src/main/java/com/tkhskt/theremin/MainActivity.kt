@@ -14,7 +14,7 @@ import com.tkhskt.theremin.ui.HandDetector
 import com.tkhskt.theremin.ui.JankStatsManager
 import com.tkhskt.theremin.ui.MainScreen
 import com.tkhskt.theremin.ui.MainViewModel
-import com.tkhskt.theremin.ui.OscillatorManager
+import com.tkhskt.theremin.ui.OscillatorController
 import com.tkhskt.theremin.ui.model.MainAction
 import com.tkhskt.theremin.ui.model.MainEffect
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val oscillatorManager = OscillatorManager()
+    private val oscillatorController = OscillatorController()
 
     private val jankStatsManager = JankStatsManager()
 
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         lifecycle.apply {
             addObserver(handDetector)
-            addObserver(oscillatorManager)
+            addObserver(oscillatorController)
             addObserver(jankStatsManager)
         }
         collectEffect()
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.uiState.collect {
-                    oscillatorManager.run {
+                    oscillatorController.run {
                         changeFrequency(it.frequency)
                         changeVolume(it.volume)
                     }
