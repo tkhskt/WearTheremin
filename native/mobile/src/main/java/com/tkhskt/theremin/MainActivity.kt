@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.tkhskt.theremin.ui.HandDetector
-import com.tkhskt.theremin.ui.JankStatsManager
+import com.tkhskt.theremin.ui.HandTracker
+import com.tkhskt.theremin.ui.JankDetector
 import com.tkhskt.theremin.ui.MainScreen
 import com.tkhskt.theremin.ui.MainViewModel
 import com.tkhskt.theremin.ui.OscillatorController
@@ -25,27 +25,27 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<MainViewModel>()
 
-    private val handDetector by lazy {
-        HandDetector(this) { distance: Float ->
+    private val handTracker by lazy {
+        HandTracker(this) { distance: Float ->
             viewModel.dispatch(MainAction.ChangeDistance(distance))
         }
     }
 
     private val oscillatorController = OscillatorController()
 
-    private val jankStatsManager = JankStatsManager()
+    private val jankDetector = JankDetector()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         lifecycle.apply {
-            addObserver(handDetector)
+            addObserver(handTracker)
             addObserver(oscillatorController)
-            addObserver(jankStatsManager)
+            addObserver(jankDetector)
         }
         collectEffect()
         initBluetooth()
-        jankStatsManager.startMeasure(
+        jankDetector.startDetection(
             stateName = MainActivity::class.java.simpleName,
             window = window,
         )
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                 viewModel.sideEffect.collect { effect ->
                     when (effect) {
                         is MainEffect.StartCamera -> {
-                            handDetector.startHandDetection()
+                            handTracker.startTracking()
                         }
                     }
                 }

@@ -14,7 +14,7 @@ import com.google.mediapipe.solutions.hands.HandsOptions
 import com.google.mediapipe.solutions.hands.HandsResult
 import timber.log.Timber
 
-class HandDetector(
+class HandTracker(
     private val activity: Activity,
     private val onChangeDistanceListener: (Float) -> Unit,
 ) : DefaultLifecycleObserver {
@@ -36,7 +36,7 @@ class HandDetector(
         hands = null
     }
 
-    fun startHandDetection() {
+    fun startTracking() {
         stopCurrentPipeline()
         hands = Hands(
             activity,

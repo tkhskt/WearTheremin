@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import timber.log.Timber
 
-class JankStatsManager : DefaultLifecycleObserver {
+class JankDetector : DefaultLifecycleObserver {
 
     private lateinit var jankStats: JankStats
 
@@ -29,7 +29,7 @@ class JankStatsManager : DefaultLifecycleObserver {
         jankStats.isTrackingEnabled = false
     }
 
-    fun startMeasure(stateName: String, window: Window) {
+    fun startDetection(stateName: String, window: Window) {
         val metricsStateHolder = PerformanceMetricsState.getForHierarchy(window.decorView)
         jankStats = JankStats.createAndTrack(
             window,
