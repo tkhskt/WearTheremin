@@ -6,7 +6,7 @@ mediapipe = "latest.release"
 hilt = "2.41"
 lifecycle = "2.4.1"
 wear-compose = "1.0.0-alpha21"
-agp = "7.2.0-beta02"
+agp = "7.2.0"
 
 [libraries]
 android-material = { module = "com.google.android.material:material", version = "1.5.0" }
