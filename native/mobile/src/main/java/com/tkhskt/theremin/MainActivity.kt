@@ -12,11 +12,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.tkhskt.theremin.ui.HandTracker
 import com.tkhskt.theremin.ui.JankDetector
-import com.tkhskt.theremin.ui.MainScreen
 import com.tkhskt.theremin.ui.MainViewModel
 import com.tkhskt.theremin.ui.OscillatorController
+import com.tkhskt.theremin.ui.composable.MainScreen
 import com.tkhskt.theremin.ui.model.MainAction
 import com.tkhskt.theremin.ui.model.MainEffect
+import com.tkhskt.theremin.ui.theme.ThereminTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -50,7 +51,9 @@ class MainActivity : AppCompatActivity() {
             window = window,
         )
         setContent {
-            MainScreen()
+            ThereminTheme {
+                MainScreen()
+            }
         }
     }
 
