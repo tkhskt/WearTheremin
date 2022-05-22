@@ -37,6 +37,7 @@ fun Menu(
     onClickBrowserButton: (Boolean) -> Unit = {},
     onClickLicenseSection: () -> Unit = {},
 ) {
+    val sectionSpace = 28.dp
     Column(
         modifier = modifier
             .width(IntrinsicSize.Max)
@@ -46,14 +47,14 @@ fun Menu(
             pcConnected = pcConnected,
             watchConnected = watchConnected,
         )
-        Spacer(modifier = Modifier.size(22.dp))
+        Spacer(modifier = Modifier.size(sectionSpace))
         SoundSection(
             browserSoundEnabled = browserSoundEnabled,
             appSoundEnabled = appSoundEnabled,
             onClickAppButton = onClickAppButton,
             onClickBrowserButton = onClickBrowserButton,
         )
-        Spacer(modifier = Modifier.size(22.dp))
+        Spacer(modifier = Modifier.size(sectionSpace))
         LicenseSection(onClick = onClickLicenseSection)
     }
 }
