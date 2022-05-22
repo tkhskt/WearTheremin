@@ -73,7 +73,7 @@ private fun DeviceSection(
         ) {
             IconMenuItem(
                 iconRes = R.drawable.ic_drawer_wear,
-                text = if (watchConnected) "Connected" else "Connected"
+                text = if (watchConnected) "Connected" else "Disconnected"
             )
             IconMenuItem(
                 iconRes = R.drawable.ic_drawer_pc,
