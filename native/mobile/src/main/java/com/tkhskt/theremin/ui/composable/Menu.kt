@@ -69,9 +69,7 @@ private fun DeviceSection(
         modifier = modifier.fillMaxWidth(),
     ) {
         MenuSectionTitle(title = "Device")
-        SubSectionContainer(
-            modifier = Modifier.padding(top = 8.dp),
-        ) {
+        SubSectionContainer {
             IconMenuItem(
                 iconRes = R.drawable.ic_drawer_wear,
                 text = if (watchConnected) "Connected" else "Disconnected"
@@ -96,9 +94,7 @@ private fun SoundSection(
         modifier = modifier.fillMaxWidth(),
     ) {
         MenuSectionTitle(title = "Sound")
-        SubSectionContainer(
-            modifier = Modifier.padding(top = 8.dp),
-        ) {
+        SubSectionContainer {
             ToggleButtonMenuItem(
                 text = "App",
                 buttonEnabled = appSoundEnabled,
@@ -167,7 +163,7 @@ private fun SubSectionContainer(
     content: @Composable () -> Unit,
 ) {
     Column(
-        modifier = modifier.padding(start = 14.dp)
+        modifier = modifier.padding(top = 4.dp, start = 14.dp)
     ) {
         content()
     }
