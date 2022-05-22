@@ -10,4 +10,6 @@ sealed interface MainAction : Action {
     data class ChangeDistance(val distance: Float) : MainAction
     data class FrequencyChanged(val frequency: Float) : MainAction
     data class VolumeChanged(val volume: Float) : MainAction
+    object ClickAppSoundButton : MainAction
+    object ClickBrowserSoundButton : MainAction
 }

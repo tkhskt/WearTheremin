@@ -33,6 +33,10 @@ class MainViewModel @Inject constructor(
         MainUiState(
             frequency = state.frequency,
             volume = state.volume,
+            pcConnected = state.pcConnected,
+            watchConnected = state.watchConnected,
+            appSoundEnabled = state.appSoundEnabled,
+            browserSoundEnabled = state.browserSoundEnabled,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        supportActionBar?.hide()
         lifecycle.apply {
             addObserver(handTracker)
             addObserver(oscillatorController)
@@ -92,6 +93,7 @@ class MainActivity : AppCompatActivity() {
                     oscillatorController.run {
                         changeFrequency(it.frequency)
                         changeVolume(it.volume)
+                        playSound(it.appSoundEnabled)
                     }
                 }
             }

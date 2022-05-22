@@ -17,6 +17,12 @@ class MainReducer : Reducer<MainAction, MainState> {
             is MainAction.VolumeChanged -> {
                 state.copy(volume = action.volume)
             }
+            is MainAction.ClickAppSoundButton -> {
+                state.copy(appSoundEnabled = !state.appSoundEnabled)
+            }
+            is MainAction.ClickBrowserSoundButton -> {
+                state.copy(browserSoundEnabled = !state.browserSoundEnabled)
+            }
             else -> {
                 state
             }

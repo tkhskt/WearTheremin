@@ -1,7 +1,7 @@
 [versions]
-kotlin = "1.6.20"
+kotlin = "1.6.21"
 coroutines = "1.6.1"
-compose = "1.2.0-alpha08"
+compose = "1.2.0-beta02"
 material3 = "1.0.0-alpha11"
 mediapipe = "latest.release"
 hilt = "2.41"
@@ -36,9 +36,11 @@ coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", ve
 coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines" }
 
 # Jetpack Compose
+compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 compose-material3-window-size = { module = "androidx.compose.material3:material3-window-size-class", version.ref = "material3" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose" }
 compose-hilt = { module = "androidx.hilt:hilt-navigation-compose", version = "1.0.0" }
 
@@ -65,7 +67,7 @@ ktlint = { module = "com.pinterest:ktlint", version = "0.43.1" }
 [bundles]
 lifecycle = ["lifecycle-viewmodel", "lifecycle-runtime"]
 coroutines = ["coroutines-android", "coroutines-core", "coroutines-play-services"]
-compose = ["compose-material3", "compose-material3-window-size", "compose-tooling", "compose-compiler", "compose-hilt"]
+compose = ["compose-material", "compose-material3", "compose-material3-window-size", "compose-tooling-preview", "compose-compiler", "compose-hilt"]
 mediapipe = ["mediapipe-core", "mediapipe-hands"]
 wear-compose = ["wear-compose-foundation", "wear-compose-material", "wear-compose-navigation"]
 
