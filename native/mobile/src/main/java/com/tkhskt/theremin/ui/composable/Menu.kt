@@ -142,7 +142,7 @@ private fun LicenseSection(
 @Composable
 private fun MenuSectionTitle(
     title: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier

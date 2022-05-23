@@ -45,7 +45,7 @@ object MainViewModelModule {
 
     @Provides
     fun provideGetFrequencyUseCase(
-        messageRepository: MessageRepository
+        messageRepository: MessageRepository,
     ): GetGravityUseCase = GetGravityUseCaseImpl(messageRepository)
 
     @Provides

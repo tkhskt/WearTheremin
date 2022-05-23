@@ -135,7 +135,7 @@ class BluetoothClient(
                 device: BluetoothDevice,
                 requestId: Int,
                 offset: Int,
-                descriptor: BluetoothGattDescriptor
+                descriptor: BluetoothGattDescriptor,
             ) {
                 Timber.d("onDescriptorReadRequest")
 
