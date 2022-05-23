@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tkhskt.theremin.R
+import com.tkhskt.theremin.ui.theme.LocalColorPalette
 import com.tkhskt.theremin.ui.theme.LocalTypography
 
 @Composable
@@ -38,9 +39,7 @@ fun Menu(
 ) {
     val sectionSpace = 28.dp
     Column(
-        modifier = modifier
-            .width(IntrinsicSize.Max)
-            .padding(start = 20.dp)
+        modifier = modifier.width(IntrinsicSize.Max)
     ) {
         DeviceSection(
             pcConnected = pcConnected,
@@ -249,7 +248,7 @@ private fun ToggleButtonMenuItem(
 @Preview
 @Composable
 fun PreviewMenu() {
-    Surface(color = Color.Black) {
+    Surface(color = LocalColorPalette.current.menuBackground) {
         Menu()
     }
 }
