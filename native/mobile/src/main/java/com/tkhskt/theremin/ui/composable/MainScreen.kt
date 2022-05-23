@@ -61,8 +61,9 @@ fun MainScreen(
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Top,
         ) {
+            Sun(offset = -0.7f)
             Button(
                 onClick = { dispatcher(MainAction.ClickStartWearableButton) }
             ) {
