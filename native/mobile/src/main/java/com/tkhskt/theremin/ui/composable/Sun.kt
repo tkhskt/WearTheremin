@@ -63,12 +63,13 @@ private fun Circle(
         start = animate
     }
 
-    Box(modifier = modifier
-        .scale(scale)
-        .alpha(alpha)
-        .requiredSize(size)
-        .clip(CircleShape)
-        .background(Color.White)
+    Box(
+        modifier = modifier
+            .scale(scale)
+            .alpha(alpha)
+            .requiredSize(size)
+            .clip(CircleShape)
+            .background(Color.White)
     )
 }
 
