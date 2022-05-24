@@ -3,7 +3,7 @@ package com.tkhskt.theremin.ui.composable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,15 +17,15 @@ fun Star(modifier: Modifier = Modifier) {
     val triangleShape = GenericShape { size, _ ->
         moveTo(size.width / 2f, 0f)
         lineTo(size.width, size.height / 2f)
-        lineTo(-(size.width / 2f), size.height)
+        lineTo(size.width / 2f, size.height)
         lineTo(0f, size.height / 2f)
         lineTo(size.width / 2f, 0f)
     }
 
     Box(
         modifier = modifier
-            .size(100.dp)
-            .height(200.dp)
+            .width(10.dp)
+            .height(50.dp)
             .clip(triangleShape)
             .background(Color.White)
     )
