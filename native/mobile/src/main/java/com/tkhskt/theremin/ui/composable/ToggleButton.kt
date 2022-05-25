@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.tkhskt.theremin.ui.theme.LocalColorPalette
@@ -81,4 +82,16 @@ fun ToggleButton(
                 .background(Color.White),
         )
     }
+}
+
+@Preview(name = "not checked")
+@Composable
+fun PreviewToggleButtonNotChecked() {
+    ToggleButton(checked = false, onChangeButtonStatus = {})
+}
+
+@Preview(name = "checked")
+@Composable
+fun PreviewToggleButtonChecked() {
+    ToggleButton(checked = true, onChangeButtonStatus = {})
 }
