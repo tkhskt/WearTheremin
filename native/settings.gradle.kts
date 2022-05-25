@@ -14,6 +14,6 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Theremin"
-include ':mobile'
-include ':wear'
-include ':redux'
+include(":mobile")
+include(":wear")
+include(":redux")
