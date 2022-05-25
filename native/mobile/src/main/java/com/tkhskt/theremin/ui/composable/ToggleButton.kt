@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FractionalThreshold
@@ -68,7 +69,7 @@ fun ToggleButton(
         Box(
             modifier = Modifier
                 .offset { IntOffset(swipeableState.offset.value.roundToInt(), 0) }
-                .clip(RoundedCornerShape(11.dp))
+                .clip(CircleShape)
                 .size(circleSize)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
