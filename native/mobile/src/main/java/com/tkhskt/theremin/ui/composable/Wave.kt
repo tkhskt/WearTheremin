@@ -38,13 +38,13 @@ fun Wave(
 
         val amplitude = height / 2f
 
-        val xPoints = (size.width * 5).roundToInt()
+        val xMagnification = 2f
 
-        (0..xPoints).forEach {
-            val x = it
+        val xPointCount = (size.width * xMagnification).roundToInt()
 
-            val y = sin(x * (2f * PI * frequency * 5f / xPoints)) * amplitude + (height / 2f)
-
+        (0..xPointCount).forEach { x ->
+            val y =
+                sin(x * (2f * PI * frequency * xMagnification / xPointCount)) * amplitude + (height / 2f)
             if (x == 0) {
                 path.moveTo(0f, height / 2f)
             } else {
@@ -52,7 +52,7 @@ fun Wave(
             }
         }
         withTransform({
-            translate(left =  -(2f * width))
+            translate(left = -(width / 2f))
         }) {
             drawPath(
                 path = path,
