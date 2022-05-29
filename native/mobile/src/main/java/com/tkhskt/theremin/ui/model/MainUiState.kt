@@ -5,6 +5,7 @@ import com.tkhskt.theremin.redux.UiState
 data class MainUiState(
     val frequency: Float,
     val volume: Float,
+    val waveGraphicFrequency: Float,
     val pcConnected: Boolean,
     val watchConnected: Boolean,
     val appSoundEnabled: Boolean,
@@ -14,6 +15,7 @@ data class MainUiState(
         val Initial = MainUiState(
             frequency = 0f,
             volume = 0f,
+            waveGraphicFrequency = 0f,
             pcConnected = false,
             watchConnected = false,
             appSoundEnabled = false,

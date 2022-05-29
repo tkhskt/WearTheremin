@@ -67,6 +67,9 @@ fun MainScreen(
             verticalArrangement = Arrangement.Top,
         ) {
             Sun(offset = -0.7f)
+
+            Wave(frequency = uiState.waveGraphicFrequency)
+
             Button(
                 onClick = { dispatcher(MainAction.ClickStartWearableButton) }
             ) {

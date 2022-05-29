@@ -33,6 +33,7 @@ class MainViewModel @Inject constructor(
         MainUiState(
             frequency = state.frequency,
             volume = state.volume,
+            waveGraphicFrequency = state.frequency / 60f,
             pcConnected = state.pcConnected,
             watchConnected = state.watchConnected,
             appSoundEnabled = state.appSoundEnabled,
