@@ -7,7 +7,8 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
@@ -22,27 +23,43 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
+import kotlin.math.roundToInt
 
 @Composable
 fun Sun(
     modifier: Modifier = Modifier,
-    offset: Float,
 ) {
     val configuration = LocalConfiguration.current
     val sunSize = configuration.screenWidthDp * 1.41f
-    Box(
+
+    Layout(
         modifier = modifier
-            .offset(y = (sunSize * offset).dp),
-    ) {
-        Circle(size = sunSize.dp)
-        Circle(size = sunSize.dp, animate = true, delay = 0)
-        Circle(size = sunSize.dp, animate = true, delay = 500)
-        Circle(size = sunSize.dp, animate = true, delay = 1000)
+            .fillMaxWidth()
+            .height((sunSize * 0.3).dp), content = {
+            Circle(size = sunSize.dp)
+            Circle(size = sunSize.dp, animate = true, delay = 0)
+            Circle(size = sunSize.dp, animate = true, delay = 500)
+            Circle(size = sunSize.dp, animate = true, delay = 1000)
+        }) { measurables, constraints ->
+        val placeables = measurables.map { measurable ->
+            measurable.measure(constraints)
+        }
+        layout(
+            width = constraints.maxWidth,
+            height = constraints.maxHeight,
+        ) {
+            val height = constraints.maxHeight
+            val y = -(sunSize / 2f).dp.toPx().roundToInt() + height / 2
+            placeables.forEach { placeable ->
+                placeable.placeRelative(x = 0, y = y)
+            }
+        }
     }
 }
 
@@ -69,7 +86,7 @@ private fun Circle(
             .alpha(alpha)
             .requiredSize(size)
             .clip(CircleShape)
-            .background(Color.White)
+            .background(Color.White),
     )
 }
 
@@ -104,5 +121,5 @@ private enum class AnimationType {
 @Preview
 @Composable
 fun PreviewSun() {
-    Sun(offset = 0f)
+    Sun()
 }

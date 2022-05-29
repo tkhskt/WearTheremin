@@ -68,7 +68,7 @@ fun MainScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top,
         ) {
-            Sun(offset = -0.7f)
+            Sun()
 
             Wave(frequency = uiState.waveGraphicFrequency)
 
