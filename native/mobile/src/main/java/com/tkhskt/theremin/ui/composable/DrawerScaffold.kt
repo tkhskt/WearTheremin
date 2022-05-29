@@ -52,9 +52,7 @@ fun DrawerScaffold(
 
     Surface(color = backgroundColor) {
         Box(
-            modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxSize(),
         ) {
             Column(
                 horizontalAlignment = Alignment.Start,
@@ -75,6 +73,7 @@ fun DrawerScaffold(
                 }
             }
             MainContentContainer(
+                modifier = Modifier.fillMaxSize(),
                 screenWidth = screenWidth,
                 maxOffset = maxOffset,
                 onUpdateDrawerState = { progress = it },
