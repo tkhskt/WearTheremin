@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tkhskt.theremin.ui.theme.LocalColorPalette
@@ -40,24 +41,28 @@ fun Wave(
         val xPoints = (size.width * 5).roundToInt()
 
         (0..xPoints).forEach {
-            val x = it / 5f
+            val x = it
 
-            val y = sin(x * (2f * PI * frequency / width)) * amplitude + (height / 2f)
+            val y = sin(x * (2f * PI * frequency * 5f / xPoints)) * amplitude + (height / 2f)
 
-            if (x == 0f) {
+            if (x == 0) {
                 path.moveTo(0f, height / 2f)
             } else {
-                path.lineTo(x, y.toFloat())
+                path.lineTo(x.toFloat(), y.toFloat())
             }
         }
-        drawPath(
-            path = path,
-            color = Color.White,
-            style = Stroke(
-                width = 2.dp.toPx(),
-                join = StrokeJoin.Round,
-            ),
-        )
+        withTransform({
+            translate(left =  -(2f * width))
+        }) {
+            drawPath(
+                path = path,
+                color = Color.White,
+                style = Stroke(
+                    width = 2.dp.toPx(),
+                    join = StrokeJoin.Round,
+                ),
+            )
+        }
     }
 }
 
