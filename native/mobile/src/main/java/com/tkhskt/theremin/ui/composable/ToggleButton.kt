@@ -63,7 +63,16 @@ fun ToggleButton(
                 thresholds = { _, _ -> FractionalThreshold(0.3f) },
                 orientation = Orientation.Horizontal,
                 resistance = null,
-            ),
+            )
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+            ) {
+                coroutineScope.launch {
+                    onChangeButtonStatus(!swipeableState.currentValue)
+                    swipeableState.animateTo(!swipeableState.currentValue)
+                }
+            },
         contentAlignment = Alignment.CenterStart
     ) {
         Box(
@@ -71,15 +80,6 @@ fun ToggleButton(
                 .offset { IntOffset(swipeableState.offset.value.roundToInt(), 0) }
                 .clip(CircleShape)
                 .size(circleSize)
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                ) {
-                    coroutineScope.launch {
-                        onChangeButtonStatus(!swipeableState.currentValue)
-                        swipeableState.animateTo(!swipeableState.currentValue)
-                    }
-                }
                 .background(Color.White),
         )
     }
