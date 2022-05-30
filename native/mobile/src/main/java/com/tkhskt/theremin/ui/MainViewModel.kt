@@ -30,22 +30,13 @@ class MainViewModel @Inject constructor(
         started = SharingStarted.Lazily,
     )
 
-    override val uiState: StateFlow<MainUiState> = store.state.map { state ->
-        MainUiState(
-            frequency = state.frequency,
-            volume = state.volume,
-            waveGraphicFrequency = state.frequency / 60f,
-            note = NoteMapper.mapFromFrequency(state.frequency).note,
-            pcConnected = state.pcConnected,
-            watchConnected = state.watchConnected,
-            appSoundEnabled = state.appSoundEnabled,
-            browserSoundEnabled = state.browserSoundEnabled,
+    override val uiState: StateFlow<MainUiState> = store.state
+        .map(MainUiStateMapper::mapFromState)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+            initialValue = MainUiState.Initial,
         )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Lazily,
-        initialValue = MainUiState.Initial,
-    )
 
     init {
         viewModelScope.launch {

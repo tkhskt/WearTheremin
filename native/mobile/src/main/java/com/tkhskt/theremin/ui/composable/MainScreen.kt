@@ -2,6 +2,7 @@ package com.tkhskt.theremin.ui.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Button
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -64,35 +66,43 @@ fun MainScreen(
             )
         },
     ) {
-        Column(
+        Surface(
             modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween,
         ) {
-
-            Sun()
-
-            Column(
-                modifier = Modifier
-                    .wrapContentHeight()
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
+            Box(
+                modifier = Modifier.fillMaxSize(),
             ) {
-                Wave(frequency = uiState.waveGraphicFrequency)
-
-                NoteText(note = uiState.note)
-
-                Button(
-                    onClick = { dispatcher(MainAction.ClickStartWearableButton) }
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    Text(text = "Start Wearable")
+
+                    Sun()
+
+                    Column(
+                        modifier = Modifier
+                            .wrapContentHeight()
+                            .fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Wave(frequency = uiState.waveGraphicFrequency)
+
+                        NoteText(note = uiState.note)
+
+                        Button(
+                            onClick = { dispatcher(MainAction.ClickStartWearableButton) }
+                        ) {
+                            Text(text = "Start Wearable")
+                        }
+                        Button(
+                            onClick = { dispatcher(MainAction.ClickCameraButton) }
+                        ) {
+                            Text(text = "Start Camera")
+                        }
+                        Spacer(modifier = Modifier.size(48.dp))
+                    }
                 }
-                Button(
-                    onClick = { dispatcher(MainAction.ClickCameraButton) }
-                ) {
-                    Text(text = "Start Camera")
-                }
-                Spacer(modifier = Modifier.size(48.dp))
             }
         }
     }
