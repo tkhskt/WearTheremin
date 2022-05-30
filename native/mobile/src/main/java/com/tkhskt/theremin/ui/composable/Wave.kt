@@ -12,6 +12,8 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.withTransform
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tkhskt.theremin.ui.theme.LocalColorPalette
@@ -24,11 +26,13 @@ fun Wave(
     frequency: Float,
     modifier: Modifier = Modifier,
 ) {
-
     val path = Path()
+    val configuration = LocalConfiguration.current
+    val screenHeight = LocalDensity.current.run { configuration.screenWidthDp.dp.toPx() }
+    val waveHeightDp = screenHeight * 0.145f
 
     Canvas(modifier = modifier
-        .height(100.dp)
+        .height(waveHeightDp.dp)
         .fillMaxWidth()
         .padding(vertical = 2.dp)
     ) {
@@ -58,7 +62,7 @@ fun Wave(
                 path = path,
                 color = Color.White,
                 style = Stroke(
-                    width = 2.dp.toPx(),
+                    width = 4.dp.toPx(),
                     join = StrokeJoin.Round,
                 ),
             )
