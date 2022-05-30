@@ -1,7 +1,6 @@
 package com.tkhskt.theremin.ui
 
 import androidx.lifecycle.viewModelScope
-import com.tkhskt.theremin.core.NoteMapper
 import com.tkhskt.theremin.domain.usecase.GetGravityUseCase
 import com.tkhskt.theremin.redux.ReduxViewModel
 import com.tkhskt.theremin.redux.Store

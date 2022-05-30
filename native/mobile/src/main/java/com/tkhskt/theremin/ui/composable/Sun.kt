@@ -41,12 +41,14 @@ fun Sun(
     Layout(
         modifier = modifier
             .fillMaxWidth()
-            .height((sunSize * 0.3).dp), content = {
+            .height((sunSize * 0.3).dp),
+        content = {
             Circle(size = sunSize.dp)
             Circle(size = sunSize.dp, animate = true, delay = 0)
             Circle(size = sunSize.dp, animate = true, delay = 500)
             Circle(size = sunSize.dp, animate = true, delay = 1000)
-        }) { measurables, constraints ->
+        },
+    ) { measurables, constraints ->
         val placeables = measurables.map { measurable ->
             measurable.measure(constraints)
         }

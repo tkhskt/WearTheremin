@@ -11,9 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.Button
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -66,42 +63,29 @@ fun MainScreen(
             )
         },
     ) {
-        Surface(
+        Box(
             modifier = Modifier.fillMaxSize(),
         ) {
-            Box(
+            StarryBackground(starCount = 6)
+            Column(
                 modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween,
             ) {
+                Sun()
                 Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier
+                        .wrapContentHeight()
+                        .fillMaxWidth()
+                        .padding(bottom = 32.dp),
+                    horizontalAlignment = Alignment.Start,
                 ) {
-
-                    Sun()
-
-                    Column(
-                        modifier = Modifier
-                            .wrapContentHeight()
-                            .fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
-                        Wave(frequency = uiState.waveGraphicFrequency)
-
-                        NoteText(note = uiState.note)
-
-                        Button(
-                            onClick = { dispatcher(MainAction.ClickStartWearableButton) }
-                        ) {
-                            Text(text = "Start Wearable")
-                        }
-                        Button(
-                            onClick = { dispatcher(MainAction.ClickCameraButton) }
-                        ) {
-                            Text(text = "Start Camera")
-                        }
-                        Spacer(modifier = Modifier.size(48.dp))
-                    }
+                    Wave(frequency = uiState.waveGraphicFrequency)
+                    Spacer(modifier = Modifier.size(26.5.dp))
+                    NoteText(
+                        modifier = Modifier.padding(start = 22.dp),
+                        note = uiState.note,
+                    )
                 }
             }
         }

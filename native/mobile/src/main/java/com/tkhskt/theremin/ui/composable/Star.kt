@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun Star(modifier: Modifier = Modifier) {
-    val triangleShape = GenericShape { size, _ ->
+    val rhomboidShape = GenericShape { size, _ ->
         moveTo(size.width / 2f, 0f)
         lineTo(size.width, size.height / 2f)
         lineTo(size.width / 2f, size.height)
@@ -26,7 +26,7 @@ fun Star(modifier: Modifier = Modifier) {
         modifier = modifier
             .width(10.dp)
             .height(50.dp)
-            .clip(triangleShape)
+            .clip(rhomboidShape)
             .background(Color.White)
     )
 }
