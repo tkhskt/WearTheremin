@@ -51,7 +51,6 @@ private enum class Position(val x: Int, val y: Int) {
     }
 }
 
-
 @Preview
 @Composable
 fun PreviewStarryBackground() {

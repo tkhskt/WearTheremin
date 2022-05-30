@@ -31,10 +31,11 @@ fun Wave(
     val screenHeight = LocalDensity.current.run { configuration.screenWidthDp.dp.toPx() }
     val waveHeightDp = screenHeight * 0.145f
 
-    Canvas(modifier = modifier
-        .height(waveHeightDp.dp)
-        .fillMaxWidth()
-        .padding(vertical = 2.dp)
+    Canvas(
+        modifier = modifier
+            .height(waveHeightDp.dp)
+            .fillMaxWidth()
+            .padding(vertical = 2.dp)
     ) {
 
         val height = size.height
