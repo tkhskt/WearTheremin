@@ -1,6 +1,7 @@
 package com.tkhskt.theremin.ui
 
 import androidx.lifecycle.viewModelScope
+import com.tkhskt.theremin.core.NoteMapper
 import com.tkhskt.theremin.domain.usecase.GetGravityUseCase
 import com.tkhskt.theremin.redux.ReduxViewModel
 import com.tkhskt.theremin.redux.Store
@@ -34,6 +35,7 @@ class MainViewModel @Inject constructor(
             frequency = state.frequency,
             volume = state.volume,
             waveGraphicFrequency = state.frequency / 60f,
+            note = NoteMapper.mapFromFrequency(state.frequency).note,
             pcConnected = state.pcConnected,
             watchConnected = state.watchConnected,
             appSoundEnabled = state.appSoundEnabled,

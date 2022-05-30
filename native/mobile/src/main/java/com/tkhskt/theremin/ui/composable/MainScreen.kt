@@ -5,16 +5,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -66,24 +67,33 @@ fun MainScreen(
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top,
+            verticalArrangement = Arrangement.SpaceBetween,
         ) {
+
             Sun()
 
-            Wave(frequency = uiState.waveGraphicFrequency)
+            Column(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Wave(frequency = uiState.waveGraphicFrequency)
 
-            Button(
-                onClick = { dispatcher(MainAction.ClickStartWearableButton) }
-            ) {
-                Text(text = "Start Wearable")
+                NoteText(note = uiState.note)
+
+                Button(
+                    onClick = { dispatcher(MainAction.ClickStartWearableButton) }
+                ) {
+                    Text(text = "Start Wearable")
+                }
+                Button(
+                    onClick = { dispatcher(MainAction.ClickCameraButton) }
+                ) {
+                    Text(text = "Start Camera")
+                }
+                Spacer(modifier = Modifier.size(48.dp))
             }
-            Button(
-                onClick = { dispatcher(MainAction.ClickCameraButton) }
-            ) {
-                Text(text = "Start Camera")
-            }
-            Spacer(modifier = Modifier.size(48.dp))
-            Text(text = uiState.frequency.toString(), color = Color.White)
         }
     }
 }
@@ -93,6 +103,7 @@ fun MainScreen(
 fun PreviewMainScreen() {
     val uiState = MainUiState.Initial.copy(
         waveGraphicFrequency = 10f,
+        note = "C#"
     )
     MainScreen(uiState) {}
 }
