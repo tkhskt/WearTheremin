@@ -11,6 +11,7 @@ fun NoteText(
     modifier: Modifier = Modifier,
 ) {
     Text(
+        modifier = modifier,
         text = note,
         style = LocalTypography.current.displayLarge,
     )
