@@ -19,7 +19,7 @@ fun Star(modifier: Modifier = Modifier) {
         lineTo(size.width, size.height / 2f)
         lineTo(size.width / 2f, size.height)
         lineTo(0f, size.height / 2f)
-        lineTo(size.width / 2f, 0f)
+        close()
     }
 
     Box(
