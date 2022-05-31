@@ -40,6 +40,7 @@ fun MainScreen(
 ) {
     DrawerScaffold(
         backgroundColor = LocalColorPalette.current.menuBackground,
+        mainContentGradientColors = uiState.backgroundGradientColors,
         titleContent = {
             Image(
                 modifier = Modifier.height(16.dp),

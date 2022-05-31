@@ -3,7 +3,6 @@ package com.tkhskt.theremin.ui.middleware
 import com.tkhskt.theremin.data.repository.ThereminRepository
 import com.tkhskt.theremin.domain.usecase.CalcFrequencyUseCase
 import com.tkhskt.theremin.domain.usecase.CalcVolumeUseCase
-import com.tkhskt.theremin.domain.usecase.OpenWearAppUseCase
 import com.tkhskt.theremin.domain.usecase.SendThereminParametersUseCase
 import com.tkhskt.theremin.redux.Middleware
 import com.tkhskt.theremin.ui.model.MainAction
@@ -17,7 +16,6 @@ class MainMiddleware(
     private val sendThereminParametersUseCase: SendThereminParametersUseCase,
     private val calcFrequencyUseCase: CalcFrequencyUseCase,
     private val calcVolumeUseCase: CalcVolumeUseCase,
-    private val openWearAppUseCase: OpenWearAppUseCase,
 ) : Middleware<MainAction, MainState, MainEffect> {
 
     private val _sideEffect = MutableSharedFlow<MainEffect>()
@@ -27,14 +25,6 @@ class MainMiddleware(
         return when (action) {
             is MainAction.InitializeBle -> {
                 thereminRepository.initialize()
-                action
-            }
-            is MainAction.ClickStartWearableButton -> {
-                openWearAppUseCase()
-                action
-            }
-            is MainAction.ClickCameraButton -> {
-                _sideEffect.emit(MainEffect.StartCamera)
                 action
             }
             is MainAction.ChangeGravity -> {
@@ -54,6 +44,16 @@ class MainMiddleware(
     }
 
     override suspend fun dispatchAfterReduce(action: MainAction, state: MainState): MainAction {
-        return action
+        return when (action) {
+            is MainAction.ClickAppSoundButton -> {
+                if (state.appSoundEnabled) {
+                    _sideEffect.emit(MainEffect.StartCamera)
+                }
+                action
+            }
+            else -> {
+                action
+            }
+        }
     }
 }

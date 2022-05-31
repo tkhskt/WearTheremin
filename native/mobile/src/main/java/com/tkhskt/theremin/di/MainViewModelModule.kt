@@ -1,7 +1,6 @@
 package com.tkhskt.theremin.di
 
 import com.google.android.gms.wearable.MessageClient
-import com.google.android.gms.wearable.NodeClient
 import com.tkhskt.theremin.data.repository.MessageRepository
 import com.tkhskt.theremin.data.repository.MessageRepositoryImpl
 import com.tkhskt.theremin.data.repository.ThereminRepository
@@ -13,8 +12,6 @@ import com.tkhskt.theremin.domain.usecase.CalcVolumeUseCase
 import com.tkhskt.theremin.domain.usecase.CalcVolumeUseCaseImpl
 import com.tkhskt.theremin.domain.usecase.GetGravityUseCase
 import com.tkhskt.theremin.domain.usecase.GetGravityUseCaseImpl
-import com.tkhskt.theremin.domain.usecase.OpenWearAppUseCase
-import com.tkhskt.theremin.domain.usecase.OpenWearAppUseCaseImpl
 import com.tkhskt.theremin.domain.usecase.SendThereminParametersUseCase
 import com.tkhskt.theremin.domain.usecase.SendThereminParametersUseCaseImpl
 import com.tkhskt.theremin.redux.Store
@@ -60,12 +57,6 @@ object MainViewModelModule {
     ): SendThereminParametersUseCase = SendThereminParametersUseCaseImpl(thereminRepository)
 
     @Provides
-    fun provideOpenWearAppUseCase(
-        messageClient: MessageClient,
-        nodeClient: NodeClient,
-    ): OpenWearAppUseCase = OpenWearAppUseCaseImpl(messageClient, nodeClient)
-
-    @Provides
     fun provideReducer(): MainReducer = MainReducer()
 
     @Provides
@@ -74,13 +65,11 @@ object MainViewModelModule {
         sendThereminParametersUseCase: SendThereminParametersUseCase,
         calcFrequencyUseCase: CalcFrequencyUseCase,
         calcVolumeUseCase: CalcVolumeUseCase,
-        openWearAppUseCase: OpenWearAppUseCase,
     ): MainMiddleware = MainMiddleware(
         thereminRepository = thereminRepository,
         sendThereminParametersUseCase = sendThereminParametersUseCase,
         calcFrequencyUseCase = calcFrequencyUseCase,
         calcVolumeUseCase = calcVolumeUseCase,
-        openWearAppUseCase = openWearAppUseCase
     )
 
     @Provides

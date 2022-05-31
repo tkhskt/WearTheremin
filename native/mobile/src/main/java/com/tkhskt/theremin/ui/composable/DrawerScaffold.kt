@@ -1,5 +1,6 @@
 package com.tkhskt.theremin.ui.composable
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -31,13 +33,13 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.tkhskt.theremin.ui.theme.LocalColorPalette
 import kotlin.math.max
 import kotlin.math.roundToInt
 
 @Composable
 fun DrawerScaffold(
     backgroundColor: Color,
+    mainContentGradientColors: List<Color>,
     titleContent: @Composable () -> Unit,
     drawerContent: @Composable () -> Unit,
     mainContent: @Composable () -> Unit,
@@ -71,6 +73,7 @@ fun DrawerScaffold(
                 }
             }
             MainContentContainer(
+                contentGradientColors = mainContentGradientColors,
                 modifier = Modifier.fillMaxSize(),
                 screenWidth = screenWidth,
                 maxOffset = maxOffset,
@@ -117,6 +120,7 @@ private fun DrawerContentContainer(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun MainContentContainer(
+    contentGradientColors: List<Color>,
     modifier: Modifier = Modifier,
     screenWidth: Float = 0f,
     maxOffset: Float = 0f,
@@ -153,10 +157,13 @@ private fun MainContentContainer(
             ),
         shadowElevation = elevation.dp,
         shape = RoundedCornerShape((1.6 * corner).dp),
-        color = LocalColorPalette.current.highVolume1,
     ) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(contentGradientColors)
+                ),
             contentAlignment = Alignment.BottomCenter,
         ) {
             mainContent()
