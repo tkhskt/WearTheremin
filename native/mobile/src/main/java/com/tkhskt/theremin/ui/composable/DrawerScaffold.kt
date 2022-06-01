@@ -1,5 +1,6 @@
 package com.tkhskt.theremin.ui.composable
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
@@ -162,7 +163,11 @@ private fun MainContentContainer(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    Brush.verticalGradient(contentGradientColors)
+                    Brush.verticalGradient(
+                        contentGradientColors.map {
+                            animateColorAsState(targetValue = it).value
+                        }
+                    )
                 ),
             contentAlignment = Alignment.BottomCenter,
         ) {
