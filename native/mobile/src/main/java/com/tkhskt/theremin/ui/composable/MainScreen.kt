@@ -73,7 +73,9 @@ fun MainScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween,
             ) {
-                Sun()
+                Sun(
+                    animate = uiState.appSoundEnabled || uiState.browserSoundEnabled,
+                )
                 Column(
                     modifier = Modifier
                         .wrapContentHeight()

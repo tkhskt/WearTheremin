@@ -2,6 +2,7 @@ package com.tkhskt.theremin.ui.composable
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
@@ -33,6 +34,7 @@ import kotlin.math.roundToInt
 
 @Composable
 fun Sun(
+    animate: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val configuration = LocalConfiguration.current
@@ -44,9 +46,9 @@ fun Sun(
             .height((sunSize * 0.3).dp),
         content = {
             Circle(size = sunSize.dp)
-            Circle(size = sunSize.dp, animate = true, delay = 0)
-            Circle(size = sunSize.dp, animate = true, delay = 500)
-            Circle(size = sunSize.dp, animate = true, delay = 1000)
+            Circle(size = sunSize.dp, animate = animate, delay = 0)
+            Circle(size = sunSize.dp, animate = animate, delay = 500)
+            Circle(size = sunSize.dp, animate = animate, delay = 1000)
         },
     ) { measurables, constraints ->
         val placeables = measurables.map { measurable ->
@@ -77,7 +79,7 @@ private fun Circle(
     val scale by createAnimationState(AnimationType.SCALE, start)
     val alpha by createAnimationState(AnimationType.ALPHA, start)
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(animate) {
         delay(delay)
         start = animate
     }
@@ -103,15 +105,20 @@ private fun createAnimationState(
     } else {
         if (start) 0f else 1f
     }
+    val tweenSpec: TweenSpec<Float> = tween(
+        durationMillis = duration,
+        easing = LinearEasing,
+    )
     return animateFloatAsState(
         targetValue = targetValue,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = duration,
-                easing = LinearEasing,
-            ),
-            repeatMode = RepeatMode.Restart,
-        )
+        animationSpec = if (start) {
+            infiniteRepeatable(
+                animation = tweenSpec,
+                repeatMode = RepeatMode.Restart,
+            )
+        } else {
+            tweenSpec
+        }
     )
 }
 
@@ -123,5 +130,5 @@ private enum class AnimationType {
 @Preview
 @Composable
 fun PreviewSun() {
-    Sun()
+    Sun(false)
 }
