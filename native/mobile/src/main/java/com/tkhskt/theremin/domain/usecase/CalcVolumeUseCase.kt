@@ -8,7 +8,7 @@ interface CalcVolumeUseCase {
 
 class CalcVolumeUseCaseImpl : CalcVolumeUseCase {
     override fun invoke(distance: Float): Float {
-        return MathUtils.clamp(
+        return 1.0f - MathUtils.clamp(
             distance - 0.7f,
             MIN_DISTANCE,
             MAX_DISTANCE,
