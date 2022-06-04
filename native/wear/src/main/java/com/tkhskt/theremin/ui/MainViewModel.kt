@@ -20,25 +20,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val store: Store<MainAction, MainState, MainEffect>
+    private val store: Store<MainAction, MainState, MainEffect>,
 ) : ReduxViewModel<MainAction, MainUiState, MainEffect>() {
 
-    override val sideEffect: SharedFlow<MainEffect>
-        get() = store.sideEffect.shareIn(
-            scope = viewModelScope,
-            started = SharingStarted.Lazily,
-        )
+    override val sideEffect: SharedFlow<MainEffect> = store.sideEffect.shareIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+    )
 
-    override val uiState: StateFlow<MainUiState>
-        get() = store.state.map {
-            MainUiState(
-                started = it.started,
-            )
-        }.stateIn(
-            scope = viewModelScope,
-            initialValue = MainUiState.Initial,
-            started = SharingStarted.Lazily,
+    override val uiState: StateFlow<MainUiState> = store.state.map {
+        MainUiState(
+            started = it.started,
         )
+    }.stateIn(
+        scope = viewModelScope,
+        initialValue = MainUiState.Initial,
+        started = SharingStarted.Lazily,
+    )
 
     init {
         viewModelScope.launch {

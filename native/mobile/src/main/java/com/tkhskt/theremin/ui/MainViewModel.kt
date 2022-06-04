@@ -9,6 +9,7 @@ import com.tkhskt.theremin.ui.model.MainEffect
 import com.tkhskt.theremin.ui.model.MainState
 import com.tkhskt.theremin.ui.model.MainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -38,7 +39,7 @@ class MainViewModel @Inject constructor(
         )
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             getGravityUseCase().collect { gravity ->
                 dispatch(MainAction.ChangeGravity(gravity))
             }
