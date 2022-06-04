@@ -26,7 +26,6 @@ fun Wave(
     frequency: Float,
     modifier: Modifier = Modifier,
 ) {
-    val path = Path()
     val configuration = LocalConfiguration.current
     val screenHeight = LocalDensity.current.run { configuration.screenWidthDp.dp.toPx() }
     val waveHeightDp = screenHeight * 0.145f
@@ -37,6 +36,7 @@ fun Wave(
             .fillMaxWidth()
             .padding(vertical = 2.dp)
     ) {
+        val path = Path()
 
         val height = size.height
         val width = size.width
