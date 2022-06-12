@@ -1,10 +1,10 @@
 package com.tkhskt.theremin
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.activity.result.ActivityResultLauncher
 import androidx.core.content.ContextCompat
 
 val Context.bluetoothPermissionGranted: Boolean
@@ -25,19 +25,21 @@ val Context.bluetoothPermissionGranted: Boolean
         }
     }
 
-fun Activity.requestBluetoothPermission(code: Int) {
+fun ActivityResultLauncher<Array<String>>.requestBluetoothPermissions() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        requestPermissions(
+        launch(
             arrayOf(
                 Manifest.permission.BLUETOOTH_CONNECT,
                 Manifest.permission.BLUETOOTH_ADVERTISE,
-            ),
-            code,
+            )
         )
     } else {
-        requestPermissions(
-            arrayOf(Manifest.permission.BLUETOOTH),
-            code,
-        )
+        launch(arrayOf(Manifest.permission.BLUETOOTH))
     }
+}
+
+sealed class PermissionRequestState {
+    object NotRequested : PermissionRequestState()
+    object Granted : PermissionRequestState()
+    object Denied : PermissionRequestState()
 }

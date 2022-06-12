@@ -42,6 +42,7 @@ compose-material3-window-size = { module = "androidx.compose.material3:material3
 compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose" }
+compose-navigation = { module = "androidx.navigation:navigation-compose", version = "2.4.2" }
 compose-hilt = { module = "androidx.hilt:hilt-navigation-compose", version = "1.0.0" }
 
 # Wear Compose
@@ -67,7 +68,7 @@ ktlint = { module = "com.pinterest:ktlint", version = "0.43.1" }
 [bundles]
 lifecycle = ["lifecycle-viewmodel", "lifecycle-runtime"]
 coroutines = ["coroutines-android", "coroutines-core", "coroutines-play-services"]
-compose = ["compose-material", "compose-material3", "compose-material3-window-size", "compose-tooling-preview", "compose-compiler", "compose-hilt"]
+compose = ["compose-material", "compose-material3", "compose-material3-window-size", "compose-tooling-preview", "compose-compiler", "compose-hilt", "compose-navigation"]
 mediapipe = ["mediapipe-core", "mediapipe-hands"]
 wear-compose = ["wear-compose-foundation", "wear-compose-material", "wear-compose-navigation"]
 

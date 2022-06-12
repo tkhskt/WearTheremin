@@ -2,6 +2,7 @@ package com.tkhskt.theremin.ui.model
 
 import androidx.compose.ui.graphics.Color
 import com.tkhskt.theremin.redux.UiState
+import com.tkhskt.theremin.ui.theme.ThereminColorPalette
 
 data class MainUiState(
     val frequency: Float,
@@ -19,7 +20,10 @@ data class MainUiState(
             frequency = 0f,
             volume = 0f,
             waveGraphicFrequency = 0f,
-            backgroundGradientColors = emptyList(),
+            backgroundGradientColors = listOf(
+                ThereminColorPalette.lowVolume1,
+                ThereminColorPalette.lowVolume1Light,
+            ),
             note = "",
             pcConnected = false,
             watchConnected = false,

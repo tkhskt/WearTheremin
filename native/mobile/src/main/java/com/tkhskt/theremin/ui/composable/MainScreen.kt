@@ -12,25 +12,61 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.tkhskt.theremin.R
+import com.tkhskt.theremin.ui.HandTracker
 import com.tkhskt.theremin.ui.MainViewModel
+import com.tkhskt.theremin.ui.OscillatorController
 import com.tkhskt.theremin.ui.model.MainAction
+import com.tkhskt.theremin.ui.model.MainEffect
 import com.tkhskt.theremin.ui.model.MainUiState
 import com.tkhskt.theremin.ui.theme.LocalColorPalette
+import kotlinx.coroutines.launch
 
 @Composable
 fun MainScreen(
-    viewModel: MainViewModel = hiltViewModel(),
+    viewModel: MainViewModel,
+    oscillatorController: OscillatorController,
+    handTracker: HandTracker,
 ) {
-    val state = viewModel.uiState.collectAsState()
-    MainScreen(state.value, viewModel::dispatch)
+    val state: MainUiState by viewModel.uiState.collectAsState()
+    val lifecycleOwner = LocalLifecycleOwner.current
+    handTracker.onChangeDistanceListener = { distance: Float ->
+        viewModel.dispatch(MainAction.ChangeDistance(distance))
+    }
+    LaunchedEffect(Unit) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            launch {
+                viewModel.uiState.collect {
+                    oscillatorController.run {
+                        changeFrequency(state.frequency)
+                        changeVolume(state.volume)
+                        playSound(state.appSoundEnabled)
+                    }
+                }
+            }
+            launch {
+                viewModel.sideEffect.collect { effect ->
+                    when (effect) {
+                        is MainEffect.StartCamera -> {
+                            handTracker.startTracking()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    MainScreen(state, viewModel::dispatch)
 }
 
 @Composable

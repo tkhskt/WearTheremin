@@ -16,8 +16,9 @@ import timber.log.Timber
 
 class HandTracker(
     private val activity: Activity,
-    private val onChangeDistanceListener: (Float) -> Unit,
 ) : DefaultLifecycleObserver {
+
+    var onChangeDistanceListener: (Float) -> Unit = {}
 
     private var hands: Hands? = null
 
