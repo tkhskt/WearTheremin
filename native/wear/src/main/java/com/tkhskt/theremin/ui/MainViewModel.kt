@@ -3,10 +3,10 @@ package com.tkhskt.theremin.ui
 import androidx.lifecycle.viewModelScope
 import com.tkhskt.theremin.redux.ReduxViewModel
 import com.tkhskt.theremin.redux.Store
-import com.tkhskt.theremin.ui.model.MainAction
-import com.tkhskt.theremin.ui.model.MainEffect
-import com.tkhskt.theremin.ui.model.MainState
-import com.tkhskt.theremin.ui.model.MainUiState
+import com.tkhskt.theremin.feature.theremin.ui.model.MainAction
+import com.tkhskt.theremin.feature.theremin.ui.model.MainEffect
+import com.tkhskt.theremin.feature.theremin.ui.model.MainState
+import com.tkhskt.theremin.feature.theremin.ui.model.MainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted

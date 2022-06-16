@@ -1,6 +1,6 @@
 package com.tkhskt.theremin.domain
 
-import com.tkhskt.theremin.data.repository.DistanceRepository
+import com.tkhskt.theremin.feature.theremin.data.repository.DistanceRepository
 
 interface GetPositionUseCase {
     fun getPosition(ay: Float): Float

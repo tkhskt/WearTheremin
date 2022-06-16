@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import com.tkhskt.theremin.ui.composable.ThereminApp
+import com.tkhskt.theremin.feature.theremin.ui.composable.ThereminApp
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

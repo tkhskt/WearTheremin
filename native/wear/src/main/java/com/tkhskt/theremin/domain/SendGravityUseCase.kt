@@ -1,6 +1,6 @@
 package com.tkhskt.theremin.domain
 
-import com.tkhskt.theremin.data.repository.ThereminRepository
+import com.tkhskt.theremin.feature.theremin.data.repository.ThereminRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

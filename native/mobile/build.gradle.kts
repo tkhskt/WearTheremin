@@ -18,9 +18,6 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        externalNativeBuild.cmake {
-            arguments += "-DANDROID_STL=c++_shared"
-        }
     }
 
     buildTypes {
@@ -49,12 +46,6 @@ android {
         kotlinCompilerExtensionVersion = libs.versions.compose.get()
     }
 
-    externalNativeBuild {
-        cmake {
-            path = file("src/main/cpp/CMakeLists.txt")
-        }
-    }
-
     buildFeatures {
         prefab = true
     }
@@ -63,17 +54,11 @@ android {
 apply(from = "$rootDir/gradle/ktlint.gradle")
 
 dependencies {
-    implementation(project(":redux"))
-
-    implementation(libs.play.services.wearable)
-    implementation(libs.android.material)
-
+    implementation(project(":feature-theremin"))
     // AndroidX
     implementation(libs.core)
     implementation(libs.appcompat)
-    implementation(libs.lifecycle.viewmodel)
     implementation(libs.activity)
-    implementation(libs.jankstats)
 
     // hilt
     implementation(libs.hilt.android)
@@ -84,22 +69,10 @@ dependencies {
     implementation(libs.bundles.compose)
     debugImplementation(libs.compose.tooling)
 
-    // Coroutines
-    implementation(libs.bundles.coroutines)
-
-    // MediaPipe
-    implementation(libs.bundles.mediapipe)
-
     implementation(libs.timber)
-    implementation(libs.oboe)
     ktlint(libs.ktlint)
-
-    // theremin-core(local maven)
-    implementation(libs.theremin.core)
 
     testImplementation(libs.test.junit)
     androidTestImplementation(libs.test.junit.ext)
     androidTestImplementation(libs.test.espresso)
-
-    wearApp(project(":wear"))
 }

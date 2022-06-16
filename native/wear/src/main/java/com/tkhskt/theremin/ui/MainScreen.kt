@@ -9,8 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.ToggleButton
-import com.tkhskt.theremin.ui.model.MainAction
-import com.tkhskt.theremin.ui.model.MainUiState
+import com.tkhskt.theremin.feature.theremin.ui.model.MainAction
+import com.tkhskt.theremin.feature.theremin.ui.model.MainUiState
 
 @Composable
 fun MainScreen(
