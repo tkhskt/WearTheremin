@@ -1,9 +1,9 @@
 package com.tkhskt.theremin.feature.theremin.ui.middleware
 
-import com.tkhskt.theremin.redux.Middleware
 import com.tkhskt.theremin.feature.theremin.ui.model.MainAction
 import com.tkhskt.theremin.feature.theremin.ui.model.MainEffect
 import com.tkhskt.theremin.feature.theremin.ui.model.MainState
+import com.tkhskt.theremin.redux.Middleware
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 

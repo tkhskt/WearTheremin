@@ -1,8 +1,8 @@
 package com.tkhskt.theremin.feature.theremin.ui.reducer
 
-import com.tkhskt.theremin.redux.Reducer
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminState
+import com.tkhskt.theremin.redux.Reducer
 
 class ThereminReducer : Reducer<ThereminAction, ThereminState> {
 

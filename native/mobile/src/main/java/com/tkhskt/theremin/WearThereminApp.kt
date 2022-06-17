@@ -23,9 +23,9 @@ import com.tkhskt.theremin.feature.theremin.PermissionRequestState
 import com.tkhskt.theremin.feature.theremin.bluetoothPermissionGranted
 import com.tkhskt.theremin.feature.theremin.requestBluetoothPermissions
 import com.tkhskt.theremin.feature.theremin.ui.HandTracker
-import com.tkhskt.theremin.feature.theremin.ui.ThereminViewModel
 import com.tkhskt.theremin.feature.theremin.ui.OscillatorController
 import com.tkhskt.theremin.feature.theremin.ui.ThereminScreen
+import com.tkhskt.theremin.feature.theremin.ui.ThereminViewModel
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
 
 @Composable

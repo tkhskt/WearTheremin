@@ -14,10 +14,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.tkhskt.theremin.ui.MainScreen
-import com.tkhskt.theremin.ui.MainViewModel
 import com.tkhskt.theremin.feature.theremin.ui.model.MainAction
 import com.tkhskt.theremin.feature.theremin.ui.model.MainEffect
+import com.tkhskt.theremin.ui.MainScreen
+import com.tkhskt.theremin.ui.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
