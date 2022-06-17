@@ -14,11 +14,11 @@ import com.tkhskt.theremin.feature.theremin.domain.usecase.GetGravityUseCase
 import com.tkhskt.theremin.feature.theremin.domain.usecase.GetGravityUseCaseImpl
 import com.tkhskt.theremin.feature.theremin.domain.usecase.SendThereminParametersUseCase
 import com.tkhskt.theremin.feature.theremin.domain.usecase.SendThereminParametersUseCaseImpl
-import com.tkhskt.theremin.feature.theremin.ui.middleware.MainMiddleware
-import com.tkhskt.theremin.feature.theremin.ui.model.MainAction
-import com.tkhskt.theremin.feature.theremin.ui.model.MainEffect
-import com.tkhskt.theremin.feature.theremin.ui.model.MainState
-import com.tkhskt.theremin.feature.theremin.ui.reducer.MainReducer
+import com.tkhskt.theremin.feature.theremin.ui.middleware.ThereminMiddleware
+import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
+import com.tkhskt.theremin.feature.theremin.ui.model.ThereminEffect
+import com.tkhskt.theremin.feature.theremin.ui.model.ThereminState
+import com.tkhskt.theremin.feature.theremin.ui.reducer.ThereminReducer
 import com.tkhskt.theremin.redux.Store
 import com.tkhskt.theremin.redux.createStore
 import dagger.Module
@@ -28,7 +28,7 @@ import dagger.hilt.android.components.ViewModelComponent
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object MainViewModelModule {
+object ThereminViewModelModule {
 
     @Provides
     fun provideThereminRepository(
@@ -57,7 +57,7 @@ object MainViewModelModule {
     ): SendThereminParametersUseCase = SendThereminParametersUseCaseImpl(thereminRepository)
 
     @Provides
-    fun provideReducer(): MainReducer = MainReducer()
+    fun provideReducer(): ThereminReducer = ThereminReducer()
 
     @Provides
     fun provideMainMiddleware(
@@ -65,7 +65,7 @@ object MainViewModelModule {
         sendThereminParametersUseCase: SendThereminParametersUseCase,
         calcFrequencyUseCase: CalcFrequencyUseCase,
         calcVolumeUseCase: CalcVolumeUseCase,
-    ): MainMiddleware = MainMiddleware(
+    ): ThereminMiddleware = ThereminMiddleware(
         thereminRepository = thereminRepository,
         sendThereminParametersUseCase = sendThereminParametersUseCase,
         calcFrequencyUseCase = calcFrequencyUseCase,
@@ -74,11 +74,11 @@ object MainViewModelModule {
 
     @Provides
     fun provideStore(
-        reducer: MainReducer,
-        middleware: MainMiddleware,
-    ): Store<MainAction, MainState, MainEffect> = createStore(
+        reducer: ThereminReducer,
+        middleware: ThereminMiddleware,
+    ): Store<ThereminAction, ThereminState, ThereminEffect> = createStore(
         reducer = reducer,
-        initialState = MainState.INITIAL,
+        initialState = ThereminState.INITIAL,
         middlewares = listOf(middleware),
     )
 }

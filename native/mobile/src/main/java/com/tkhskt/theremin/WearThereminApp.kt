@@ -1,4 +1,4 @@
-package com.tkhskt.theremin.feature.theremin.ui.composable
+package com.tkhskt.theremin
 
 import android.app.Activity
 import android.widget.Toast
@@ -24,13 +24,14 @@ import com.tkhskt.theremin.feature.theremin.bluetoothPermissionGranted
 import com.tkhskt.theremin.feature.theremin.requestBluetoothPermissions
 import com.tkhskt.theremin.feature.theremin.ui.HandTracker
 import com.tkhskt.theremin.feature.theremin.ui.JankDetector
-import com.tkhskt.theremin.feature.theremin.ui.MainViewModel
+import com.tkhskt.theremin.feature.theremin.ui.ThereminViewModel
 import com.tkhskt.theremin.feature.theremin.ui.OscillatorController
-import com.tkhskt.theremin.feature.theremin.ui.model.MainAction
+import com.tkhskt.theremin.feature.theremin.ui.composable.ThereminScreen
+import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
 
 @Composable
-fun ThereminApp(
-    viewModel: MainViewModel = hiltViewModel(),
+fun WearThereminApp(
+    viewModel: ThereminViewModel = hiltViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val activity = LocalContext.current as Activity
@@ -67,7 +68,7 @@ fun ThereminApp(
 
     when (bluetoothPermissionRequestState) {
         PermissionRequestState.Granted -> {
-            viewModel.dispatch(MainAction.InitializeBle)
+            viewModel.dispatch(ThereminAction.InitializeBle)
             lifecycleOwner.lifecycle.addObserver(handTracker)
         }
         PermissionRequestState.Denied -> {
@@ -114,7 +115,7 @@ fun ThereminApp(
             composable(
                 route = "main"
             ) {
-                MainScreen(
+                ThereminScreen(
                     viewModel = viewModel,
                     oscillatorController = oscillatorController,
                     handTracker = handTracker,

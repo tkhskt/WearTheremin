@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 import com.tkhskt.theremin.core.ui.ThereminColorPalette
 import com.tkhskt.theremin.redux.UiState
 
-data class MainUiState(
+data class ThereminUiState(
     val frequency: Float,
     val volume: Float,
     val waveGraphicFrequency: Float,
@@ -16,7 +16,7 @@ data class MainUiState(
     val browserSoundEnabled: Boolean,
 ) : UiState {
     companion object {
-        val Initial = MainUiState(
+        val Initial = ThereminUiState(
             frequency = 0f,
             volume = 0f,
             waveGraphicFrequency = 0f,

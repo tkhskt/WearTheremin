@@ -3,12 +3,12 @@ package com.tkhskt.theremin.feature.theremin.ui
 import androidx.compose.ui.graphics.Color
 import com.tkhskt.theremin.core.NoteMapper
 import com.tkhskt.theremin.core.ui.ThereminColorPalette
-import com.tkhskt.theremin.feature.theremin.ui.model.MainState
-import com.tkhskt.theremin.feature.theremin.ui.model.MainUiState
+import com.tkhskt.theremin.feature.theremin.ui.model.ThereminState
+import com.tkhskt.theremin.feature.theremin.ui.model.ThereminUiState
 
 object MainUiStateMapper {
-    fun mapFromState(state: MainState): MainUiState {
-        return MainUiState(
+    fun mapFromState(state: ThereminState): ThereminUiState {
+        return ThereminUiState(
             frequency = state.frequency,
             volume = state.volume,
             waveGraphicFrequency = state.frequency / 60f,

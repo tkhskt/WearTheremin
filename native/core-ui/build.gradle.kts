@@ -4,7 +4,6 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -53,10 +52,6 @@ apply(from = "$rootDir/gradle/ktlint.gradle")
 dependencies {
 
     implementation(libs.android.material)
-
-    // hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
 
     // Jetpack Compose
     implementation(libs.activity.compose)

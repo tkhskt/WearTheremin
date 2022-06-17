@@ -1,26 +1,26 @@
 package com.tkhskt.theremin.feature.theremin.ui.reducer
 
 import com.tkhskt.theremin.redux.Reducer
-import com.tkhskt.theremin.feature.theremin.ui.model.MainAction
-import com.tkhskt.theremin.feature.theremin.ui.model.MainState
+import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
+import com.tkhskt.theremin.feature.theremin.ui.model.ThereminState
 
-class MainReducer : Reducer<MainAction, MainState> {
+class ThereminReducer : Reducer<ThereminAction, ThereminState> {
 
-    override suspend fun reduce(action: MainAction, state: MainState): MainState {
+    override suspend fun reduce(action: ThereminAction, state: ThereminState): ThereminState {
         return when (action) {
-            is MainAction.InitializeBle -> {
+            is ThereminAction.InitializeBle -> {
                 state.copy(bluetoothInitialized = true)
             }
-            is MainAction.FrequencyChanged -> {
+            is ThereminAction.FrequencyChanged -> {
                 state.copy(frequency = action.frequency)
             }
-            is MainAction.VolumeChanged -> {
+            is ThereminAction.VolumeChanged -> {
                 state.copy(volume = action.volume)
             }
-            is MainAction.ClickAppSoundButton -> {
+            is ThereminAction.ClickAppSoundButton -> {
                 state.copy(appSoundEnabled = !state.appSoundEnabled)
             }
-            is MainAction.ClickBrowserSoundButton -> {
+            is ThereminAction.ClickBrowserSoundButton -> {
                 state.copy(browserSoundEnabled = !state.browserSoundEnabled)
             }
             else -> {

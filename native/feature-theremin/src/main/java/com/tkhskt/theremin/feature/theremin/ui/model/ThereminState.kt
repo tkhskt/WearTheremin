@@ -2,7 +2,7 @@ package com.tkhskt.theremin.feature.theremin.ui.model
 
 import com.tkhskt.theremin.redux.State
 
-data class MainState(
+data class ThereminState(
     val frequency: Float,
     val volume: Float,
     val cameraStarted: Boolean,
@@ -13,7 +13,7 @@ data class MainState(
     val browserSoundEnabled: Boolean,
 ) : State {
     companion object {
-        val INITIAL = MainState(
+        val INITIAL = ThereminState(
             frequency = 0f,
             volume = 0f,
             cameraStarted = false,

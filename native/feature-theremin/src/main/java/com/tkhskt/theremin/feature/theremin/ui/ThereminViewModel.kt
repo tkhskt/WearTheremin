@@ -2,10 +2,10 @@ package com.tkhskt.theremin.feature.theremin.ui
 
 import androidx.lifecycle.viewModelScope
 import com.tkhskt.theremin.feature.theremin.domain.usecase.GetGravityUseCase
-import com.tkhskt.theremin.feature.theremin.ui.model.MainAction
-import com.tkhskt.theremin.feature.theremin.ui.model.MainEffect
-import com.tkhskt.theremin.feature.theremin.ui.model.MainState
-import com.tkhskt.theremin.feature.theremin.ui.model.MainUiState
+import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
+import com.tkhskt.theremin.feature.theremin.ui.model.ThereminEffect
+import com.tkhskt.theremin.feature.theremin.ui.model.ThereminState
+import com.tkhskt.theremin.feature.theremin.ui.model.ThereminUiState
 import com.tkhskt.theremin.redux.ReduxViewModel
 import com.tkhskt.theremin.redux.Store
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,33 +20,33 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
-    private val store: Store<MainAction, MainState, MainEffect>,
+class ThereminViewModel @Inject constructor(
+    private val store: Store<ThereminAction, ThereminState, ThereminEffect>,
     private val getGravityUseCase: GetGravityUseCase,
-) : ReduxViewModel<MainAction, MainUiState, MainEffect>() {
+) : ReduxViewModel<ThereminAction, ThereminUiState, ThereminEffect>() {
 
-    override val sideEffect: SharedFlow<MainEffect> = store.sideEffect.shareIn(
+    override val sideEffect: SharedFlow<ThereminEffect> = store.sideEffect.shareIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
     )
 
-    override val uiState: StateFlow<MainUiState> = store.state
+    override val uiState: StateFlow<ThereminUiState> = store.state
         .map(MainUiStateMapper::mapFromState)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Lazily,
-            initialValue = MainUiState.Initial,
+            initialValue = ThereminUiState.Initial,
         )
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             getGravityUseCase().collect { gravity ->
-                dispatch(MainAction.ChangeGravity(gravity))
+                dispatch(ThereminAction.ChangeGravity(gravity))
             }
         }
     }
 
-    override fun dispatch(action: MainAction) {
+    override fun dispatch(action: ThereminAction) {
         viewModelScope.launch {
             store.dispatch(action)
         }

@@ -27,23 +27,23 @@ import com.tkhskt.theremin.R
 import com.tkhskt.theremin.core.ui.LocalColorPalette
 import com.tkhskt.theremin.core.ui.composable.DrawerScaffold
 import com.tkhskt.theremin.feature.theremin.ui.HandTracker
-import com.tkhskt.theremin.feature.theremin.ui.MainViewModel
+import com.tkhskt.theremin.feature.theremin.ui.ThereminViewModel
 import com.tkhskt.theremin.feature.theremin.ui.OscillatorController
-import com.tkhskt.theremin.feature.theremin.ui.model.MainAction
-import com.tkhskt.theremin.feature.theremin.ui.model.MainEffect
-import com.tkhskt.theremin.feature.theremin.ui.model.MainUiState
+import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
+import com.tkhskt.theremin.feature.theremin.ui.model.ThereminEffect
+import com.tkhskt.theremin.feature.theremin.ui.model.ThereminUiState
 import kotlinx.coroutines.launch
 
 @Composable
-fun MainScreen(
-    viewModel: MainViewModel,
+fun ThereminScreen(
+    viewModel: ThereminViewModel,
     oscillatorController: OscillatorController,
     handTracker: HandTracker,
 ) {
-    val state: MainUiState by viewModel.uiState.collectAsState()
+    val state: ThereminUiState by viewModel.uiState.collectAsState()
     val lifecycleOwner = LocalLifecycleOwner.current
     handTracker.onChangeDistanceListener = { distance: Float ->
-        viewModel.dispatch(MainAction.ChangeDistance(distance))
+        viewModel.dispatch(ThereminAction.ChangeDistance(distance))
     }
     LaunchedEffect(Unit) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -59,7 +59,7 @@ fun MainScreen(
             launch {
                 viewModel.sideEffect.collect { effect ->
                     when (effect) {
-                        is MainEffect.StartCamera -> {
+                        is ThereminEffect.StartCamera -> {
                             handTracker.startTracking()
                         }
                     }
@@ -67,13 +67,13 @@ fun MainScreen(
             }
         }
     }
-    MainScreen(state, viewModel::dispatch)
+    ThereminScreen(state, viewModel::dispatch)
 }
 
 @Composable
-fun MainScreen(
-    uiState: MainUiState,
-    dispatcher: (MainAction) -> Unit,
+fun ThereminScreen(
+    uiState: ThereminUiState,
+    dispatcher: (ThereminAction) -> Unit,
 ) {
     DrawerScaffold(
         backgroundColor = LocalColorPalette.current.menuBackground,
@@ -93,10 +93,10 @@ fun MainScreen(
                 appSoundEnabled = uiState.appSoundEnabled,
                 browserSoundEnabled = uiState.browserSoundEnabled,
                 onClickAppButton = {
-                    dispatcher(MainAction.ClickAppSoundButton)
+                    dispatcher(ThereminAction.ClickAppSoundButton)
                 },
                 onClickBrowserButton = {
-                    dispatcher(MainAction.ClickBrowserSoundButton)
+                    dispatcher(ThereminAction.ClickBrowserSoundButton)
                 },
             )
         },
@@ -135,9 +135,9 @@ fun MainScreen(
 @Preview
 @Composable
 fun PreviewMainScreen() {
-    val uiState = MainUiState.Initial.copy(
+    val uiState = ThereminUiState.Initial.copy(
         waveGraphicFrequency = 10f,
         note = "C#"
     )
-    MainScreen(uiState) {}
+    ThereminScreen(uiState) {}
 }

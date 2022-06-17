@@ -4,38 +4,38 @@ import com.tkhskt.theremin.feature.theremin.data.repository.ThereminRepository
 import com.tkhskt.theremin.feature.theremin.domain.usecase.CalcFrequencyUseCase
 import com.tkhskt.theremin.feature.theremin.domain.usecase.CalcVolumeUseCase
 import com.tkhskt.theremin.feature.theremin.domain.usecase.SendThereminParametersUseCase
-import com.tkhskt.theremin.feature.theremin.ui.model.MainAction
-import com.tkhskt.theremin.feature.theremin.ui.model.MainEffect
-import com.tkhskt.theremin.feature.theremin.ui.model.MainState
+import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
+import com.tkhskt.theremin.feature.theremin.ui.model.ThereminEffect
+import com.tkhskt.theremin.feature.theremin.ui.model.ThereminState
 import com.tkhskt.theremin.redux.Middleware
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
-class MainMiddleware(
+class ThereminMiddleware(
     private val thereminRepository: ThereminRepository,
     private val sendThereminParametersUseCase: SendThereminParametersUseCase,
     private val calcFrequencyUseCase: CalcFrequencyUseCase,
     private val calcVolumeUseCase: CalcVolumeUseCase,
-) : Middleware<MainAction, MainState, MainEffect> {
+) : Middleware<ThereminAction, ThereminState, ThereminEffect> {
 
-    private val _sideEffect = MutableSharedFlow<MainEffect>()
-    override val sideEffect: SharedFlow<MainEffect> = _sideEffect
+    private val _sideEffect = MutableSharedFlow<ThereminEffect>()
+    override val sideEffect: SharedFlow<ThereminEffect> = _sideEffect
 
-    override suspend fun dispatchBeforeReduce(action: MainAction, state: MainState): MainAction {
+    override suspend fun dispatchBeforeReduce(action: ThereminAction, state: ThereminState): ThereminAction {
         return when (action) {
-            is MainAction.InitializeBle -> {
+            is ThereminAction.InitializeBle -> {
                 thereminRepository.initialize()
                 action
             }
-            is MainAction.ChangeGravity -> {
+            is ThereminAction.ChangeGravity -> {
                 val frequency = calcFrequencyUseCase(action.gravity)
                 sendThereminParametersUseCase(state.frequency, state.volume)
-                MainAction.FrequencyChanged(frequency)
+                ThereminAction.FrequencyChanged(frequency)
             }
-            is MainAction.ChangeDistance -> {
+            is ThereminAction.ChangeDistance -> {
                 val volume = calcVolumeUseCase(action.distance)
                 sendThereminParametersUseCase(state.frequency, volume)
-                MainAction.VolumeChanged(volume)
+                ThereminAction.VolumeChanged(volume)
             }
             else -> {
                 action
@@ -43,11 +43,11 @@ class MainMiddleware(
         }
     }
 
-    override suspend fun dispatchAfterReduce(action: MainAction, state: MainState): MainAction {
+    override suspend fun dispatchAfterReduce(action: ThereminAction, state: ThereminState): ThereminAction {
         return when (action) {
-            is MainAction.ClickAppSoundButton -> {
+            is ThereminAction.ClickAppSoundButton -> {
                 if (state.appSoundEnabled) {
-                    _sideEffect.emit(MainEffect.StartCamera)
+                    _sideEffect.emit(ThereminEffect.StartCamera)
                 }
                 action
             }

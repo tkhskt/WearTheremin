@@ -55,6 +55,11 @@ apply(from = "$rootDir/gradle/ktlint.gradle")
 
 dependencies {
     implementation(project(":feature-theremin"))
+    implementation(project(":core-ui"))
+    implementation(project(":redux"))
+
+    implementation(libs.play.services.wearable)
+
     // AndroidX
     implementation(libs.core)
     implementation(libs.appcompat)
