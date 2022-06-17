@@ -1,4 +1,4 @@
-package com.tkhskt.theremin.feature.theremin.ui.composable
+package com.tkhskt.theremin.feature.tutorial.ui
 
 import androidx.compose.runtime.Composable
 

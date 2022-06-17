@@ -1,4 +1,4 @@
-package com.tkhskt.theremin.feature.theremin.ui.composable
+package com.tkhskt.theremin.feature.theremin.ui.component
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image

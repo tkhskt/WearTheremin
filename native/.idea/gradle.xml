@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/core-ui" />
             <option value="$PROJECT_DIR$/feature-theremin" />
+            <option value="$PROJECT_DIR$/feature-tutorial" />
             <option value="$PROJECT_DIR$/mobile" />
             <option value="$PROJECT_DIR$/redux" />
             <option value="$PROJECT_DIR$/wear" />

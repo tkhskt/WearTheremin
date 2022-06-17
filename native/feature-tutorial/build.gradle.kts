@@ -1,7 +1,7 @@
 val ktlint: Configuration by configurations.creating
 
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
@@ -11,11 +11,8 @@ android {
     compileSdk = 31
 
     defaultConfig {
-        applicationId = "com.tkhskt.theremin"
         minSdk = 30
         targetSdk = 31
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -54,17 +51,16 @@ android {
 apply(from = "$rootDir/gradle/ktlint.gradle")
 
 dependencies {
-    implementation(project(":feature-theremin"))
-    implementation(project(":core-ui"))
     implementation(project(":redux"))
+    implementation(project(":core-ui"))
 
     implementation(libs.play.services.wearable)
+    implementation(libs.android.material)
 
     // AndroidX
     implementation(libs.core)
     implementation(libs.appcompat)
-    implementation(libs.activity)
-    implementation(libs.jankstats)
+    implementation(libs.lifecycle.viewmodel)
 
     // hilt
     implementation(libs.hilt.android)
@@ -75,8 +71,14 @@ dependencies {
     implementation(libs.bundles.compose)
     debugImplementation(libs.compose.tooling)
 
+    // Coroutines
+    implementation(libs.bundles.coroutines)
+
     implementation(libs.timber)
     ktlint(libs.ktlint)
+
+    // theremin-core(local maven)
+    implementation(libs.theremin.core)
 
     testImplementation(libs.test.junit)
     androidTestImplementation(libs.test.junit.ext)

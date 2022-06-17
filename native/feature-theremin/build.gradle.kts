@@ -71,7 +71,6 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.activity)
-    implementation(libs.jankstats)
 
     // hilt
     implementation(libs.hilt.android)

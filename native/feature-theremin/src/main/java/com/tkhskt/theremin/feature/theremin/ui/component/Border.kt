@@ -1,4 +1,4 @@
-package com.tkhskt.theremin.feature.theremin.ui.composable
+package com.tkhskt.theremin.feature.theremin.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

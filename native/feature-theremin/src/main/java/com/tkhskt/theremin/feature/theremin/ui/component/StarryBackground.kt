@@ -1,4 +1,4 @@
-package com.tkhskt.theremin.feature.theremin.ui.composable
+package com.tkhskt.theremin.feature.theremin.ui.component
 
 import androidx.annotation.IntRange
 import androidx.compose.runtime.Composable

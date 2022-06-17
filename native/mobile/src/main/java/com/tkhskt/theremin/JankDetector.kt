@@ -1,4 +1,4 @@
-package com.tkhskt.theremin.feature.theremin.ui
+package com.tkhskt.theremin
 
 import android.view.Window
 import androidx.lifecycle.DefaultLifecycleObserver

@@ -1,4 +1,4 @@
-package com.tkhskt.theremin.feature.theremin.ui.composable
+package com.tkhskt.theremin.feature.theremin.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -26,9 +26,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.tkhskt.theremin.R
 import com.tkhskt.theremin.core.ui.LocalColorPalette
 import com.tkhskt.theremin.core.ui.composable.DrawerScaffold
-import com.tkhskt.theremin.feature.theremin.ui.HandTracker
-import com.tkhskt.theremin.feature.theremin.ui.ThereminViewModel
-import com.tkhskt.theremin.feature.theremin.ui.OscillatorController
+import com.tkhskt.theremin.feature.theremin.ui.component.Menu
+import com.tkhskt.theremin.feature.theremin.ui.component.NoteText
+import com.tkhskt.theremin.feature.theremin.ui.component.StarryBackground
+import com.tkhskt.theremin.feature.theremin.ui.component.Sun
+import com.tkhskt.theremin.feature.theremin.ui.component.Wave
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminEffect
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminUiState

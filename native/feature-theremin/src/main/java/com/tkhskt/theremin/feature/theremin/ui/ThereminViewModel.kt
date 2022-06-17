@@ -31,7 +31,7 @@ class ThereminViewModel @Inject constructor(
     )
 
     override val uiState: StateFlow<ThereminUiState> = store.state
-        .map(MainUiStateMapper::mapFromState)
+        .map(ThereminUiStateMapper::mapFromState)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Lazily,

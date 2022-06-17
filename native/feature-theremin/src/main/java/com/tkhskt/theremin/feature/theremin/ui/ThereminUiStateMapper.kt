@@ -6,7 +6,7 @@ import com.tkhskt.theremin.core.ui.ThereminColorPalette
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminState
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminUiState
 
-object MainUiStateMapper {
+object ThereminUiStateMapper {
     fun mapFromState(state: ThereminState): ThereminUiState {
         return ThereminUiState(
             frequency = state.frequency,
