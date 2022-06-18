@@ -59,4 +59,8 @@ dependencies {
     debugImplementation(libs.compose.tooling)
 
     ktlint(libs.ktlint)
+
+    testImplementation(libs.test.junit)
+    androidTestImplementation(libs.test.junit.ext)
+    androidTestImplementation(libs.test.espresso)
 }
