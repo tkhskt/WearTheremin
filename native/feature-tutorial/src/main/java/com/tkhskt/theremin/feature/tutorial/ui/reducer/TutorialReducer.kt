@@ -11,11 +11,11 @@ class TutorialReducer : Reducer<TutorialAction, TutorialState> {
             is TutorialAction.ClickStepButton -> {
                 val nextStep = when (state.currentStep) {
                     TutorialState.Step.PREPARATION -> {
-                        delay(500)
+                        delay(DELAY_FOR_ANIMATION)
                         TutorialState.Step.VOLUME
                     }
                     TutorialState.Step.VOLUME -> {
-                        delay(500)
+                        delay(DELAY_FOR_ANIMATION)
                         TutorialState.Step.PITCH
                     }
                     TutorialState.Step.PITCH -> TutorialState.Step.PITCH
@@ -25,5 +25,9 @@ class TutorialReducer : Reducer<TutorialAction, TutorialState> {
                 )
             }
         }
+    }
+
+    companion object {
+        private const val DELAY_FOR_ANIMATION = 500L
     }
 }
