@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.merge
 
 interface State
@@ -41,7 +42,7 @@ class Store<ACTION : Action, STATE : State, SIDE_EFFECT : SideEffect>(
 ) {
 
     private val _state = MutableStateFlow(initialState)
-    val state: StateFlow<STATE> = _state
+    val state: StateFlow<STATE> = _state.asStateFlow()
 
     val sideEffect: Flow<SIDE_EFFECT>
         get() = middlewares.mapNotNull { it.sideEffect }.merge()
