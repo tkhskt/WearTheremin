@@ -27,6 +27,7 @@ import com.tkhskt.theremin.feature.theremin.ui.OscillatorController
 import com.tkhskt.theremin.feature.theremin.ui.ThereminScreen
 import com.tkhskt.theremin.feature.theremin.ui.ThereminViewModel
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
+import com.tkhskt.theremin.feature.tutorial.ui.TutorialScreen
 
 @Composable
 fun WearThereminApp(
@@ -74,7 +75,7 @@ fun WearThereminApp(
             Toast.makeText(
                 activity,
                 "Please grant permissions",
-                Toast.LENGTH_SHORT
+                Toast.LENGTH_SHORT,
             ).show()
         }
         else -> {
@@ -105,14 +106,23 @@ fun WearThereminApp(
     ThereminTheme {
         NavHost(
             navController = navController,
-            startDestination = "main"
+            startDestination = "tutorial",
         ) {
             composable(
-                route = "tutorial"
+                route = "tutorial",
             ) {
+                TutorialScreen(
+                    navigateToTheremin = {
+                        navController.navigate("main") {
+                            popUpTo("tutorial") {
+                                inclusive = true
+                            }
+                        }
+                    },
+                )
             }
             composable(
-                route = "main"
+                route = "main",
             ) {
                 ThereminScreen(
                     viewModel = viewModel,

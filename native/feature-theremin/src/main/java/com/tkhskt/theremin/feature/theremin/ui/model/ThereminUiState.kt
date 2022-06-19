@@ -21,8 +21,8 @@ data class ThereminUiState(
             volume = 0f,
             waveGraphicFrequency = 0f,
             backgroundGradientColors = listOf(
-                ThereminColorPalette.lowVolume1,
                 ThereminColorPalette.lowVolume1Light,
+                ThereminColorPalette.lowVolume1,
             ),
             note = "",
             pcConnected = false,

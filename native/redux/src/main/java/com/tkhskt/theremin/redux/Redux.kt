@@ -37,9 +37,8 @@ abstract class ReduxViewModel<in ACTION : Action, out UI_STATE : UiState, SIDE_E
 class Store<ACTION : Action, STATE : State, SIDE_EFFECT : SideEffect>(
     initialState: STATE,
     private val reducer: Reducer<ACTION, STATE>,
+    private val middlewares: List<Middleware<ACTION, STATE, SIDE_EFFECT>>,
 ) {
-
-    private val middlewares = mutableListOf<Middleware<ACTION, STATE, SIDE_EFFECT>>()
 
     private val _state = MutableStateFlow(initialState)
     val state: StateFlow<STATE> = _state
@@ -57,10 +56,6 @@ class Store<ACTION : Action, STATE : State, SIDE_EFFECT : SideEffect>(
             newAction = it.dispatchAfterReduce(newAction, state.value)
         }
     }
-
-    fun addMiddleware(middleware: Middleware<ACTION, STATE, SIDE_EFFECT>) {
-        middlewares.add(middleware)
-    }
 }
 
 fun <ACTION : Action, STATE : State, SIDE_EFFECT : SideEffect> createStore(
@@ -68,9 +63,7 @@ fun <ACTION : Action, STATE : State, SIDE_EFFECT : SideEffect> createStore(
     initialState: STATE,
     middlewares: List<Middleware<ACTION, STATE, SIDE_EFFECT>> = emptyList(),
 ): Store<ACTION, STATE, SIDE_EFFECT> {
-    val store = Store<ACTION, STATE, SIDE_EFFECT>(initialState, reducer)
-    middlewares.forEach { store.addMiddleware(it) }
-    return store
+    return Store(initialState, reducer, middlewares)
 }
 
 fun <ACTION : Action, STATE : State> combineReducers(

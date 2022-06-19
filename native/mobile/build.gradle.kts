@@ -55,6 +55,7 @@ apply(from = "$rootDir/gradle/ktlint.gradle")
 
 dependencies {
     implementation(project(":feature-theremin"))
+    implementation(project(":feature-tutorial"))
     implementation(project(":core-ui"))
     implementation(project(":redux"))
 
