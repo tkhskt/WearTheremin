@@ -1,6 +1,7 @@
 package com.tkhskt.theremin.core.ui.composable
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
@@ -14,7 +15,8 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FractionalThreshold
-import androidx.compose.material.rememberSwipeableState
+import androidx.compose.material.SwipeableDefaults
+import androidx.compose.material.SwipeableState
 import androidx.compose.material.swipeable
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -37,13 +39,45 @@ import androidx.compose.ui.unit.dp
 import kotlin.math.max
 import kotlin.math.roundToInt
 
+enum class ThereminDrawerValue {
+    CLOSE,
+    OPEN,
+}
+
+class ThereminScaffoldState(
+    val drawerState: ThereminDrawerState,
+)
+
+@OptIn(ExperimentalMaterialApi::class)
+class ThereminDrawerState {
+
+    val swipeableState = SwipeableState(
+        initialValue = ThereminDrawerValue.CLOSE,
+        confirmStateChange = { true },
+    )
+
+    suspend fun open() = animateTo(ThereminDrawerValue.OPEN, SwipeableDefaults.AnimationSpec)
+
+    @ExperimentalMaterialApi
+    suspend fun animateTo(targetValue: ThereminDrawerValue, anim: AnimationSpec<Float>) {
+        swipeableState.animateTo(targetValue, anim)
+    }
+}
+
 @Composable
-fun DrawerScaffold(
+fun rememberThereminScaffoldState(
+    drawerState: ThereminDrawerState = remember { ThereminDrawerState() },
+): ThereminScaffoldState = remember { ThereminScaffoldState(drawerState) }
+
+
+@Composable
+fun ThereminScaffold(
     backgroundColor: Color,
     mainContentGradientColors: List<Color>,
-    titleContent: @Composable () -> Unit,
-    drawerContent: @Composable () -> Unit,
-    mainContent: @Composable () -> Unit,
+    scaffoldState: ThereminScaffoldState = rememberThereminScaffoldState(),
+    titleContent: @Composable () -> Unit = {},
+    drawerContent: @Composable () -> Unit = {},
+    mainContent: @Composable () -> Unit = {},
 ) {
     val configuration = LocalConfiguration.current
     val screenWidth = LocalDensity.current.run { configuration.screenWidthDp.dp.toPx() }
@@ -61,7 +95,7 @@ fun DrawerScaffold(
             ) {
                 TitleContainer(
                     modifier = Modifier
-                        .padding(18.dp)
+                        .padding(18.dp),
                 ) {
                     titleContent()
                 }
@@ -78,6 +112,7 @@ fun DrawerScaffold(
                 modifier = Modifier.fillMaxSize(),
                 screenWidth = screenWidth,
                 maxOffset = maxOffset,
+                drawerState = scaffoldState.drawerState,
                 onUpdateDrawerState = { progress = it },
             ) {
                 mainContent()
@@ -125,33 +160,33 @@ private fun MainContentContainer(
     modifier: Modifier = Modifier,
     screenWidth: Float = 0f,
     maxOffset: Float = 0f,
+    drawerState: ThereminDrawerState = remember { ThereminDrawerState() },
     onUpdateDrawerState: (Float) -> Unit = { _ -> },
-    mainContent: @Composable () -> Unit,
+    mainContent: @Composable () -> Unit = {},
 ) {
-    val swipeableState = rememberSwipeableState(0)
     // 0 to 1
-    val progress = (swipeableState.offset.value / screenWidth) * 2.5f
+    val progress = (drawerState.swipeableState.offset.value / screenWidth) * 2.5f
     onUpdateDrawerState(progress)
 
     // 0 to 0.8
-    val scale = 1f - (swipeableState.offset.value / screenWidth) * progress / 2
+    val scale = 1f - (drawerState.swipeableState.offset.value / screenWidth) * progress / 2
     // 0 to 10
-    val corner = (swipeableState.offset.value / screenWidth) * progress * 25f
+    val corner = (drawerState.swipeableState.offset.value / screenWidth) * progress * 25f
     // 0 to 8
-    val elevation = (swipeableState.offset.value / screenWidth) * 7.5f
+    val elevation = (drawerState.swipeableState.offset.value / screenWidth) * 7.5f
 
     Surface(
         modifier = modifier
             .offset {
                 IntOffset(
-                    x = swipeableState.offset.value.roundToInt(),
+                    x = drawerState.swipeableState.offset.value.roundToInt(),
                     y = 0,
                 )
             }
             .scale(scale)
             .swipeable(
-                state = swipeableState,
-                anchors = mapOf(0f to 0, maxOffset to 1),
+                state = drawerState.swipeableState,
+                anchors = mapOf(0f to ThereminDrawerValue.CLOSE, maxOffset to ThereminDrawerValue.OPEN),
                 thresholds = { _, _ -> FractionalThreshold(0.3f) },
                 orientation = Orientation.Horizontal,
                 resistance = null,
@@ -166,8 +201,8 @@ private fun MainContentContainer(
                     Brush.verticalGradient(
                         contentGradientColors.map {
                             animateColorAsState(targetValue = it).value
-                        }
-                    )
+                        },
+                    ),
                 ),
             contentAlignment = Alignment.BottomCenter,
         ) {
@@ -184,6 +219,6 @@ private fun Mask() {
     Box(
         Modifier
             .fillMaxSize()
-            .pointerInput(Unit) {}
+            .pointerInput(Unit) {},
     )
 }

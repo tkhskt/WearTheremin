@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -25,7 +26,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.tkhskt.theremin.R
 import com.tkhskt.theremin.core.ui.LocalColorPalette
-import com.tkhskt.theremin.core.ui.composable.DrawerScaffold
+import com.tkhskt.theremin.core.ui.composable.MenuIcon
+import com.tkhskt.theremin.core.ui.composable.ThereminScaffold
+import com.tkhskt.theremin.core.ui.composable.rememberThereminScaffoldState
 import com.tkhskt.theremin.feature.theremin.ui.component.Menu
 import com.tkhskt.theremin.feature.theremin.ui.component.NoteText
 import com.tkhskt.theremin.feature.theremin.ui.component.StarryBackground
@@ -77,9 +80,13 @@ fun ThereminScreen(
     uiState: ThereminUiState,
     dispatcher: (ThereminAction) -> Unit,
 ) {
-    DrawerScaffold(
+    val scaffoldState = rememberThereminScaffoldState()
+    val scope = rememberCoroutineScope()
+
+    ThereminScaffold(
         backgroundColor = LocalColorPalette.current.menuBackground,
         mainContentGradientColors = uiState.backgroundGradientColors,
+        scaffoldState = scaffoldState,
         titleContent = {
             Image(
                 modifier = Modifier.height(16.dp),
@@ -112,9 +119,20 @@ fun ThereminScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween,
             ) {
-                Sun(
-                    animate = uiState.appSoundEnabled || uiState.browserSoundEnabled,
-                )
+                Box {
+                    Sun(
+                        animate = uiState.appSoundEnabled || uiState.browserSoundEnabled,
+                    )
+                    MenuIcon(
+                        color = uiState.backgroundGradientColors[1],
+                        onClick = {
+                            scope.launch {
+                                scaffoldState.drawerState.open()
+                            }
+                        },
+                        modifier = Modifier.padding(20.dp),
+                    )
+                }
                 Column(
                     modifier = Modifier
                         .wrapContentHeight()
@@ -139,7 +157,7 @@ fun ThereminScreen(
 fun PreviewMainScreen() {
     val uiState = ThereminUiState.Initial.copy(
         waveGraphicFrequency = 10f,
-        note = "C#"
+        note = "C#",
     )
     ThereminScreen(uiState) {}
 }
