@@ -51,7 +51,7 @@ class ThereminScaffoldState(
 @OptIn(ExperimentalMaterialApi::class)
 class ThereminDrawerState {
 
-    val swipeableState = SwipeableState(
+    internal val swipeableState = SwipeableState(
         initialValue = ThereminDrawerValue.CLOSE,
         confirmStateChange = { true },
     )

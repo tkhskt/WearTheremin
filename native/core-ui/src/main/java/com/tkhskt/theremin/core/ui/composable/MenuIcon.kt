@@ -29,21 +29,21 @@ fun MenuIcon(
     ) {
         Box(
             Modifier
-                .width(30.dp)
+                .width(28.dp)
                 .height(3.dp)
                 .clip(RoundedCornerShape(50))
                 .background(color),
         )
         Box(
             Modifier
-                .width(18.dp)
+                .width(16.dp)
                 .height(3.dp)
                 .clip(RoundedCornerShape(50))
                 .background(color),
         )
         Box(
             Modifier
-                .width(24.dp)
+                .width(22.dp)
                 .height(3.dp)
                 .clip(RoundedCornerShape(50))
                 .background(color),
