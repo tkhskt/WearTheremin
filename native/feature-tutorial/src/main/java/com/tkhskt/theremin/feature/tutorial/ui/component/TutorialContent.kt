@@ -17,7 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.tkhskt.theremin.core.ui.LocalTypography
+import com.tkhskt.theremin.core.ui.ThereminTheme
 
 @Composable
 fun TutorialContent(
@@ -51,12 +51,12 @@ fun TutorialContent(
             ) {
                 Text(
                     text = title,
-                    style = LocalTypography.current.headlineMedium,
+                    style = ThereminTheme.typography.headlineMedium,
                 )
                 Spacer(modifier = Modifier.size(36.dp))
                 Text(
                     text = body,
-                    style = LocalTypography.current.bodySmall,
+                    style = ThereminTheme.typography.bodySmall,
                 )
             }
         }

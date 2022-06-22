@@ -23,12 +23,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.tkhskt.theremin.core.ui.ThereminTheme
 import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
 
@@ -90,7 +90,7 @@ private fun Circle(
             .alpha(alpha)
             .requiredSize(size)
             .clip(CircleShape)
-            .background(Color.White),
+            .background(ThereminTheme.color.sun),
     )
 }
 

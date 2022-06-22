@@ -8,11 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.tkhskt.theremin.core.ui.LocalColorPalette
+import com.tkhskt.theremin.core.ui.ThereminTheme
 
 @Composable
 fun Border(
-    color: Color = LocalColorPalette.current.border,
+    color: Color = ThereminTheme.color.border,
 ) {
     Box(
         modifier = Modifier

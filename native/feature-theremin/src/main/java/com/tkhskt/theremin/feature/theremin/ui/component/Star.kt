@@ -8,9 +8,9 @@ import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.tkhskt.theremin.core.ui.ThereminTheme
 
 @Composable
 fun Star(modifier: Modifier = Modifier) {
@@ -27,7 +27,7 @@ fun Star(modifier: Modifier = Modifier) {
             .width(10.dp)
             .height(50.dp)
             .clip(rhomboidShape)
-            .background(Color.White)
+            .background(ThereminTheme.color.star)
     )
 }
 

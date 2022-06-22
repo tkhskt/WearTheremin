@@ -22,8 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tkhskt.theremin.R
-import com.tkhskt.theremin.core.ui.LocalColorPalette
-import com.tkhskt.theremin.core.ui.LocalTypography
+import com.tkhskt.theremin.core.ui.ThereminTheme
 
 @Composable
 fun Menu(
@@ -125,7 +124,7 @@ private fun LicenseSection(
         ) {
             Text(
                 text = "License",
-                style = LocalTypography.current.headlineSmall,
+                style = ThereminTheme.typography.headlineSmall,
             )
             Image(
                 painter = painterResource(id = R.drawable.ic_arrow),
@@ -147,7 +146,7 @@ private fun MenuSectionTitle(
     ) {
         Text(
             text = title,
-            style = LocalTypography.current.headlineSmall,
+            style = ThereminTheme.typography.headlineSmall,
         )
         Spacer(modifier = Modifier.size(3.dp))
         Border()
@@ -197,7 +196,7 @@ private fun IconMenuItem(
             Spacer(modifier = Modifier.size(28.dp))
             Text(
                 text = text,
-                style = LocalTypography.current.bodySmall,
+                style = ThereminTheme.typography.bodySmall,
             )
         }
         Border()
@@ -233,7 +232,7 @@ private fun ToggleButtonMenuItem(
         ) {
             Text(
                 text = text,
-                style = LocalTypography.current.bodySmall,
+                style = ThereminTheme.typography.bodySmall,
             )
             ToggleButton(
                 checked = buttonEnabled,
@@ -247,7 +246,7 @@ private fun ToggleButtonMenuItem(
 @Preview
 @Composable
 fun PreviewMenu() {
-    Surface(color = LocalColorPalette.current.menuBackground) {
+    Surface(color = ThereminTheme.color.menuBackground) {
         Menu()
     }
 }

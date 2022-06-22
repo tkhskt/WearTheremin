@@ -22,8 +22,8 @@ object TutorialUiStateMapper {
                 TutorialUiState(
                     title = "Volume",
                     body = "The volume increases as you move your hand away from the front camera.\n" +
-                            "\n" +
-                            "The volume decreases as you move your hand closer to the front camera.",
+                        "\n" +
+                        "The volume decreases as you move your hand closer to the front camera.",
                     backgroundGradientColors = listOf(
                         ThereminColorPalette.lowVolume2Light,
                         ThereminColorPalette.lowVolume2,

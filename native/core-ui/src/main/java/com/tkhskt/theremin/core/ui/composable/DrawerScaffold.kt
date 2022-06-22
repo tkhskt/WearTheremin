@@ -69,7 +69,6 @@ fun rememberThereminScaffoldState(
     drawerState: ThereminDrawerState = remember { ThereminDrawerState() },
 ): ThereminScaffoldState = remember { ThereminScaffoldState(drawerState) }
 
-
 @Composable
 fun ThereminScaffold(
     backgroundColor: Color,

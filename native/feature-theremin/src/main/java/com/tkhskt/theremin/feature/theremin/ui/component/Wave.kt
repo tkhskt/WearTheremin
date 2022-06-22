@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -16,7 +15,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.tkhskt.theremin.core.ui.LocalColorPalette
+import com.tkhskt.theremin.core.ui.ThereminTheme
 import java.lang.Math.PI
 import kotlin.math.roundToInt
 import kotlin.math.sin
@@ -29,6 +28,7 @@ fun Wave(
     val configuration = LocalConfiguration.current
     val screenHeight = LocalDensity.current.run { configuration.screenWidthDp.dp.toPx() }
     val waveHeightDp = screenHeight * 0.145f
+    val waveColor = ThereminTheme.color.wave
 
     Canvas(
         modifier = modifier
@@ -61,7 +61,7 @@ fun Wave(
         }) {
             drawPath(
                 path = path,
-                color = Color.White,
+                color = waveColor,
                 style = Stroke(
                     width = 4.dp.toPx(),
                     join = StrokeJoin.Round,
@@ -74,7 +74,7 @@ fun Wave(
 @Preview
 @Composable
 fun PreviewWave() {
-    Surface(color = LocalColorPalette.current.highVolume1) {
+    Surface(color = ThereminTheme.color.highVolume1) {
         Wave(5f)
     }
 }

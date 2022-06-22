@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.tkhskt.theremin.R
-import com.tkhskt.theremin.core.ui.LocalColorPalette
+import com.tkhskt.theremin.core.ui.ThereminTheme
 import com.tkhskt.theremin.core.ui.composable.MenuIcon
 import com.tkhskt.theremin.core.ui.composable.ThereminScaffold
 import com.tkhskt.theremin.core.ui.composable.rememberThereminScaffoldState
@@ -84,7 +84,7 @@ fun ThereminScreen(
     val scope = rememberCoroutineScope()
 
     ThereminScaffold(
-        backgroundColor = LocalColorPalette.current.menuBackground,
+        backgroundColor = ThereminTheme.color.menuBackground,
         mainContentGradientColors = uiState.backgroundGradientColors,
         scaffoldState = scaffoldState,
         titleContent = {

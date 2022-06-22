@@ -15,8 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.tkhskt.theremin.core.ui.LocalColorPalette
-import com.tkhskt.theremin.core.ui.LocalTypography
+import com.tkhskt.theremin.core.ui.ThereminTheme
 
 @Composable
 fun TutorialButton(
@@ -33,21 +32,21 @@ fun TutorialButton(
                 .padding(top = 3.dp, start = 3.dp)
                 .defaultMinSize(minWidth = 124.dp, minHeight = 32.dp)
                 .clip(RoundedCornerShape(6.dp))
-                .background(LocalColorPalette.current.buttonShadow),
+                .background(ThereminTheme.color.buttonShadow),
         )
         Box(
             modifier = Modifier
                 .wrapContentSize()
                 .defaultMinSize(minWidth = 124.dp, minHeight = 32.dp)
                 .clip(RoundedCornerShape(6.dp))
-                .background(Color.White)
+                .background(ThereminTheme.color.button)
                 .clickable { onClick.invoke() },
             contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = text,
                 color = textColor,
-                style = LocalTypography.current.bodySmall,
+                style = ThereminTheme.typography.bodySmall,
             )
         }
     }
@@ -59,6 +58,6 @@ fun PreviewTutorialButton() {
     TutorialButton(
         text = "Next",
         onClick = {},
-        textColor = LocalColorPalette.current.midVolume,
+        textColor = ThereminTheme.color.midVolume,
     )
 }

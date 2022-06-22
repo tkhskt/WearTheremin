@@ -22,12 +22,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.tkhskt.theremin.core.ui.LocalColorPalette
+import com.tkhskt.theremin.core.ui.ThereminTheme
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -46,10 +45,10 @@ fun ToggleButton(
     val maxOffset = with(LocalDensity.current) { (toggleButtonWidth - circleSize - 2.dp).toPx() }
     val colorAnimation = animateColorAsState(
         targetValue = if (swipeableState.targetValue) {
-            LocalColorPalette.current.buttonEnabled
+            ThereminTheme.color.buttonEnabled
         } else {
-            LocalColorPalette.current.buttonDisabled
-        }
+            ThereminTheme.color.buttonDisabled
+        },
     )
     Box(
         modifier = Modifier
@@ -73,14 +72,14 @@ fun ToggleButton(
                     swipeableState.animateTo(!swipeableState.currentValue)
                 }
             },
-        contentAlignment = Alignment.CenterStart
+        contentAlignment = Alignment.CenterStart,
     ) {
         Box(
             modifier = Modifier
                 .offset { IntOffset(swipeableState.offset.value.roundToInt(), 0) }
                 .clip(CircleShape)
                 .size(circleSize)
-                .background(Color.White),
+                .background(ThereminTheme.color.button),
         )
     }
 }

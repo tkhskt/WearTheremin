@@ -20,6 +20,9 @@ private val LightDefaultColorScheme = lightColorScheme(
 object ThereminColorPalette {
     val text = Color.White
     val button = Color.White
+    val star = Color.White
+    val sun = Color.White
+    val wave = Color.White
     val buttonShadow = Gray20
     val lowVolume1 = Blue10
     val lowVolume1Light = Blue20
@@ -39,6 +42,18 @@ object ThereminColorPalette {
 
 val LocalColorPalette = staticCompositionLocalOf { ThereminColorPalette }
 
+val LocalTypography = staticCompositionLocalOf { ThereminTypography }
+
+object ThereminTheme {
+    val color
+        @Composable
+        get() = LocalColorPalette.current
+
+    val typography
+        @Composable
+        get() = LocalTypography.current
+}
+
 @Composable
 fun ThereminTheme(content: @Composable () -> Unit) {
     val typography = ThereminTypography
@@ -50,7 +65,7 @@ fun ThereminTheme(content: @Composable () -> Unit) {
         MaterialTheme(
             colorScheme = LightDefaultColorScheme,
             typography = ThereminTypography,
-            content = content
+            content = content,
         )
     }
 }
