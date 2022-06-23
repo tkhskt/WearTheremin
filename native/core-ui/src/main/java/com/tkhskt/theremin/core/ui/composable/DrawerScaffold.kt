@@ -40,8 +40,8 @@ import kotlin.math.max
 import kotlin.math.roundToInt
 
 enum class ThereminDrawerValue {
-    CLOSE,
-    OPEN,
+    Close,
+    Open,
 }
 
 class ThereminScaffoldState(
@@ -52,11 +52,11 @@ class ThereminScaffoldState(
 class ThereminDrawerState {
 
     internal val swipeableState = SwipeableState(
-        initialValue = ThereminDrawerValue.CLOSE,
+        initialValue = ThereminDrawerValue.Close,
         confirmStateChange = { true },
     )
 
-    suspend fun open() = animateTo(ThereminDrawerValue.OPEN, SwipeableDefaults.AnimationSpec)
+    suspend fun open() = animateTo(ThereminDrawerValue.Open, SwipeableDefaults.AnimationSpec)
 
     @ExperimentalMaterialApi
     suspend fun animateTo(targetValue: ThereminDrawerValue, anim: AnimationSpec<Float>) {
@@ -185,7 +185,7 @@ private fun MainContentContainer(
             .scale(scale)
             .swipeable(
                 state = drawerState.swipeableState,
-                anchors = mapOf(0f to ThereminDrawerValue.CLOSE, maxOffset to ThereminDrawerValue.OPEN),
+                anchors = mapOf(0f to ThereminDrawerValue.Close, maxOffset to ThereminDrawerValue.Open),
                 thresholds = { _, _ -> FractionalThreshold(0.3f) },
                 orientation = Orientation.Horizontal,
                 resistance = null,
