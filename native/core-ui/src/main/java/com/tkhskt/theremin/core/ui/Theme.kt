@@ -40,9 +40,9 @@ object ThereminColorPalette {
     val buttonDisabled = Gray40
 }
 
-val LocalColorPalette = staticCompositionLocalOf { ThereminColorPalette }
+internal val LocalColorPalette = staticCompositionLocalOf { ThereminColorPalette }
 
-val LocalTypography = staticCompositionLocalOf { ThereminTypography }
+internal val LocalTypography = staticCompositionLocalOf { ThereminTypography }
 
 object ThereminTheme {
     val color
