@@ -196,7 +196,7 @@ private fun IconMenuItem(
             Spacer(modifier = Modifier.size(28.dp))
             Text(
                 text = text,
-                style = ThereminTheme.typography.bodySmall,
+                style = ThereminTheme.typography.bodyMedium,
             )
         }
         Border()
@@ -232,7 +232,7 @@ private fun ToggleButtonMenuItem(
         ) {
             Text(
                 text = text,
-                style = ThereminTheme.typography.bodySmall,
+                style = ThereminTheme.typography.bodyMedium,
             )
             ToggleButton(
                 checked = buttonEnabled,

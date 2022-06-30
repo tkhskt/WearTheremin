@@ -38,6 +38,11 @@ object ThereminColorPalette {
     val border = Gray30
     val buttonEnabled = Green10
     val buttonDisabled = Gray40
+    val licenseName = Gray50
+    val licenseTitle = Black10
+    val artifactName = Black10
+    val versionText = Gray50
+    val licenseDivider = Gray60
 }
 
 internal val LocalColorPalette = staticCompositionLocalOf { ThereminColorPalette }

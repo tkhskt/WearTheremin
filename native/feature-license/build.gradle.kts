@@ -54,7 +54,6 @@ dependencies {
     implementation(project(":redux"))
     implementation(project(":core-ui"))
 
-    implementation(libs.play.services.wearable)
     implementation(libs.android.material)
 
     // AndroidX
@@ -77,6 +76,8 @@ dependencies {
 
     implementation(libs.timber)
     ktlint(libs.ktlint)
+
+    implementation(libs.bundles.moshi)
 
     // theremin-core(local maven)
     implementation(libs.theremin.core)

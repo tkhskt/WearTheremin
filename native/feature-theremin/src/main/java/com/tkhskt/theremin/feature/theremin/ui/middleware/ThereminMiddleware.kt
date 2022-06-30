@@ -37,6 +37,10 @@ class ThereminMiddleware(
                 sendThereminParametersUseCase(state.frequency, volume)
                 ThereminAction.VolumeChanged(volume)
             }
+            is ThereminAction.ClickLicenseButton -> {
+                _sideEffect.emit(ThereminEffect.NavigateToLicense)
+                action
+            }
             else -> {
                 action
             }

@@ -65,6 +65,8 @@ theremin-core = { module = "com.tkhskt.theremin:core", version = "1.0.0" }
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 oboe = { module = "com.google.oboe:oboe", version = "1.6.1" }
 ktlint = { module = "com.pinterest:ktlint", version = "0.43.1" }
+moshi = { module = "com.squareup.moshi:moshi", version = "1.13.0" }
+moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version = "1.13.0" }
 
 [bundles]
 lifecycle = ["lifecycle-viewmodel", "lifecycle-runtime"]
@@ -72,6 +74,7 @@ coroutines = ["coroutines-android", "coroutines-core", "coroutines-play-services
 compose = ["compose-material", "compose-material3", "compose-material3-window-size", "compose-tooling-preview", "compose-compiler", "compose-hilt", "compose-navigation"]
 mediapipe = ["mediapipe-core", "mediapipe-hands"]
 wear-compose = ["wear-compose-foundation", "wear-compose-material", "wear-compose-navigation"]
+moshi = ["moshi", "moshi-kotlin"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

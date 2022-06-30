@@ -10,4 +10,5 @@ sealed interface ThereminAction : Action {
     data class VolumeChanged(val volume: Float) : ThereminAction
     object ClickAppSoundButton : ThereminAction
     object ClickBrowserSoundButton : ThereminAction
+    object ClickLicenseButton : ThereminAction
 }

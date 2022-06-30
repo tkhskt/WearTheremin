@@ -56,7 +56,7 @@ fun TutorialContent(
                 Spacer(modifier = Modifier.size(36.dp))
                 Text(
                     text = body,
-                    style = ThereminTheme.typography.bodySmall,
+                    style = ThereminTheme.typography.bodyMedium,
                 )
             }
         }

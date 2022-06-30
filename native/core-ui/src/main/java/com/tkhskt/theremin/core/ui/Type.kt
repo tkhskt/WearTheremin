@@ -14,6 +14,13 @@ val ThereminTypography = Typography(
         letterSpacing = 0.sp,
         color = Color.White,
     ),
+    headlineLarge = TextStyle(
+        fontWeight = FontWeight.W700,
+        fontSize = 28.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp,
+        color = Color.White,
+    ),
     headlineMedium = TextStyle(
         fontWeight = FontWeight.W700,
         fontSize = 24.sp,
@@ -35,10 +42,17 @@ val ThereminTypography = Typography(
         letterSpacing = 0.sp,
         color = Color.White,
     ),
-    bodySmall = TextStyle(
+    bodyMedium = TextStyle(
         fontWeight = FontWeight.W400,
         fontSize = 18.sp,
         lineHeight = 24.sp,
+        letterSpacing = 0.sp,
+        color = Color.White,
+    ),
+    bodySmall = TextStyle(
+        fontWeight = FontWeight.W400,
+        fontSize = 14.sp,
+        lineHeight = 19.sp,
         letterSpacing = 0.sp,
         color = Color.White,
     ),

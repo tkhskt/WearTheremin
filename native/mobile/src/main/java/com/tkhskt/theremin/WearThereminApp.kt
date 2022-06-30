@@ -19,6 +19,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.tkhskt.theremin.core.ui.ThereminTheme
+import com.tkhskt.theremin.feature.license.ui.LicenseScreen
 import com.tkhskt.theremin.feature.theremin.PermissionRequestState
 import com.tkhskt.theremin.feature.theremin.bluetoothPermissionGranted
 import com.tkhskt.theremin.feature.theremin.requestBluetoothPermissions
@@ -122,12 +123,18 @@ fun WearThereminApp(
                 )
             }
             composable(
+                route = "license",
+            ) {
+                LicenseScreen()
+            }
+            composable(
                 route = "main",
             ) {
                 ThereminScreen(
                     viewModel = viewModel,
                     oscillatorController = oscillatorController,
                     handTracker = handTracker,
+                    navigateToLicense = { navController.navigate("license") },
                 )
             }
         }

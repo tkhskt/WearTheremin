@@ -46,7 +46,7 @@ fun TutorialButton(
             Text(
                 text = text,
                 color = textColor,
-                style = ThereminTheme.typography.bodySmall,
+                style = ThereminTheme.typography.bodyMedium,
             )
         }
     }

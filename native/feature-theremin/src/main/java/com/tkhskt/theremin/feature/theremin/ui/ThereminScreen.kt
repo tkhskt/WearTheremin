@@ -44,6 +44,7 @@ fun ThereminScreen(
     viewModel: ThereminViewModel,
     oscillatorController: OscillatorController,
     handTracker: HandTracker,
+    navigateToLicense: () -> Unit,
 ) {
     val state: ThereminUiState by viewModel.uiState.collectAsState()
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -66,6 +67,9 @@ fun ThereminScreen(
                     when (effect) {
                         is ThereminEffect.StartCamera -> {
                             handTracker.startTracking()
+                        }
+                        is ThereminEffect.NavigateToLicense -> {
+                            navigateToLicense()
                         }
                     }
                 }
@@ -106,6 +110,9 @@ fun ThereminScreen(
                 },
                 onClickBrowserButton = {
                     dispatcher(ThereminAction.ClickBrowserSoundButton)
+                },
+                onClickLicenseSection = {
+                    dispatcher(ThereminAction.ClickLicenseButton)
                 },
             )
         },
