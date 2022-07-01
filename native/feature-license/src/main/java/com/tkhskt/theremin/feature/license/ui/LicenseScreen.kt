@@ -60,7 +60,7 @@ fun LicenseScreen(
                     color = ThereminTheme.color.licenseTitle,
                 )
             }
-            uiState.artifactGroups.forEachIndexed { index, artifactGroup ->
+            uiState.artifactGroups.forEach { artifactGroup ->
                 stickyHeader {
                     LicenseItem(
                         modifier = Modifier
