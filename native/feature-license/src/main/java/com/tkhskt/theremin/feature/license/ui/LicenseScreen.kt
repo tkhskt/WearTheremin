@@ -54,7 +54,7 @@ fun LicenseScreen(
         ) {
             item {
                 Text(
-                    modifier = Modifier.padding(top = 32.dp, bottom = 16.dp),
+                    modifier = Modifier.padding(top = 48.dp, bottom = 16.dp),
                     text = "Open Source Licenses",
                     style = ThereminTheme.typography.headlineLarge,
                     color = ThereminTheme.color.licenseTitle,
