@@ -74,11 +74,10 @@ fun LicenseScreen(
                     ArtifactItem(
                         name = artifact.name,
                         version = artifact.version,
-                        clickable = artifact.url != null,
-                        onClick = {
-                            artifact.url?.let { url ->
-                                dispatcher(LicenseAction.ClickArtifactItem(url = url))
-                            }
+                        onClick = if (artifact.url != null) {
+                            { dispatcher(LicenseAction.ClickArtifactItem(url = artifact.url)) }
+                        } else {
+                            null
                         },
                     )
                 }

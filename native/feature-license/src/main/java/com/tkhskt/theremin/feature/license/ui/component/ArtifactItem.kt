@@ -1,8 +1,8 @@
 package com.tkhskt.theremin.feature.license.ui.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,12 +10,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,8 +26,7 @@ import com.tkhskt.theremin.feature.license.R
 fun ArtifactItem(
     name: String,
     version: String,
-    clickable: Boolean,
-    onClick: () -> Unit,
+    onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -36,7 +35,8 @@ fun ArtifactItem(
             .wrapContentHeight()
             .padding(top = 16.dp)
             .run {
-                if (clickable) clickable { onClick() } else this
+                if (onClick != null) return@run clickable { onClick.invoke() }
+                this
             },
     ) {
         Row(
@@ -44,25 +44,28 @@ fun ArtifactItem(
                 .fillMaxWidth()
                 .wrapContentHeight(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Column(
-                modifier = Modifier.wrapContentSize(),
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .weight(1f),
             ) {
                 Text(
+                    modifier = Modifier.fillMaxWidth(),
                     text = name,
                     style = ThereminTheme.typography.bodyMedium,
                     color = ThereminTheme.color.artifactName,
                 )
                 Text(
+                    modifier = Modifier.fillMaxWidth(),
                     text = version,
                     style = ThereminTheme.typography.bodySmall,
                     color = ThereminTheme.color.versionText,
                 )
             }
-            if (clickable) {
+            if (onClick != null) {
+                Spacer(modifier = Modifier.size(16.dp))
                 Image(
-                    modifier = Modifier.padding(start = 16.dp),
                     painter = painterResource(id = R.drawable.ic_license_arrow),
                     contentDescription = null,
                 )
@@ -80,9 +83,9 @@ fun ArtifactItem(
 fun PreviewArtifactItem() {
     ThereminTheme {
         ArtifactItem(
+            modifier = Modifier.background(Color.White),
             name = "Compose Animation",
             version = "1.2.0-alpha04",
-            clickable = true,
             onClick = {},
         )
     }
