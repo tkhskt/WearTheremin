@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import com.tkhskt.theremin.core.ui.ThereminTheme
 
 @Composable
@@ -23,4 +24,15 @@ fun LicenseItem(
         style = ThereminTheme.typography.bodyMedium,
         color = ThereminTheme.color.licenseName,
     )
+}
+
+@Preview
+@Composable
+fun PreviewLicenseItem() {
+    ThereminTheme {
+        LicenseItem(
+            name = "Apache License 2.0",
+            onClick = {},
+        )
+    }
 }

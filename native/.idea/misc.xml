@@ -34,7 +34,9 @@
         <entry key="../../../../../layout/compose-model-1655633158407.xml" value="0.1" />
         <entry key="../../../../../layout/compose-model-1655633199424.xml" value="1.0" />
         <entry key="core-ui/src/main/java/com/tkhskt/theremin/core/ui/composable/MenuIcon.kt" value="2.5" />
+        <entry key="feature-license/src/main/java/com/tkhskt/theremin/feature/license/ui/LicenseScreen.kt" value="0.5" />
         <entry key="feature-license/src/main/java/com/tkhskt/theremin/feature/license/ui/component/ArtifactItem.kt" value="0.39444444444444443" />
+        <entry key="feature-license/src/main/java/com/tkhskt/theremin/feature/license/ui/component/LicenseItem.kt" value="0.5" />
         <entry key="feature-theremin/src/main/java/com/tkhskt/theremin/feature/theremin/ui/ThereminScreen.kt" value="0.45" />
         <entry key="feature-theremin/src/main/java/com/tkhskt/theremin/feature/theremin/ui/component/StarryBackground.kt" value="0.42947635135135137" />
         <entry key="feature-theremin/src/main/java/com/tkhskt/theremin/feature/theremin/ui/component/Sun.kt" value="0.6425925925925926" />

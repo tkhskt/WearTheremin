@@ -16,6 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tkhskt.theremin.core.ui.ThereminTheme
@@ -86,5 +87,32 @@ fun LicenseScreen(
                 Spacer(modifier = Modifier.size(32.dp))
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewLicenseScreen() {
+    ThereminTheme {
+        LicenseScreen(
+            uiState = LicenseUiState(
+                artifactGroups = (0..10).map {
+                    LicenseUiState.ArtifactGroup(
+                        license = LicenseUiState.ArtifactGroup.License(
+                            name = "Apache License 2.0",
+                            url = "",
+                        ),
+                        artifacts = (0..4).map {
+                            LicenseUiState.ArtifactGroup.Artifact(
+                                name = "AndroidX Metrics",
+                                version = "1.0.0",
+                                url = "",
+                            )
+                        },
+                    )
+                },
+            ),
+            dispatcher = {},
+        )
     }
 }
