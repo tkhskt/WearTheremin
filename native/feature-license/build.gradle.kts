@@ -82,6 +82,8 @@ dependencies {
     // theremin-core(local maven)
     implementation(libs.theremin.core)
 
+    implementation("com.google.accompanist:accompanist-webview:0.24.13-rc")
+
     testImplementation(libs.test.junit)
     androidTestImplementation(libs.test.junit.ext)
     androidTestImplementation(libs.test.espresso)

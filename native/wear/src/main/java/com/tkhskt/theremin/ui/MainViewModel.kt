@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,14 +36,6 @@ class MainViewModel @Inject constructor(
         initialValue = MainUiState.Initial,
         started = SharingStarted.Lazily,
     )
-
-    init {
-        viewModelScope.launch {
-            sideEffect.collect {
-                Timber.d(it.toString())
-            }
-        }
-    }
 
     override fun dispatch(action: MainAction) {
         viewModelScope.launch {

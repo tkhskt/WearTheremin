@@ -15,11 +15,18 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.tkhskt.theremin.core.ui.ThereminTheme
+import com.tkhskt.theremin.feature.license.LicenseDestination
+import com.tkhskt.theremin.feature.license.WebViewGraph
+import com.tkhskt.theremin.feature.license.licenseRoute
 import com.tkhskt.theremin.feature.license.ui.LicenseScreen
+import com.tkhskt.theremin.feature.license.ui.WebViewScreen
+import com.tkhskt.theremin.feature.license.webViewRoute
 import com.tkhskt.theremin.feature.theremin.PermissionRequestState
 import com.tkhskt.theremin.feature.theremin.bluetoothPermissionGranted
 import com.tkhskt.theremin.feature.theremin.requestBluetoothPermissions
@@ -122,10 +129,10 @@ fun WearThereminApp(
                     },
                 )
             }
-            composable(
-                route = "license",
+            licenseRoute(
+                navigateToWebView = { navController.navigate("${WebViewGraph.route}/$it") },
             ) {
-                LicenseScreen()
+                webViewRoute()
             }
             composable(
                 route = "main",

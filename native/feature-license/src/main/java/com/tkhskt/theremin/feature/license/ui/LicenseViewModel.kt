@@ -51,9 +51,11 @@ class LicenseViewModel @Inject constructor(
                 )
             }
             is LicenseAction.ClickLicenseItem -> {
+                _sideEffect.emit(LicenseEffect.TransitToWebView(action.url))
                 state
             }
             is LicenseAction.ClickArtifactItem -> {
+                _sideEffect.emit(LicenseEffect.TransitToWebView(action.url))
                 state
             }
         }
