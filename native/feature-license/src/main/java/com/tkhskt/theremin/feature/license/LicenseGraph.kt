@@ -10,7 +10,7 @@ object LicenseDestination {
     const val destination = "license"
 }
 
-fun NavGraphBuilder.licenseRoute(
+fun NavGraphBuilder.licenseGraph(
     navigateToWebView: (String) -> Unit,
     nestedGraphs: NavGraphBuilder.() -> Unit,
 ) {

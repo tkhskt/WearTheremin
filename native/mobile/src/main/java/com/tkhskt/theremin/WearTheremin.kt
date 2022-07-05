@@ -15,30 +15,27 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.tkhskt.theremin.core.ui.ThereminTheme
 import com.tkhskt.theremin.feature.license.LicenseDestination
-import com.tkhskt.theremin.feature.license.WebViewGraph
-import com.tkhskt.theremin.feature.license.licenseRoute
-import com.tkhskt.theremin.feature.license.ui.LicenseScreen
-import com.tkhskt.theremin.feature.license.ui.WebViewScreen
+import com.tkhskt.theremin.feature.license.WebViewDestination
+import com.tkhskt.theremin.feature.license.licenseGraph
 import com.tkhskt.theremin.feature.license.webViewRoute
 import com.tkhskt.theremin.feature.theremin.PermissionRequestState
+import com.tkhskt.theremin.feature.theremin.ThereminDestination
 import com.tkhskt.theremin.feature.theremin.bluetoothPermissionGranted
 import com.tkhskt.theremin.feature.theremin.requestBluetoothPermissions
+import com.tkhskt.theremin.feature.theremin.thereminGraph
 import com.tkhskt.theremin.feature.theremin.ui.HandTracker
 import com.tkhskt.theremin.feature.theremin.ui.OscillatorController
-import com.tkhskt.theremin.feature.theremin.ui.ThereminScreen
 import com.tkhskt.theremin.feature.theremin.ui.ThereminViewModel
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
-import com.tkhskt.theremin.feature.tutorial.ui.TutorialScreen
+import com.tkhskt.theremin.feature.tutorial.TutorialDestination
+import com.tkhskt.theremin.feature.tutorial.tutorialGraph
 
 @Composable
-fun WearThereminApp(
+fun WearTheremin(
     viewModel: ThereminViewModel = hiltViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -114,36 +111,29 @@ fun WearThereminApp(
     ThereminTheme {
         NavHost(
             navController = navController,
-            startDestination = "tutorial",
+            startDestination = TutorialDestination.route,
         ) {
-            composable(
-                route = "tutorial",
-            ) {
-                TutorialScreen(
-                    navigateToTheremin = {
-                        navController.navigate("main") {
-                            popUpTo("tutorial") {
-                                inclusive = true
-                            }
+            tutorialGraph(
+                navigateToTheremin = {
+                    navController.navigate(ThereminDestination.route) {
+                        popUpTo(TutorialDestination.route) {
+                            inclusive = true
                         }
-                    },
-                )
-            }
-            licenseRoute(
-                navigateToWebView = { navController.navigate("${WebViewGraph.route}/$it") },
-            ) {
-                webViewRoute()
-            }
-            composable(
-                route = "main",
-            ) {
-                ThereminScreen(
-                    viewModel = viewModel,
-                    oscillatorController = oscillatorController,
-                    handTracker = handTracker,
-                    navigateToLicense = { navController.navigate("license") },
-                )
-            }
+                    }
+                },
+            )
+            licenseGraph(
+                navigateToWebView = { navController.navigate("${WebViewDestination.route}/$it") },
+                nestedGraphs = { webViewRoute() },
+            )
+            thereminGraph(
+                viewModel = viewModel,
+                oscillatorController = oscillatorController,
+                handTracker = handTracker,
+                navigateToLicense = {
+                    navController.navigate(LicenseDestination.route)
+                },
+            )
         }
     }
 }
