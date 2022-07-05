@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.activity)
+    implementation(libs.datastore)
 
     // hilt
     implementation(libs.hilt.android)
