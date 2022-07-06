@@ -69,6 +69,7 @@ dependencies {
     // Jetpack Compose
     implementation(libs.activity.compose)
     implementation(libs.bundles.compose)
+    implementation(libs.compose.webview)
     debugImplementation(libs.compose.tooling)
 
     // Coroutines
@@ -81,8 +82,6 @@ dependencies {
 
     // theremin-core(local maven)
     implementation(libs.theremin.core)
-
-    implementation("com.google.accompanist:accompanist-webview:0.24.13-rc")
 
     testImplementation(libs.test.junit)
     androidTestImplementation(libs.test.junit.ext)

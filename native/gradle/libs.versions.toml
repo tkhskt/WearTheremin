@@ -46,6 +46,7 @@ compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", v
 compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version = "2.4.2" }
 compose-hilt = { module = "androidx.hilt:hilt-navigation-compose", version = "1.0.0" }
+compose-webview = { module = "com.google.accompanist:accompanist-webview", version = "0.24.13-rc" }
 
 # Wear Compose
 wear-compose-foundation = { module = "androidx.wear.compose:compose-foundation", version.ref = "wear-compose" }
