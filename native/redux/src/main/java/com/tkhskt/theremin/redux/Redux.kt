@@ -27,10 +27,14 @@ abstract class ReduxViewModel<in ACTION : Action, out UI_STATE : UiState, SIDE_E
     abstract fun dispatch(action: ACTION)
 }
 
+@JvmInline
+value class Dispatcher<ACTION>(
+    val dispatch: suspend (ACTION) -> Unit,
+)
 
 interface Middleware<ACTION : Action, STATE : State, SIDE_EFFECT : SideEffect> {
     val sideEffect: SharedFlow<SIDE_EFFECT>?
-    suspend fun dispatch(store: Store<ACTION, STATE, SIDE_EFFECT>): (suspend (ACTION) -> Unit) -> (suspend (ACTION) -> Unit)
+    suspend fun dispatch(store: Store<ACTION, STATE, SIDE_EFFECT>): (Dispatcher<ACTION>) -> Dispatcher<ACTION>
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -49,18 +53,18 @@ class Store<ACTION : Action, STATE : State, SIDE_EFFECT : SideEffect>(
     val sideEffect: Flow<SIDE_EFFECT>
         get() = middlewares.mapNotNull { it.sideEffect }.merge()
 
-    val dispatch: suspend (ACTION) -> Unit = { action ->
-        compose(middlewares.map { it.dispatch(this) })(::dispatch)(action)
-    }
+    val dispatch: suspend (ACTION) -> Unit = Dispatcher<ACTION> { action ->
+        compose(middlewares.map { it.dispatch(this) })(Dispatcher(::dispatch)).dispatch(action)
+    }.dispatch
 
     private suspend fun dispatch(action: ACTION) {
         _state.value = reducer.reduce(action, _state.value)
     }
 
-    private fun compose(functions: List<(suspend (ACTION) -> Unit) -> (suspend (ACTION) -> Unit)>): (suspend (ACTION) -> Unit) -> (suspend (ACTION) -> Unit) {
+    private fun compose(functions: List<(Dispatcher<ACTION>) -> Dispatcher<ACTION>>): (Dispatcher<ACTION>) -> Dispatcher<ACTION> {
         return { last ->
-            { action ->
-                functions.foldRight(last) { f, composed -> f(composed) }(action)
+            Dispatcher { action ->
+                functions.foldRight(last) { f, composed -> f(composed) }.dispatch(action)
             }
         }
     }

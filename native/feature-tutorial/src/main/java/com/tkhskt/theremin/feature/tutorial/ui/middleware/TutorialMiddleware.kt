@@ -3,6 +3,7 @@ package com.tkhskt.theremin.feature.tutorial.ui.middleware
 import com.tkhskt.theremin.feature.tutorial.ui.model.TutorialAction
 import com.tkhskt.theremin.feature.tutorial.ui.model.TutorialEffect
 import com.tkhskt.theremin.feature.tutorial.ui.model.TutorialState
+import com.tkhskt.theremin.redux.Dispatcher
 import com.tkhskt.theremin.redux.Middleware
 import com.tkhskt.theremin.redux.Store
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -14,13 +15,13 @@ class TutorialMiddleware : Middleware<TutorialAction, TutorialState, TutorialEff
     private val _sideEffect = MutableSharedFlow<TutorialEffect>()
     override val sideEffect: SharedFlow<TutorialEffect> = _sideEffect.asSharedFlow()
 
-    override suspend fun dispatch(store: Store<TutorialAction, TutorialState, TutorialEffect>): (suspend (TutorialAction) -> Unit) -> suspend (TutorialAction) -> Unit {
+    override suspend fun dispatch(store: Store<TutorialAction, TutorialState, TutorialEffect>): (Dispatcher<TutorialAction>) -> Dispatcher<TutorialAction> {
         return { next ->
-            { action ->
+            Dispatcher { action ->
                 if (action is TutorialAction.ClickStepButton && store.currentState.currentStep == TutorialState.Step.PITCH) {
                     _sideEffect.emit(TutorialEffect.TransitToTheremin)
                 }
-                next(action)
+                next.dispatch(action)
             }
         }
     }

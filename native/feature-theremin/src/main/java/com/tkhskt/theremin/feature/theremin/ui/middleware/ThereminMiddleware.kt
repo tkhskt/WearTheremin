@@ -7,6 +7,7 @@ import com.tkhskt.theremin.feature.theremin.domain.usecase.SendThereminParameter
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminEffect
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminState
+import com.tkhskt.theremin.redux.Dispatcher
 import com.tkhskt.theremin.redux.Middleware
 import com.tkhskt.theremin.redux.Store
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,9 +23,9 @@ class ThereminMiddleware(
     private val _sideEffect = MutableSharedFlow<ThereminEffect>()
     override val sideEffect: SharedFlow<ThereminEffect> = _sideEffect
 
-    override suspend fun dispatch(store: Store<ThereminAction, ThereminState, ThereminEffect>): (suspend (ThereminAction) -> Unit) -> suspend (ThereminAction) -> Unit {
+    override suspend fun dispatch(store: Store<ThereminAction, ThereminState, ThereminEffect>): (Dispatcher<ThereminAction>) -> Dispatcher<ThereminAction> {
         return { next ->
-            { action ->
+            Dispatcher { action ->
                 val newAction = when (action) {
                     is ThereminAction.InitializeBle -> {
                         thereminRepository.initialize()
@@ -48,7 +49,7 @@ class ThereminMiddleware(
                         action
                     }
                 }
-                next(newAction)
+                next.dispatch(newAction)
                 if (store.currentState.appSoundEnabled) {
                     _sideEffect.emit(ThereminEffect.StartCamera)
                 }
