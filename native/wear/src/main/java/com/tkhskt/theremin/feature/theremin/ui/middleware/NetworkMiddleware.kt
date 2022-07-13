@@ -5,6 +5,7 @@ import com.tkhskt.theremin.feature.theremin.ui.model.MainAction
 import com.tkhskt.theremin.feature.theremin.ui.model.MainEffect
 import com.tkhskt.theremin.feature.theremin.ui.model.MainState
 import com.tkhskt.theremin.redux.Middleware
+import com.tkhskt.theremin.redux.Store
 import kotlinx.coroutines.flow.SharedFlow
 
 class NetworkMiddleware(
@@ -13,21 +14,19 @@ class NetworkMiddleware(
 
     override val sideEffect: SharedFlow<MainEffect>? = null
 
-    override suspend fun dispatchBeforeReduce(action: MainAction, state: MainState): MainAction {
-        return when (action) {
-            is MainAction.ChangeGravity -> {
-                if (state.started) {
-                    sendGravityUseCase(action.gravity)
+    override suspend fun dispatch(store: Store<MainAction, MainState, MainEffect>): (suspend (MainAction) -> Unit) -> suspend (MainAction) -> Unit {
+        return { next ->
+            { action ->
+                when (action) {
+                    is MainAction.ChangeGravity -> {
+                        if (store.currentState.started) {
+                            sendGravityUseCase(action.gravity)
+                        }
+                    }
+                    else -> {}
                 }
-                action
-            }
-            else -> {
-                action
+                next(action)
             }
         }
-    }
-
-    override suspend fun dispatchAfterReduce(action: MainAction, state: MainState): MainAction {
-        return action
     }
 }

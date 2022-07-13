@@ -8,6 +8,7 @@ import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminEffect
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminState
 import com.tkhskt.theremin.redux.Middleware
+import com.tkhskt.theremin.redux.Store
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
@@ -21,42 +22,36 @@ class ThereminMiddleware(
     private val _sideEffect = MutableSharedFlow<ThereminEffect>()
     override val sideEffect: SharedFlow<ThereminEffect> = _sideEffect
 
-    override suspend fun dispatchBeforeReduce(action: ThereminAction, state: ThereminState): ThereminAction {
-        return when (action) {
-            is ThereminAction.InitializeBle -> {
-                thereminRepository.initialize()
-                action
-            }
-            is ThereminAction.ChangeGravity -> {
-                val frequency = calcFrequencyUseCase(action.gravity)
-                sendThereminParametersUseCase(state.frequency, state.volume)
-                ThereminAction.FrequencyChanged(frequency)
-            }
-            is ThereminAction.ChangeDistance -> {
-                val volume = calcVolumeUseCase(action.distance)
-                sendThereminParametersUseCase(state.frequency, volume)
-                ThereminAction.VolumeChanged(volume)
-            }
-            is ThereminAction.ClickLicenseButton -> {
-                _sideEffect.emit(ThereminEffect.NavigateToLicense)
-                action
-            }
-            else -> {
-                action
-            }
-        }
-    }
-
-    override suspend fun dispatchAfterReduce(action: ThereminAction, state: ThereminState): ThereminAction {
-        return when (action) {
-            is ThereminAction.ClickAppSoundButton -> {
-                if (state.appSoundEnabled) {
+    override suspend fun dispatch(store: Store<ThereminAction, ThereminState, ThereminEffect>): (suspend (ThereminAction) -> Unit) -> suspend (ThereminAction) -> Unit {
+        return { next ->
+            { action ->
+                val newAction = when (action) {
+                    is ThereminAction.InitializeBle -> {
+                        thereminRepository.initialize()
+                        action
+                    }
+                    is ThereminAction.ChangeGravity -> {
+                        val frequency = calcFrequencyUseCase(action.gravity)
+                        sendThereminParametersUseCase(store.currentState.frequency, store.currentState.volume)
+                        ThereminAction.FrequencyChanged(frequency)
+                    }
+                    is ThereminAction.ChangeDistance -> {
+                        val volume = calcVolumeUseCase(action.distance)
+                        sendThereminParametersUseCase(store.currentState.frequency, volume)
+                        ThereminAction.VolumeChanged(volume)
+                    }
+                    is ThereminAction.ClickLicenseButton -> {
+                        _sideEffect.emit(ThereminEffect.NavigateToLicense)
+                        action
+                    }
+                    else -> {
+                        action
+                    }
+                }
+                next(newAction)
+                if (store.currentState.appSoundEnabled) {
                     _sideEffect.emit(ThereminEffect.StartCamera)
                 }
-                action
-            }
-            else -> {
-                action
             }
         }
     }

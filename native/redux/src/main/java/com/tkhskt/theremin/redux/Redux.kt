@@ -2,13 +2,11 @@ package com.tkhskt.theremin.redux
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.scan
 
 interface State
 
@@ -22,19 +20,17 @@ interface Reducer<ACTION : Action, STATE : State> {
     suspend fun reduce(action: ACTION, state: STATE): STATE
 }
 
-interface Middleware<ACTION : Action, STATE : State, SIDE_EFFECT : SideEffect> {
-    val sideEffect: SharedFlow<SIDE_EFFECT>?
-
-    suspend fun dispatchBeforeReduce(action: ACTION, state: STATE): ACTION
-
-    suspend fun dispatchAfterReduce(action: ACTION, state: STATE): ACTION
-}
-
 abstract class ReduxViewModel<in ACTION : Action, out UI_STATE : UiState, SIDE_EFFECT : SideEffect> :
     ViewModel() {
     abstract val uiState: StateFlow<UI_STATE>
     abstract val sideEffect: SharedFlow<SIDE_EFFECT>
     abstract fun dispatch(action: ACTION)
+}
+
+
+interface Middleware<ACTION : Action, STATE : State, SIDE_EFFECT : SideEffect> {
+    val sideEffect: SharedFlow<SIDE_EFFECT>?
+    suspend fun dispatch(store: Store<ACTION, STATE, SIDE_EFFECT>): (suspend (ACTION) -> Unit) -> (suspend (ACTION) -> Unit)
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -44,31 +40,30 @@ class Store<ACTION : Action, STATE : State, SIDE_EFFECT : SideEffect>(
     private val middlewares: List<Middleware<ACTION, STATE, SIDE_EFFECT>>,
 ) {
 
-    private object EmptyAction : Action
+    private val _state = MutableStateFlow(initialState)
+    val state: StateFlow<STATE> = _state.asStateFlow()
 
-    private val actionFlow = MutableSharedFlow<ACTION>()
-
-    val state: Flow<STATE> = actionFlow
-        .scan((EmptyAction as Action) to initialState) { (_, state), action ->
-            var newAction = action
-            middlewares.forEach {
-                newAction = it.dispatchBeforeReduce(newAction, state)
-            }
-            newAction to reducer.reduce(newAction, state)
-        }.onEach { (action, state) ->
-            if (action is EmptyAction) return@onEach
-            var newAction = action as ACTION
-            middlewares.forEach {
-                newAction = it.dispatchAfterReduce(newAction, state)
-            }
-        }.map { (_, state) ->
-            state
-        }
+    val currentState: STATE
+        get() = state.value
 
     val sideEffect: Flow<SIDE_EFFECT>
         get() = middlewares.mapNotNull { it.sideEffect }.merge()
 
-    suspend fun dispatch(action: ACTION) = actionFlow.emit(action)
+    val dispatch: suspend (ACTION) -> Unit = { action ->
+        compose(middlewares.map { it.dispatch(this) })(::dispatch)(action)
+    }
+
+    private suspend fun dispatch(action: ACTION) {
+        _state.value = reducer.reduce(action, _state.value)
+    }
+
+    private fun compose(functions: List<(suspend (ACTION) -> Unit) -> (suspend (ACTION) -> Unit)>): (suspend (ACTION) -> Unit) -> (suspend (ACTION) -> Unit) {
+        return { last ->
+            { action ->
+                functions.foldRight(last) { f, composed -> f(composed) }(action)
+            }
+        }
+    }
 }
 
 fun <ACTION : Action, STATE : State, SIDE_EFFECT : SideEffect> createStore(

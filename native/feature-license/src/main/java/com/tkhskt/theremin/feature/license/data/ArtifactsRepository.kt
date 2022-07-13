@@ -4,8 +4,8 @@ import android.content.Context
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
-import com.tkhskt.theremin.feature.license.data.model.ArtifactResult
 import com.tkhskt.theremin.feature.license.R
+import com.tkhskt.theremin.feature.license.data.model.ArtifactResult
 import java.io.BufferedReader
 import java.io.InputStreamReader
 

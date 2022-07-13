@@ -25,7 +25,6 @@ class GetArtifactsUseCaseImpl(
                         url = it.url,
                     )
                 }
-
             } else if (artifact.unknownLicenses?.isNotEmpty() == true) {
                 artifact.unknownLicenses.map {
                     Artifact.License(

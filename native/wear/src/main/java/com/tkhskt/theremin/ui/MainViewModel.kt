@@ -39,7 +39,7 @@ class MainViewModel @Inject constructor(
 
     override fun dispatch(action: MainAction) {
         viewModelScope.launch {
-            store.dispatch(action)
+            val b: Unit = store.dispatch(action)
         }
     }
 }
