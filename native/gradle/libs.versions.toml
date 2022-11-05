@@ -69,6 +69,7 @@ oboe = { module = "com.google.oboe:oboe", version = "1.6.1" }
 ktlint = { module = "com.pinterest:ktlint", version = "0.43.1" }
 moshi = { module = "com.squareup.moshi:moshi", version = "1.13.0" }
 moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version = "1.13.0" }
+shiirudo = { module = "com.tkhskt:shiirudo", version = "0.1.1" }
 
 [bundles]
 lifecycle = ["lifecycle-viewmodel", "lifecycle-runtime"]
@@ -83,3 +84,4 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 licensee = { id = "app.cash.licensee", version.ref = "licensee" }
+ksp = { id = "com.google.devtools.ksp", version = "1.7.10-1.0.6" }
