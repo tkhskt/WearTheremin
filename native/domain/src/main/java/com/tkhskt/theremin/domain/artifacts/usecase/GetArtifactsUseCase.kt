@@ -1,7 +1,7 @@
-package com.tkhskt.theremin.domain.license.usecase
+package com.tkhskt.theremin.domain.artifacts.usecase
 
-import com.tkhskt.theremin.domain.license.repository.ArtifactsRepository
-import com.tkhskt.theremin.domain.license.valueobject.Artifact
+import com.tkhskt.theremin.domain.artifacts.repository.ArtifactsRepository
+import com.tkhskt.theremin.domain.artifacts.valueobject.Artifact
 
 interface GetArtifactsUseCase {
     class ArtifactNotFoundException : Exception()

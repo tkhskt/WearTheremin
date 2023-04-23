@@ -1,4 +1,4 @@
-package com.tkhskt.theremin.domain.license.valueobject
+package com.tkhskt.theremin.domain.artifacts.valueobject
 
 data class Artifact(
     val name: String,

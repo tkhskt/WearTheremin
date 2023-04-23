@@ -1,4 +1,4 @@
-package com.tkhskt.theremin.domain.license.repository
+package com.tkhskt.theremin.domain.artifacts.repository
 
 import android.content.Context
 import com.squareup.moshi.JsonAdapter
