@@ -40,6 +40,8 @@ apply(from = "$rootDir/gradle/ktlint.gradle")
 
 dependencies {
 
+    implementation(libs.play.services.wearable)
+
     // hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
@@ -49,6 +51,8 @@ dependencies {
 
     implementation(libs.timber)
     ktlint(libs.ktlint)
+
+    implementation(libs.bundles.moshi)
 
     // theremin-core(local maven)
     implementation(libs.theremin.core)

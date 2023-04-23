@@ -59,6 +59,7 @@ dependencies {
     implementation(project(":feature-license"))
     implementation(project(":core-ui"))
     implementation(project(":redux"))
+    implementation(project(":domain"))
 
     implementation(libs.play.services.wearable)
 

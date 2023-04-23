@@ -1,4 +1,4 @@
-package com.tkhskt.theremin.feature.theremin.data.repository
+package com.tkhskt.theremin.domain.audio.repository
 
 import com.google.android.gms.wearable.MessageClient
 import kotlinx.coroutines.channels.awaitClose

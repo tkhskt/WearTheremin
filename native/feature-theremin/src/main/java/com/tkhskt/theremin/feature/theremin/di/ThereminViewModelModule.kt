@@ -1,19 +1,19 @@
 package com.tkhskt.theremin.feature.theremin.di
 
 import com.google.android.gms.wearable.MessageClient
-import com.tkhskt.theremin.feature.theremin.data.repository.MessageRepository
-import com.tkhskt.theremin.feature.theremin.data.repository.MessageRepositoryImpl
-import com.tkhskt.theremin.feature.theremin.data.repository.ThereminRepository
-import com.tkhskt.theremin.feature.theremin.data.repository.ThereminRepositoryImpl
-import com.tkhskt.theremin.feature.theremin.data.source.BluetoothClient
-import com.tkhskt.theremin.feature.theremin.domain.usecase.CalcFrequencyUseCase
-import com.tkhskt.theremin.feature.theremin.domain.usecase.CalcFrequencyUseCaseImpl
-import com.tkhskt.theremin.feature.theremin.domain.usecase.CalcVolumeUseCase
-import com.tkhskt.theremin.feature.theremin.domain.usecase.CalcVolumeUseCaseImpl
-import com.tkhskt.theremin.feature.theremin.domain.usecase.GetGravityUseCase
-import com.tkhskt.theremin.feature.theremin.domain.usecase.GetGravityUseCaseImpl
-import com.tkhskt.theremin.feature.theremin.domain.usecase.SendThereminParametersUseCase
-import com.tkhskt.theremin.feature.theremin.domain.usecase.SendThereminParametersUseCaseImpl
+import com.tkhskt.theremin.domain.audio.usecase.CalcFrequencyUseCase
+import com.tkhskt.theremin.domain.audio.usecase.CalcFrequencyUseCaseImpl
+import com.tkhskt.theremin.domain.audio.usecase.CalcVolumeUseCase
+import com.tkhskt.theremin.domain.audio.usecase.CalcVolumeUseCaseImpl
+import com.tkhskt.theremin.domain.audio.usecase.GetGravityUseCase
+import com.tkhskt.theremin.domain.audio.usecase.GetGravityUseCaseImpl
+import com.tkhskt.theremin.domain.audio.usecase.SendThereminParametersUseCase
+import com.tkhskt.theremin.domain.audio.usecase.SendThereminParametersUseCaseImpl
+import com.tkhskt.theremin.domain.audio.repository.MessageRepository
+import com.tkhskt.theremin.domain.audio.repository.MessageRepositoryImpl
+import com.tkhskt.theremin.domain.audio.repository.AudioRepository
+import com.tkhskt.theremin.domain.audio.repository.AudioRepositoryImpl
+import com.tkhskt.theremin.domain.audio.repository.BluetoothClient
 import com.tkhskt.theremin.feature.theremin.ui.middleware.ThereminMiddleware
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminEffect
@@ -33,7 +33,7 @@ object ThereminViewModelModule {
     @Provides
     fun provideThereminRepository(
         bluetoothClient: BluetoothClient,
-    ): ThereminRepository = ThereminRepositoryImpl(bluetoothClient)
+    ): AudioRepository = AudioRepositoryImpl(bluetoothClient)
 
     @Provides
     fun provideMessageRepository(
@@ -53,20 +53,20 @@ object ThereminViewModelModule {
 
     @Provides
     fun provideSendThereminParametersUseCase(
-        thereminRepository: ThereminRepository,
-    ): SendThereminParametersUseCase = SendThereminParametersUseCaseImpl(thereminRepository)
+        audioRepository: AudioRepository,
+    ): SendThereminParametersUseCase = SendThereminParametersUseCaseImpl(audioRepository)
 
     @Provides
     fun provideReducer(): ThereminReducer = ThereminReducer()
 
     @Provides
     fun provideMainMiddleware(
-        thereminRepository: ThereminRepository,
+        audioRepository: AudioRepository,
         sendThereminParametersUseCase: SendThereminParametersUseCase,
         calcFrequencyUseCase: CalcFrequencyUseCase,
         calcVolumeUseCase: CalcVolumeUseCase,
     ): ThereminMiddleware = ThereminMiddleware(
-        thereminRepository = thereminRepository,
+        audioRepository = audioRepository,
         sendThereminParametersUseCase = sendThereminParametersUseCase,
         calcFrequencyUseCase = calcFrequencyUseCase,
         calcVolumeUseCase = calcVolumeUseCase,

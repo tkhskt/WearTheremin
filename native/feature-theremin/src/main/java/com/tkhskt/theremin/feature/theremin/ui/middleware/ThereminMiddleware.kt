@@ -1,9 +1,6 @@
 package com.tkhskt.theremin.feature.theremin.ui.middleware
 
-import com.tkhskt.theremin.feature.theremin.data.repository.ThereminRepository
-import com.tkhskt.theremin.feature.theremin.domain.usecase.CalcFrequencyUseCase
-import com.tkhskt.theremin.feature.theremin.domain.usecase.CalcVolumeUseCase
-import com.tkhskt.theremin.feature.theremin.domain.usecase.SendThereminParametersUseCase
+import com.tkhskt.theremin.domain.audio.repository.AudioRepository
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminEffect
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminState
@@ -14,10 +11,10 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
 class ThereminMiddleware(
-    private val thereminRepository: ThereminRepository,
-    private val sendThereminParametersUseCase: SendThereminParametersUseCase,
-    private val calcFrequencyUseCase: CalcFrequencyUseCase,
-    private val calcVolumeUseCase: CalcVolumeUseCase,
+    private val audioRepository: AudioRepository,
+    private val sendThereminParametersUseCase: com.tkhskt.theremin.domain.audio.usecase.SendThereminParametersUseCase,
+    private val calcFrequencyUseCase: com.tkhskt.theremin.domain.audio.usecase.CalcFrequencyUseCase,
+    private val calcVolumeUseCase: com.tkhskt.theremin.domain.audio.usecase.CalcVolumeUseCase,
 ) : Middleware<ThereminAction, ThereminState, ThereminEffect> {
 
     private val _sideEffect = MutableSharedFlow<ThereminEffect>()
@@ -28,7 +25,7 @@ class ThereminMiddleware(
             Dispatcher { action ->
                 val newAction = when (action) {
                     is ThereminAction.InitializeBle -> {
-                        thereminRepository.initialize()
+                        audioRepository.initialize()
                         action
                     }
                     is ThereminAction.ChangeGravity -> {

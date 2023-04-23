@@ -1,11 +1,10 @@
-package com.tkhskt.theremin.feature.license.data
+package com.tkhskt.theremin.domain.license.repository
 
 import android.content.Context
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
-import com.tkhskt.theremin.feature.license.R
-import com.tkhskt.theremin.feature.license.data.model.ArtifactResult
+import com.tkhskt.theremin.domain.R
 import java.io.BufferedReader
 import java.io.InputStreamReader
 

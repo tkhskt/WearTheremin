@@ -5,7 +5,7 @@ import android.content.Context
 import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.NodeClient
 import com.google.android.gms.wearable.Wearable
-import com.tkhskt.theremin.feature.theremin.data.source.BluetoothClient
+import com.tkhskt.theremin.domain.audio.repository.BluetoothClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

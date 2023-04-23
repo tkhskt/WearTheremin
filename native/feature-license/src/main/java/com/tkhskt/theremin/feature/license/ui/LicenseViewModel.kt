@@ -1,7 +1,7 @@
 package com.tkhskt.theremin.feature.license.ui
 
 import androidx.lifecycle.viewModelScope
-import com.tkhskt.theremin.feature.license.domain.GetArtifactsUseCase
+import com.tkhskt.theremin.domain.license.usecase.GetArtifactsUseCase
 import com.tkhskt.theremin.feature.license.ui.model.LicenseAction
 import com.tkhskt.theremin.feature.license.ui.model.LicenseEffect
 import com.tkhskt.theremin.feature.license.ui.model.LicenseState
@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LicenseViewModel @Inject constructor(
-    private val getArtifactsUseCase: GetArtifactsUseCase,
+    private val getArtifactsUseCase: com.tkhskt.theremin.domain.license.usecase.GetArtifactsUseCase,
 ) : ReduxViewModel<LicenseAction, LicenseUiState, LicenseEffect>(), Reducer<LicenseAction, LicenseState> {
 
     private val _sideEffect = MutableSharedFlow<LicenseEffect>()

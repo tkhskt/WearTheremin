@@ -1,7 +1,7 @@
 package com.tkhskt.theremin.feature.theremin.ui
 
 import androidx.lifecycle.viewModelScope
-import com.tkhskt.theremin.feature.theremin.domain.usecase.GetGravityUseCase
+import com.tkhskt.theremin.domain.audio.usecase.GetGravityUseCase
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminEffect
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminState
@@ -22,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ThereminViewModel @Inject constructor(
     private val store: Store<ThereminAction, ThereminState, ThereminEffect>,
-    private val getGravityUseCase: GetGravityUseCase,
+    private val getGravityUseCase: com.tkhskt.theremin.domain.audio.usecase.GetGravityUseCase,
 ) : ReduxViewModel<ThereminAction, ThereminUiState, ThereminEffect>() {
 
     override val sideEffect: SharedFlow<ThereminEffect> = store.sideEffect.shareIn(

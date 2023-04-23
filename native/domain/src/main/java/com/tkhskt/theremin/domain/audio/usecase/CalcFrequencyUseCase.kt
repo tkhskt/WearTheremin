@@ -1,4 +1,4 @@
-package com.tkhskt.theremin.feature.theremin.domain.usecase
+package com.tkhskt.theremin.domain.audio.usecase
 
 import androidx.core.math.MathUtils
 

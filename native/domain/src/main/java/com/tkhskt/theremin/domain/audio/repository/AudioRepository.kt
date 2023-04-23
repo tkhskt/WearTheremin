@@ -1,16 +1,13 @@
-package com.tkhskt.theremin.feature.theremin.data.repository
+package com.tkhskt.theremin.domain.audio.repository
 
-import com.tkhskt.theremin.feature.theremin.data.model.ThereminParameter
-import com.tkhskt.theremin.feature.theremin.data.source.BluetoothClient
-
-interface ThereminRepository {
+interface AudioRepository {
     suspend fun initialize()
     suspend fun sendParameter(parameter: ThereminParameter)
 }
 
-class ThereminRepositoryImpl(
+class AudioRepositoryImpl(
     private val bluetoothClient: BluetoothClient,
-) : ThereminRepository {
+) : AudioRepository {
 
     override suspend fun initialize() {
         bluetoothClient.prepare()

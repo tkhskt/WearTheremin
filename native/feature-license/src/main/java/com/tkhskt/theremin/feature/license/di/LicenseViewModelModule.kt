@@ -3,10 +3,10 @@ package com.tkhskt.theremin.feature.license.di
 import android.content.Context
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.tkhskt.theremin.feature.license.data.ArtifactsRepository
-import com.tkhskt.theremin.feature.license.data.ArtifactsRepositoryImpl
-import com.tkhskt.theremin.feature.license.domain.GetArtifactsUseCase
-import com.tkhskt.theremin.feature.license.domain.GetArtifactsUseCaseImpl
+import com.tkhskt.theremin.domain.license.usecase.GetArtifactsUseCase
+import com.tkhskt.theremin.domain.license.usecase.GetArtifactsUseCaseImpl
+import com.tkhskt.theremin.domain.license.repository.ArtifactsRepository
+import com.tkhskt.theremin.domain.license.repository.ArtifactsRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

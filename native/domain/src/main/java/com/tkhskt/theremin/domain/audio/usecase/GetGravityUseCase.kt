@@ -1,6 +1,6 @@
-package com.tkhskt.theremin.feature.theremin.domain.usecase
+package com.tkhskt.theremin.domain.audio.usecase
 
-import com.tkhskt.theremin.feature.theremin.data.repository.MessageRepository
+import com.tkhskt.theremin.domain.audio.repository.MessageRepository
 import kotlinx.coroutines.flow.Flow
 
 interface GetGravityUseCase {

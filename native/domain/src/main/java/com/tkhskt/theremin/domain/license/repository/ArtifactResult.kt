@@ -1,4 +1,4 @@
-package com.tkhskt.theremin.feature.license.data.model
+package com.tkhskt.theremin.domain.license.repository
 
 data class ArtifactResult(
     val artifactId: String,

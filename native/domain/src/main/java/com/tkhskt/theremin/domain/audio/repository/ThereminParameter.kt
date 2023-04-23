@@ -1,4 +1,4 @@
-package com.tkhskt.theremin.feature.theremin.data.model
+package com.tkhskt.theremin.domain.audio.repository
 
 data class ThereminParameter(
     val frequency: String,
