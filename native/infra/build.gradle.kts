@@ -41,6 +41,8 @@ apply(from = "$rootDir/gradle/ktlint.gradle")
 
 dependencies {
 
+    implementation(project(":domain"))
+
     // hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

@@ -1,4 +1,4 @@
-package com.tkhskt.theremin.domain.audio.repository
+package com.tkhskt.theremin.infra.bluetooth
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice

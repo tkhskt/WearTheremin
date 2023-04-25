@@ -1,7 +1,7 @@
 package com.tkhskt.theremin.domain.audio.usecase
 
 import com.tkhskt.theremin.domain.audio.repository.AudioRepository
-import com.tkhskt.theremin.domain.audio.repository.ThereminParameter
+import com.tkhskt.theremin.domain.audio.repository.AudioParameter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -15,7 +15,7 @@ class SendThereminParametersUseCaseImpl(
     override suspend fun invoke(frequency: Float, volume: Float) {
         withContext(Dispatchers.IO) {
             thereminRepository.sendParameter(
-                ThereminParameter(frequency.toString(), volume.toString())
+                AudioParameter(frequency.toString(), volume.toString())
             )
         }
     }

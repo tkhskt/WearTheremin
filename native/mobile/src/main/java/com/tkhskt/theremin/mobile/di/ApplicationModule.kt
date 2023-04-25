@@ -5,7 +5,7 @@ import android.content.Context
 import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.NodeClient
 import com.google.android.gms.wearable.Wearable
-import com.tkhskt.theremin.domain.audio.repository.BluetoothClient
+import com.tkhskt.theremin.infra.bluetooth.BluetoothClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,9 +21,9 @@ object ApplicationModule {
     @Singleton
     fun provideBluetoothClient(
         @ApplicationContext context: Context,
-    ): BluetoothClient {
+    ): com.tkhskt.theremin.infra.bluetooth.BluetoothClient {
         val manager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        return BluetoothClient(
+        return com.tkhskt.theremin.infra.bluetooth.BluetoothClient(
             context = context,
             bleManager = manager,
         )

@@ -24,12 +24,6 @@ object LicenseViewModelModule {
         .build()
 
     @Provides
-    fun provideArtifactsRepository(
-        @ApplicationContext context: Context,
-        moshi: Moshi,
-    ): ArtifactsRepository = ArtifactsRepositoryImpl(context, moshi)
-
-    @Provides
     fun provideGetArtifactsUseCase(
         artifactsRepository: ArtifactsRepository,
     ): GetArtifactsUseCase = GetArtifactsUseCaseImpl(artifactsRepository)

@@ -1,6 +1,9 @@
 package com.tkhskt.theremin.feature.theremin.di
 
 import com.google.android.gms.wearable.MessageClient
+import com.tkhskt.theremin.domain.audio.repository.AudioRepository
+import com.tkhskt.theremin.domain.audio.repository.MessageRepository
+import com.tkhskt.theremin.domain.audio.repository.MessageRepositoryImpl
 import com.tkhskt.theremin.domain.audio.usecase.CalcFrequencyUseCase
 import com.tkhskt.theremin.domain.audio.usecase.CalcFrequencyUseCaseImpl
 import com.tkhskt.theremin.domain.audio.usecase.CalcVolumeUseCase
@@ -9,11 +12,6 @@ import com.tkhskt.theremin.domain.audio.usecase.GetGravityUseCase
 import com.tkhskt.theremin.domain.audio.usecase.GetGravityUseCaseImpl
 import com.tkhskt.theremin.domain.audio.usecase.SendThereminParametersUseCase
 import com.tkhskt.theremin.domain.audio.usecase.SendThereminParametersUseCaseImpl
-import com.tkhskt.theremin.domain.audio.repository.MessageRepository
-import com.tkhskt.theremin.domain.audio.repository.MessageRepositoryImpl
-import com.tkhskt.theremin.domain.audio.repository.AudioRepository
-import com.tkhskt.theremin.domain.audio.repository.AudioRepositoryImpl
-import com.tkhskt.theremin.domain.audio.repository.BluetoothClient
 import com.tkhskt.theremin.feature.theremin.ui.middleware.ThereminMiddleware
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminEffect
@@ -29,11 +27,6 @@ import dagger.hilt.android.components.ViewModelComponent
 @Module
 @InstallIn(ViewModelComponent::class)
 object ThereminViewModelModule {
-
-    @Provides
-    fun provideThereminRepository(
-        bluetoothClient: BluetoothClient,
-    ): AudioRepository = AudioRepositoryImpl(bluetoothClient)
 
     @Provides
     fun provideMessageRepository(
