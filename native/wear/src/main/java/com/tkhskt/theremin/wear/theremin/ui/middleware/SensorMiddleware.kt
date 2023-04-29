@@ -1,11 +1,11 @@
 package com.tkhskt.theremin.wear.theremin.ui.middleware
 
-import com.tkhskt.theremin.wear.theremin.ui.model.MainAction
-import com.tkhskt.theremin.wear.theremin.ui.model.MainEffect
-import com.tkhskt.theremin.wear.theremin.ui.model.MainState
 import com.tkhskt.theremin.redux.Dispatcher
 import com.tkhskt.theremin.redux.Middleware
 import com.tkhskt.theremin.redux.Store
+import com.tkhskt.theremin.wear.theremin.ui.model.MainAction
+import com.tkhskt.theremin.wear.theremin.ui.model.MainEffect
+import com.tkhskt.theremin.wear.theremin.ui.model.MainState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 

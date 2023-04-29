@@ -2,6 +2,8 @@ package com.tkhskt.theremin.wear.theremin.di
 
 import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.NodeClient
+import com.tkhskt.theremin.redux.Store
+import com.tkhskt.theremin.redux.createStore
 import com.tkhskt.theremin.wear.domain.SendGravityUseCase
 import com.tkhskt.theremin.wear.domain.SendGravityUseCaseImpl
 import com.tkhskt.theremin.wear.theremin.data.repository.ThereminRepository
@@ -12,8 +14,6 @@ import com.tkhskt.theremin.wear.theremin.ui.model.MainAction
 import com.tkhskt.theremin.wear.theremin.ui.model.MainEffect
 import com.tkhskt.theremin.wear.theremin.ui.model.MainState
 import com.tkhskt.theremin.wear.theremin.ui.reducer.MainReducer
-import com.tkhskt.theremin.redux.Store
-import com.tkhskt.theremin.redux.createStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

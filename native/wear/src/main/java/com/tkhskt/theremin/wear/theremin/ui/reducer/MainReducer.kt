@@ -1,8 +1,8 @@
 package com.tkhskt.theremin.wear.theremin.ui.reducer
 
+import com.tkhskt.theremin.redux.Reducer
 import com.tkhskt.theremin.wear.theremin.ui.model.MainAction
 import com.tkhskt.theremin.wear.theremin.ui.model.MainState
-import com.tkhskt.theremin.redux.Reducer
 
 class MainReducer : Reducer<MainAction, MainState> {
 

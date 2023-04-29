@@ -43,6 +43,8 @@ dependencies {
 
     implementation(project(":domain"))
 
+    implementation(libs.play.services.wearable)
+
     // hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

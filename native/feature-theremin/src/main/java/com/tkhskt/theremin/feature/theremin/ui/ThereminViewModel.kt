@@ -22,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ThereminViewModel @Inject constructor(
     private val store: Store<ThereminAction, ThereminState, ThereminEffect>,
-    private val getGravityUseCase: com.tkhskt.theremin.domain.audio.usecase.GetGravityUseCase,
+    private val getGravityUseCase: GetGravityUseCase,
 ) : ReduxViewModel<ThereminAction, ThereminUiState, ThereminEffect>() {
 
     override val sideEffect: SharedFlow<ThereminEffect> = store.sideEffect.shareIn(

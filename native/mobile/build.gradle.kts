@@ -60,6 +60,7 @@ dependencies {
     implementation(project(":core-ui"))
     implementation(project(":redux"))
     implementation(project(":domain"))
+    implementation(project(":infra"))
 
     implementation(libs.play.services.wearable)
 
