@@ -199,7 +199,7 @@ private fun MainContentContainer(
                 .background(
                     Brush.verticalGradient(
                         contentGradientColors.map {
-                            animateColorAsState(targetValue = it).value
+                            animateColorAsState(targetValue = it, label = "").value
                         },
                     ),
                 ),
