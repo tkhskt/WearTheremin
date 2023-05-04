@@ -1,5 +1,6 @@
 package com.tkhskt.theremin.feature.theremin.ui.model
 
+import com.tkhskt.theremin.core.NoteMapper
 import com.tkhskt.theremin.redux.State
 
 data class ThereminState(
@@ -24,4 +25,15 @@ data class ThereminState(
             browserSoundEnabled = false,
         )
     }
+
+    val uiState = ThereminUiState(
+        frequency = frequency,
+        volume = volume,
+        waveGraphicFrequency = frequency / 60f,
+        note = NoteMapper.mapFromFrequency(frequency).note,
+        pcConnected = pcConnected,
+        watchConnected = watchConnected,
+        appSoundEnabled = appSoundEnabled,
+        browserSoundEnabled = browserSoundEnabled,
+    )
 }
