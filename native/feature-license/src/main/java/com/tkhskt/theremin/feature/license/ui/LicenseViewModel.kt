@@ -1,12 +1,12 @@
 package com.tkhskt.theremin.feature.license.ui
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tkhskt.theremin.domain.artifacts.usecase.GetArtifactsUseCase
 import com.tkhskt.theremin.feature.license.ui.model.LicenseAction
 import com.tkhskt.theremin.feature.license.ui.model.LicenseEffect
 import com.tkhskt.theremin.feature.license.ui.model.LicenseState
 import com.tkhskt.theremin.feature.license.ui.model.LicenseUiState
-import com.tkhskt.theremin.redux.Reducer
-import com.tkhskt.theremin.redux.ReduxViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,42 +20,38 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LicenseViewModel @Inject constructor(
-    private val getArtifactsUseCase: com.tkhskt.theremin.domain.artifacts.usecase.GetArtifactsUseCase,
-) : ReduxViewModel<LicenseAction, LicenseUiState, LicenseEffect>(), Reducer<LicenseAction, LicenseState> {
+    private val getArtifactsUseCase: GetArtifactsUseCase,
+) : ViewModel() {
 
     private val _sideEffect = MutableSharedFlow<LicenseEffect>()
-    override val sideEffect: SharedFlow<LicenseEffect> = _sideEffect
+    val sideEffect: SharedFlow<LicenseEffect> = _sideEffect
 
     private val _state = MutableStateFlow(LicenseState.INITIAL)
-    override val uiState: StateFlow<LicenseUiState> = _state
-        .map(LicenseUiStateMapper::mapFromState)
+    val uiState: StateFlow<LicenseUiState> = _state
+        .map { it.uiState }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Lazily,
             initialValue = LicenseUiState.Initial,
         )
 
-    override fun dispatch(action: LicenseAction) {
+    fun dispatch(action: LicenseAction) {
         viewModelScope.launch {
-            val newState = reduce(action, _state.value)
-            _state.value = newState
-        }
-    }
 
-    override suspend fun reduce(action: LicenseAction, state: LicenseState): LicenseState {
-        return when (action) {
-            is LicenseAction.Initialize -> {
-                LicenseState(
-                    artifacts = getArtifactsUseCase.invoke(),
-                )
-            }
-            is LicenseAction.ClickLicenseItem -> {
-                _sideEffect.emit(LicenseEffect.TransitToWebView(action.url))
-                state
-            }
-            is LicenseAction.ClickArtifactItem -> {
-                _sideEffect.emit(LicenseEffect.TransitToWebView(action.url))
-                state
+            when (action) {
+                is LicenseAction.Initialize -> {
+                    _state.value = LicenseState(
+                        artifacts = getArtifactsUseCase.invoke(),
+                    )
+                }
+
+                is LicenseAction.ClickLicenseItem -> {
+                    _sideEffect.emit(LicenseEffect.TransitToWebView(action.url))
+                }
+
+                is LicenseAction.ClickArtifactItem -> {
+                    _sideEffect.emit(LicenseEffect.TransitToWebView(action.url))
+                }
             }
         }
     }

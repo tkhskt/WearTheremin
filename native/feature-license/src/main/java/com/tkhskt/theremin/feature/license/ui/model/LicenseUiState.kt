@@ -1,10 +1,8 @@
 package com.tkhskt.theremin.feature.license.ui.model
 
-import com.tkhskt.theremin.redux.UiState
-
 data class LicenseUiState(
     val artifactGroups: List<ArtifactGroup>,
-) : UiState {
+) {
 
     data class ArtifactGroup(
         val license: License,

@@ -5,7 +5,6 @@ import com.tkhskt.theremin.domain.audio.repository.MessageRepository
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.channelFlow
 import timber.log.Timber
-import java.lang.Exception
 
 class MessageRepositoryImpl(
     private val messageClient: MessageClient,
