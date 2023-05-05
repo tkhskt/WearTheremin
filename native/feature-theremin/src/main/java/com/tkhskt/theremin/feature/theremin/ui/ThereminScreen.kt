@@ -37,6 +37,8 @@ import com.tkhskt.theremin.feature.theremin.ui.component.Wave
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminEffect
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminUiState
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @Composable
@@ -53,27 +55,24 @@ fun ThereminScreen(
     }
     LaunchedEffect(Unit) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            launch {
-                viewModel.uiState.collect {
-                    oscillatorController.run {
-                        changeFrequency(state.frequency)
-                        changeVolume(state.volume)
-                        playSound(state.appSoundEnabled)
+            viewModel.uiState.onEach {
+                oscillatorController.run {
+                    changeFrequency(state.frequency)
+                    changeVolume(state.volume)
+                    playSound(state.appSoundEnabled)
+                }
+            }.launchIn(this)
+            viewModel.sideEffect.onEach { effect ->
+                when (effect) {
+                    is ThereminEffect.StartCamera -> {
+                        handTracker.startTracking()
+                    }
+
+                    is ThereminEffect.NavigateToLicense -> {
+                        navigateToLicense()
                     }
                 }
-            }
-            launch {
-                viewModel.sideEffect.collect { effect ->
-                    when (effect) {
-                        is ThereminEffect.StartCamera -> {
-                            handTracker.startTracking()
-                        }
-                        is ThereminEffect.NavigateToLicense -> {
-                            navigateToLicense()
-                        }
-                    }
-                }
-            }
+            }.launchIn(this)
         }
     }
     ThereminScreen(state, viewModel::dispatch)

@@ -21,6 +21,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -29,7 +31,7 @@ object ThereminViewModelModule {
     @Provides
     fun provideGetFrequencyUseCase(
         messageRepository: MessageRepository,
-    ): GetGravityUseCase = GetGravityUseCaseImpl(messageRepository)
+    ): GetGravityUseCase = GetGravityUseCaseImpl(Dispatchers.IO, messageRepository)
 
     @Provides
     fun provideCalcFrequencyUseCase(): CalcFrequencyUseCase = CalcFrequencyUseCaseImpl()

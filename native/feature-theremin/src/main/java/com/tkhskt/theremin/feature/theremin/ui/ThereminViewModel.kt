@@ -12,14 +12,15 @@ import com.tkhskt.theremin.feature.theremin.ui.model.ThereminEffect
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminState
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -27,7 +28,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ThereminViewModel @Inject constructor(
-    private val getGravityUseCase: GetGravityUseCase,
+    getGravityUseCase: GetGravityUseCase,
     private val audioRepository: AudioRepository,
     private val sendThereminParametersUseCase: SendThereminParametersUseCase,
     private val calcFrequencyUseCase: CalcFrequencyUseCase,
@@ -47,19 +48,18 @@ class ThereminViewModel @Inject constructor(
         )
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            getGravityUseCase().collect { gravity ->
+        getGravityUseCase()
+            .onEach { gravity ->
                 dispatch(ThereminAction.ChangeGravity(gravity))
-            }
-        }
+            }.launchIn(viewModelScope)
     }
 
     fun dispatch(action: ThereminAction) {
         viewModelScope.launch {
             when (action) {
                 is ThereminAction.InitializeBle -> {
-//                    audioRepository.initialize()
-//                    _state.update { it.copy(bluetoothInitialized = true) }
+                    audioRepository.initialize()
+                    _state.update { it.copy(bluetoothInitialized = true) }
                 }
 
                 is ThereminAction.ChangeGravity -> {
@@ -91,6 +91,7 @@ class ThereminViewModel @Inject constructor(
                 }
 
                 else -> {
+                    // no-op
                 }
             }
 
