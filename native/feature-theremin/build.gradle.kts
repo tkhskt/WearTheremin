@@ -61,7 +61,6 @@ android {
 apply(from = "$rootDir/gradle/ktlint.gradle")
 
 dependencies {
-    implementation(project(":redux"))
     implementation(project(":core-ui"))
     implementation(project(":domain"))
 

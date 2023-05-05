@@ -1,7 +1,6 @@
 package com.tkhskt.theremin.feature.theremin.ui.model
 
 import com.tkhskt.theremin.core.NoteMapper
-import com.tkhskt.theremin.redux.State
 
 data class ThereminState(
     val frequency: Float,
@@ -12,7 +11,7 @@ data class ThereminState(
     val watchConnected: Boolean,
     val appSoundEnabled: Boolean,
     val browserSoundEnabled: Boolean,
-) : State {
+) {
     companion object {
         val INITIAL = ThereminState(
             frequency = 0f,

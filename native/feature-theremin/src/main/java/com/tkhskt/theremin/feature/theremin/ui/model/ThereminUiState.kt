@@ -2,7 +2,6 @@ package com.tkhskt.theremin.feature.theremin.ui.model
 
 import androidx.compose.ui.graphics.Color
 import com.tkhskt.theremin.core.ui.ThereminColorPalette
-import com.tkhskt.theremin.redux.UiState
 
 data class ThereminUiState(
     val frequency: Float,
@@ -13,7 +12,7 @@ data class ThereminUiState(
     val watchConnected: Boolean,
     val appSoundEnabled: Boolean,
     val browserSoundEnabled: Boolean,
-) : UiState {
+) {
     companion object {
         val Initial = ThereminUiState(
             frequency = 0f,
