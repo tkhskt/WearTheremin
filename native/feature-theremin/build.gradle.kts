@@ -5,7 +5,6 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
-    alias(libs.plugins.ksp)
 }
 
 android {
@@ -94,9 +93,6 @@ dependencies {
 
     // theremin-core(local maven)
     implementation(libs.theremin.core)
-
-    implementation(libs.shiirudo)
-    ksp(libs.shiirudo)
 
     testImplementation(libs.test.junit)
     androidTestImplementation(libs.test.junit.ext)
