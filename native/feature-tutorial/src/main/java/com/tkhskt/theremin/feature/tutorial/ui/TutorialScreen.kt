@@ -73,7 +73,7 @@ fun TutorialScreen(
                 .background(
                     Brush.verticalGradient(
                         uiState.backgroundGradientColors.map {
-                            animateColorAsState(targetValue = it).value
+                            animateColorAsState(targetValue = it, label = "").value
                         },
                     ),
                 )
