@@ -30,12 +30,11 @@ class JankDetector : DefaultLifecycleObserver {
     }
 
     fun startDetection(stateName: String, window: Window) {
-        val metricsStateHolder = PerformanceMetricsState.getForHierarchy(window.decorView)
+        val metricsStateHolder = PerformanceMetricsState.getHolderForHierarchy(window.decorView)
         jankStats = JankStats.createAndTrack(
             window,
-            Dispatchers.Default.asExecutor(),
             jankFrameListener,
         )
-        metricsStateHolder.state?.addState(stateName, javaClass.simpleName)
+        metricsStateHolder.state?.putState(stateName, javaClass.simpleName)
     }
 }
