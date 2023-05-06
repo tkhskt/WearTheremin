@@ -4,12 +4,14 @@ import android.app.Activity
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -17,6 +19,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.tkhskt.theremin.core.ui.ThereminColorPalette
 import com.tkhskt.theremin.core.ui.ThereminTheme
 import com.tkhskt.theremin.feature.license.LicenseDestination
 import com.tkhskt.theremin.feature.license.WebViewDestination
@@ -86,6 +90,17 @@ fun WearTheremin(
         else -> {
             // no-op
         }
+    }
+
+    val systemUiController = rememberSystemUiController()
+    val useDarkIcons = !isSystemInDarkTheme()
+
+    DisposableEffect(systemUiController, useDarkIcons) {
+        systemUiController.setSystemBarsColor(
+            color = ThereminColorPalette.menuBackground,
+            darkIcons = useDarkIcons
+        )
+        onDispose {}
     }
 
     DisposableEffect(lifecycleOwner) {

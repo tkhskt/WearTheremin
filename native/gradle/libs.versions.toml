@@ -64,6 +64,8 @@ hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.re
 # theremin-core(local maven)
 theremin-core = { module = "com.tkhskt.theremin:core", version = "1.0.0" }
 
+accompanist-system-ui = { module = "com.google.accompanist:accompanist-systemuicontroller", version = "0.31.1-alpha" }
+
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 oboe = { module = "com.google.oboe:oboe", version = "1.7.0" }
 ktlint = { module = "com.pinterest:ktlint", version = "0.43.1" }

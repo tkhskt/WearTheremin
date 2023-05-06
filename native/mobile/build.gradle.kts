@@ -58,11 +58,12 @@ dependencies {
     implementation(project(":feature-tutorial"))
     implementation(project(":feature-license"))
     implementation(project(":core-ui"))
-    implementation(project(":redux"))
     implementation(project(":domain"))
     implementation(project(":infra"))
 
     implementation(libs.play.services.wearable)
+
+    implementation(libs.accompanist.system.ui)
 
     // AndroidX
     implementation(libs.core)
