@@ -5,6 +5,8 @@ import androidx.lifecycle.LifecycleOwner
 
 class OscillatorController : DefaultLifecycleObserver {
 
+    private var isPlaying = false
+
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
         createStream()
@@ -12,7 +14,7 @@ class OscillatorController : DefaultLifecycleObserver {
 
     override fun onResume(owner: LifecycleOwner) {
         super.onResume(owner)
-        playSound(true)
+        playSound(isPlaying)
     }
 
     override fun onPause(owner: LifecycleOwner) {
@@ -25,11 +27,21 @@ class OscillatorController : DefaultLifecycleObserver {
         destroyStream()
     }
 
-    external fun playSound(enable: Boolean): Int
+    fun play() {
+        playSound(true)
+        isPlaying = true
+    }
+
+    fun pause() {
+        playSound(false)
+        isPlaying = false
+    }
 
     external fun changeFrequency(frequency: Float)
 
     external fun changeVolume(volume: Float)
+
+    private external fun playSound(enable: Boolean): Int
 
     private external fun createStream(): Int
 

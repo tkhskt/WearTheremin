@@ -61,7 +61,12 @@ fun ThereminScreen(
         oscillatorController.run {
             changeFrequency(state.frequency)
             changeVolume(state.volume)
-            playSound(state.appSoundEnabled)
+            if (state.appSoundEnabled) {
+                play()
+            } else {
+                pause()
+            }
+
         }
     }
     LaunchedEffect(Unit) {
