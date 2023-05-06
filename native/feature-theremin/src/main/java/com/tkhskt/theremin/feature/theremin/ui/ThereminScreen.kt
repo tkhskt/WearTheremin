@@ -53,15 +53,19 @@ fun ThereminScreen(
     handTracker.onChangeDistanceListener = { distance: Float ->
         viewModel.dispatch(ThereminAction.ChangeDistance(distance))
     }
+    LaunchedEffect(
+        state.volume,
+        state.frequency,
+        state.appSoundEnabled,
+    ) {
+        oscillatorController.run {
+            changeFrequency(state.frequency)
+            changeVolume(state.volume)
+            playSound(state.appSoundEnabled)
+        }
+    }
     LaunchedEffect(Unit) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            viewModel.uiState.onEach {
-                oscillatorController.run {
-                    changeFrequency(state.frequency)
-                    changeVolume(state.volume)
-                    playSound(state.appSoundEnabled)
-                }
-            }.launchIn(this)
             viewModel.sideEffect.onEach { effect ->
                 when (effect) {
                     is ThereminEffect.StartCamera -> {
