@@ -40,7 +40,6 @@ fun ThereminRoute(
             } else {
                 pause()
             }
-
         }
     }
     LaunchedEffect(Unit) {
