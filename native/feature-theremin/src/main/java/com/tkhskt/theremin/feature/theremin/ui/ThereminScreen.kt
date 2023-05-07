@@ -115,7 +115,7 @@ fun ThereminScreen(
         scaffoldState = scaffoldState,
         titleContent = {
             Image(
-                modifier = Modifier.height(16.dp),
+                modifier = Modifier.height(20.dp),
                 painter = painterResource(id = R.drawable.ic_logo),
                 contentDescription = "Logo",
             )
