@@ -1,6 +1,9 @@
 package com.tkhskt.theremin.mobile
 
 import android.app.Activity
+import android.content.Context
+import android.hardware.SensorManager
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -32,6 +35,7 @@ import com.tkhskt.theremin.feature.theremin.requestBluetoothPermissions
 import com.tkhskt.theremin.feature.theremin.thereminGraph
 import com.tkhskt.theremin.feature.theremin.ui.HandTracker
 import com.tkhskt.theremin.feature.theremin.ui.OscillatorController
+import com.tkhskt.theremin.feature.theremin.ui.ShakeDetector
 import com.tkhskt.theremin.feature.theremin.ui.ThereminViewModel
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
 import com.tkhskt.theremin.feature.tutorial.TutorialDestination
@@ -46,6 +50,11 @@ fun WearTheremin(
     val oscillatorController = remember { OscillatorController() }
     val jankDetector = remember { JankDetector() }
     val handTracker = remember { HandTracker(activity) }
+    val shakeDetector = remember {
+        ShakeDetector(activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager) {
+
+        }
+    }
     val navController = rememberNavController()
 
     var bluetoothPermissionRequestState: PermissionRequestState by remember {
@@ -79,6 +88,7 @@ fun WearTheremin(
             viewModel.dispatch(ThereminAction.InitializeBle)
             lifecycleOwner.lifecycle.addObserver(handTracker)
         }
+
         PermissionRequestState.Denied -> {
             Toast.makeText(
                 activity,
@@ -86,6 +96,7 @@ fun WearTheremin(
                 Toast.LENGTH_SHORT,
             ).show()
         }
+
         else -> {
             // no-op
         }
@@ -97,7 +108,7 @@ fun WearTheremin(
     DisposableEffect(systemUiController, useDarkIcons) {
         systemUiController.setSystemBarsColor(
             color = ThereminColorPalette.menuBackground,
-            darkIcons = useDarkIcons
+            darkIcons = useDarkIcons,
         )
         onDispose {}
     }
@@ -107,6 +118,7 @@ fun WearTheremin(
             addObserver(oscillatorController)
             addObserver(jankDetector)
             addObserver(permissionHandler)
+            addObserver(shakeDetector)
         }
         jankDetector.startDetection(
             stateName = "ThereminApp",
@@ -118,6 +130,7 @@ fun WearTheremin(
                 removeObserver(oscillatorController)
                 removeObserver(jankDetector)
                 removeObserver(permissionHandler)
+                removeObserver(shakeDetector)
             }
         }
     }
