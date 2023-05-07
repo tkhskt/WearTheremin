@@ -118,7 +118,8 @@ private fun createAnimationState(
             )
         } else {
             tweenSpec
-        }
+        },
+        label = ""
     )
 }
 

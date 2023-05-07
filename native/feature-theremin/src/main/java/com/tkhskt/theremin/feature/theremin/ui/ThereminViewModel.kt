@@ -12,6 +12,7 @@ import com.tkhskt.theremin.feature.theremin.ui.model.ThereminEffect
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminState
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -90,11 +91,16 @@ class ThereminViewModel @Inject constructor(
                     _state.update { it.copy(browserSoundEnabled = !it.browserSoundEnabled) }
                 }
 
+                is ThereminAction.Shake -> {
+                   _state.update { it.copy(shaked = true) }
+                    delay(100)
+                    _state.update { it.copy(shaked = false) }
+                }
+
                 else -> {
                     // no-op
                 }
             }
-
         }
     }
 }

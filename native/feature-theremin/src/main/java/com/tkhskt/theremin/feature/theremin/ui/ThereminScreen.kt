@@ -34,6 +34,7 @@ import com.tkhskt.theremin.core.ui.composable.ThereminScaffold
 import com.tkhskt.theremin.core.ui.composable.rememberThereminScaffoldState
 import com.tkhskt.theremin.core.ui.debounce
 import com.tkhskt.theremin.feature.theremin.ui.component.Menu
+import com.tkhskt.theremin.feature.theremin.ui.component.MeteorShower
 import com.tkhskt.theremin.feature.theremin.ui.component.NoteText
 import com.tkhskt.theremin.feature.theremin.ui.component.StarryBackground
 import com.tkhskt.theremin.feature.theremin.ui.component.Sun
@@ -104,6 +105,9 @@ fun ThereminScreen(
     debounce(uiState.backgroundGradientColors) {
         backgroundColor = uiState.backgroundGradientColors
     }
+    var meteorAnimationRunning by remember {
+        mutableStateOf(false)
+    }
 
     ThereminScaffold(
         backgroundColor = ThereminTheme.color.menuBackground,
@@ -138,13 +142,19 @@ fun ThereminScreen(
         Box(
             modifier = Modifier.fillMaxSize(),
         ) {
-            StarryBackground(starCount = 6)
+            StarryBackground(starCount = 7)
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween,
             ) {
                 Box {
+                    if (uiState.showMeteor || meteorAnimationRunning) {
+                        MeteorShower(modifier = Modifier.padding(top = 150.dp)) {
+                            meteorAnimationRunning = false
+                        }
+                        meteorAnimationRunning = true
+                    }
                     Sun(
                         animate = uiState.appSoundEnabled || uiState.browserSoundEnabled,
                     )

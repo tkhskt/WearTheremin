@@ -9,4 +9,6 @@ sealed class ThereminAction {
     object ClickAppSoundButton : ThereminAction()
     object ClickBrowserSoundButton : ThereminAction()
     object ClickLicenseButton : ThereminAction()
+
+    object Shake : ThereminAction()
 }

@@ -52,7 +52,7 @@ fun WearTheremin(
     val handTracker = remember { HandTracker(activity) }
     val shakeDetector = remember {
         ShakeDetector(activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager) {
-
+            viewModel.dispatch(ThereminAction.Shake)
         }
     }
     val navController = rememberNavController()

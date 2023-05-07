@@ -12,6 +12,7 @@ data class ThereminUiState(
     val watchConnected: Boolean,
     val appSoundEnabled: Boolean,
     val browserSoundEnabled: Boolean,
+    val showMeteor: Boolean,
 ) {
     companion object {
         val Initial = ThereminUiState(
@@ -23,6 +24,7 @@ data class ThereminUiState(
             watchConnected = false,
             appSoundEnabled = false,
             browserSoundEnabled = false,
+            showMeteor = false,
         )
     }
 

@@ -8,7 +8,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun StarryBackground(
-    @IntRange(from = 1, to = 6) starCount: Int,
+    @IntRange(from = 1, to = 7) starCount: Int,
     modifier: Modifier = Modifier,
 ) {
     Layout(
@@ -42,7 +42,9 @@ private enum class Position(val x: Int, val y: Int) {
     STAR_3(57, 22),
     STAR_4(17, 37),
     STAR_5(81, 42),
-    STAR_6(76, 83);
+    STAR_6(76, 83),
+    STAR_7(40, 44),
+    ;
 
     fun toAbsolutePosition(baseWidth: Int, baseHeight: Int): Pair<Int, Int> {
         val absX = x * (baseWidth / 100)
@@ -54,5 +56,5 @@ private enum class Position(val x: Int, val y: Int) {
 @Preview
 @Composable
 fun PreviewStarryBackground() {
-    StarryBackground(starCount = 6)
+    StarryBackground(starCount = 7)
 }
