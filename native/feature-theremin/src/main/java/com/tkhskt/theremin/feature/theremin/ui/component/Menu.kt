@@ -34,11 +34,13 @@ fun Menu(
 ) {
     val sectionSpace = 28.dp
     Column(
-        modifier = modifier.width(IntrinsicSize.Max)
+        modifier = modifier
+            .defaultMinSize(minWidth = 180.dp)
+            .width(IntrinsicSize.Max)
     ) {
-        DeviceSection(
-            watchConnected = watchConnected,
-        )
+//        DeviceSection(
+//            watchConnected = watchConnected,
+//        )
         Spacer(modifier = Modifier.size(sectionSpace))
         SoundSection(
             appSoundEnabled = appSoundEnabled,
