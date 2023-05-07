@@ -2,7 +2,6 @@ package com.tkhskt.theremin.feature.theremin.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tkhskt.theremin.domain.audio.repository.AudioRepository
 import com.tkhskt.theremin.domain.audio.usecase.CalcFrequencyUseCase
 import com.tkhskt.theremin.domain.audio.usecase.CalcVolumeUseCase
 import com.tkhskt.theremin.domain.audio.usecase.GetGravityUseCase
@@ -30,7 +29,6 @@ import javax.inject.Inject
 @HiltViewModel
 class ThereminViewModel @Inject constructor(
     getGravityUseCase: GetGravityUseCase,
-    private val audioRepository: AudioRepository,
     private val sendThereminParametersUseCase: SendThereminParametersUseCase,
     private val calcFrequencyUseCase: CalcFrequencyUseCase,
     private val calcVolumeUseCase: CalcVolumeUseCase,
@@ -58,10 +56,6 @@ class ThereminViewModel @Inject constructor(
     fun dispatch(action: ThereminAction) {
         viewModelScope.launch {
             when (action) {
-                is ThereminAction.InitializeBle -> {
-                    audioRepository.initialize()
-                    _state.update { it.copy(bluetoothInitialized = true) }
-                }
 
                 is ThereminAction.ChangeGravity -> {
                     val frequency = calcFrequencyUseCase(action.gravity)
@@ -85,10 +79,6 @@ class ThereminViewModel @Inject constructor(
                     if (!appSoundEnabled) {
                         _sideEffect.emit(ThereminEffect.StartCamera)
                     }
-                }
-
-                is ThereminAction.ClickBrowserSoundButton -> {
-                    _state.update { it.copy(browserSoundEnabled = !it.browserSoundEnabled) }
                 }
 
                 is ThereminAction.Shake -> {

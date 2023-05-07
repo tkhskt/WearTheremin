@@ -27,12 +27,9 @@ import com.tkhskt.theremin.core.ui.ThereminTheme
 @Composable
 fun Menu(
     modifier: Modifier = Modifier,
-    pcConnected: Boolean = false,
     watchConnected: Boolean = false,
     appSoundEnabled: Boolean = false,
-    browserSoundEnabled: Boolean = false,
     onClickAppButton: (Boolean) -> Unit = {},
-    onClickBrowserButton: (Boolean) -> Unit = {},
     onClickLicenseSection: () -> Unit = {},
 ) {
     val sectionSpace = 28.dp
@@ -40,15 +37,12 @@ fun Menu(
         modifier = modifier.width(IntrinsicSize.Max)
     ) {
         DeviceSection(
-            pcConnected = pcConnected,
             watchConnected = watchConnected,
         )
         Spacer(modifier = Modifier.size(sectionSpace))
         SoundSection(
-            browserSoundEnabled = browserSoundEnabled,
             appSoundEnabled = appSoundEnabled,
             onClickAppButton = onClickAppButton,
-            onClickBrowserButton = onClickBrowserButton,
         )
         Spacer(modifier = Modifier.size(sectionSpace))
         LicenseSection(onClick = onClickLicenseSection)
@@ -58,7 +52,6 @@ fun Menu(
 @Composable
 private fun DeviceSection(
     modifier: Modifier = Modifier,
-    pcConnected: Boolean = false,
     watchConnected: Boolean = false,
 ) {
     Column(
@@ -70,10 +63,6 @@ private fun DeviceSection(
                 iconRes = R.drawable.ic_drawer_wear,
                 text = if (watchConnected) "Connected" else "Disconnected"
             )
-            IconMenuItem(
-                iconRes = R.drawable.ic_drawer_pc,
-                text = if (pcConnected) "Connected" else "Disconnected",
-            )
         }
     }
 }
@@ -82,9 +71,7 @@ private fun DeviceSection(
 private fun SoundSection(
     modifier: Modifier = Modifier,
     appSoundEnabled: Boolean = false,
-    browserSoundEnabled: Boolean = false,
     onClickAppButton: (Boolean) -> Unit = {},
-    onClickBrowserButton: (Boolean) -> Unit = {},
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -95,11 +82,6 @@ private fun SoundSection(
                 text = "App",
                 buttonEnabled = appSoundEnabled,
                 onChangeButtonStatus = onClickAppButton,
-            )
-            ToggleButtonMenuItem(
-                text = "Browser",
-                buttonEnabled = browserSoundEnabled,
-                onChangeButtonStatus = onClickBrowserButton,
             )
         }
     }

@@ -123,15 +123,10 @@ fun ThereminScreen(
         drawerContent = {
             Menu(
                 modifier = Modifier.padding(start = 20.dp),
-                pcConnected = uiState.pcConnected,
                 watchConnected = uiState.watchConnected,
                 appSoundEnabled = uiState.appSoundEnabled,
-                browserSoundEnabled = uiState.browserSoundEnabled,
                 onClickAppButton = {
                     dispatcher(ThereminAction.ClickAppSoundButton)
-                },
-                onClickBrowserButton = {
-                    dispatcher(ThereminAction.ClickBrowserSoundButton)
                 },
                 onClickLicenseSection = {
                     dispatcher(ThereminAction.ClickLicenseButton)
