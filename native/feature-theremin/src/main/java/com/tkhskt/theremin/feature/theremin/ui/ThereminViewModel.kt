@@ -81,10 +81,6 @@ class ThereminViewModel @Inject constructor(
                     delay(100)
                     _state.update { it.copy(shook = false) }
                 }
-
-                else -> {
-                    // no-op
-                }
             }
         }
     }
