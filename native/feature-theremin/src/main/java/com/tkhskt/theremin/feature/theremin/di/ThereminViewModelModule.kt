@@ -1,6 +1,5 @@
 package com.tkhskt.theremin.feature.theremin.di
 
-import com.tkhskt.theremin.domain.audio.repository.AudioRepository
 import com.tkhskt.theremin.domain.audio.repository.MessageRepository
 import com.tkhskt.theremin.domain.audio.usecase.CalcFrequencyUseCase
 import com.tkhskt.theremin.domain.audio.usecase.CalcFrequencyUseCaseImpl

@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,12 +19,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.repeatOnLifecycle
 import com.tkhskt.theremin.R
 import com.tkhskt.theremin.core.ui.ThereminTheme
 import com.tkhskt.theremin.core.ui.composable.MenuIcon
@@ -39,63 +34,14 @@ import com.tkhskt.theremin.feature.theremin.ui.component.NoteText
 import com.tkhskt.theremin.feature.theremin.ui.component.StarryBackground
 import com.tkhskt.theremin.feature.theremin.ui.component.Sun
 import com.tkhskt.theremin.feature.theremin.ui.component.Wave
-import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
-import com.tkhskt.theremin.feature.theremin.ui.model.ThereminEffect
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminUiState
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @Composable
 fun ThereminScreen(
-    viewModel: ThereminViewModel,
-    oscillatorController: OscillatorController,
-    handTracker: HandTracker,
-    navigateToLicense: () -> Unit,
-) {
-    val state: ThereminUiState by viewModel.uiState.collectAsState()
-    val lifecycleOwner = LocalLifecycleOwner.current
-    handTracker.onChangeDistanceListener = { distance: Float ->
-        viewModel.dispatch(ThereminAction.ChangeDistance(distance))
-    }
-    LaunchedEffect(
-        state.volume,
-        state.frequency,
-        state.appSoundEnabled,
-    ) {
-        oscillatorController.run {
-            changeFrequency(state.frequency)
-            changeVolume(state.volume)
-            if (state.appSoundEnabled) {
-                play()
-            } else {
-                pause()
-            }
-
-        }
-    }
-    LaunchedEffect(Unit) {
-        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            viewModel.sideEffect.onEach { effect ->
-                when (effect) {
-                    is ThereminEffect.StartCamera -> {
-                        handTracker.startTracking()
-                    }
-
-                    is ThereminEffect.NavigateToLicense -> {
-                        navigateToLicense()
-                    }
-                }
-            }.launchIn(this)
-        }
-    }
-    ThereminScreen(state, viewModel::dispatch)
-}
-
-@Composable
-fun ThereminScreen(
     uiState: ThereminUiState,
-    dispatcher: (ThereminAction) -> Unit,
+    onClickAppButton: (Boolean) -> Unit,
+    onClickLicense: () -> Unit,
 ) {
     val scaffoldState = rememberThereminScaffoldState()
     val scope = rememberCoroutineScope()
@@ -125,12 +71,8 @@ fun ThereminScreen(
                 modifier = Modifier.padding(start = 20.dp),
                 watchConnected = uiState.watchConnected,
                 appSoundEnabled = uiState.appSoundEnabled,
-                onClickAppButton = {
-                    dispatcher(ThereminAction.ClickAppSoundButton)
-                },
-                onClickLicenseSection = {
-                    dispatcher(ThereminAction.ClickLicenseButton)
-                },
+                onClickAppButton = onClickAppButton,
+                onClickLicenseSection = onClickLicense,
             )
         },
     ) {
@@ -151,7 +93,7 @@ fun ThereminScreen(
                         meteorAnimationRunning = true
                     }
                     Sun(
-                        animate = uiState.appSoundEnabled || uiState.browserSoundEnabled,
+                        animate = uiState.appSoundEnabled,
                     )
                     MenuIcon(
                         color = backgroundColor[1],
@@ -189,5 +131,9 @@ fun PreviewMainScreen() {
         waveGraphicFrequency = 10f,
         note = "C#",
     )
-    ThereminScreen(uiState) {}
+    ThereminScreen(
+        uiState = uiState,
+        onClickLicense = {},
+        onClickAppButton = {},
+    )
 }

@@ -49,6 +49,7 @@ fun ToggleButton(
         } else {
             ThereminTheme.color.buttonDisabled
         },
+        label = "",
     )
     Box(
         modifier = Modifier

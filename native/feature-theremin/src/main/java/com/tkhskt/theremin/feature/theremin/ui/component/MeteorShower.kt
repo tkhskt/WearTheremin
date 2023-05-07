@@ -27,11 +27,7 @@ fun MeteorShower(
     val density = LocalDensity.current
     val shootingStarSize = 500.dp + 45.dp + 200.dp
     var initialOffset by remember { mutableStateOf(0f) }
-    var targetOffset by remember {
-        mutableStateOf(
-            0f,
-        )
-    }
+    var targetOffset by remember { mutableStateOf(0f) }
     var animatedOffset by remember { mutableStateOf(900f) }
 
     animatedOffset = animateFloatAsState(
@@ -56,7 +52,7 @@ fun MeteorShower(
             }
             .rotate(-30f),
         content = {
-            (0..2).forEach {
+            (0..2).forEach { _ ->
                 ShootingStar(
                     modifier = Modifier,
                     tailLength = 500.dp,

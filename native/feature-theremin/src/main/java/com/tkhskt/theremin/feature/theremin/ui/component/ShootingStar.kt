@@ -33,48 +33,15 @@ import com.tkhskt.theremin.core.ui.ThereminTheme
 
 
 @Composable
-fun Tail(
-    width: Dp,
-    length: Dp,
-    modifier: Modifier = Modifier,
-) {
-    val tailShape = GenericShape { size, _ ->
-        moveTo(0f, 0f)
-        lineTo(size.width, size.height * 0.15f)
-        lineTo(size.width, size.height * 0.85f)
-        lineTo(0f, size.height)
-        close()
-    }
-    Box(
-        modifier = modifier
-            .width(length)
-            .height(width)
-            .clip(tailShape)
-            .background(
-                Brush.horizontalGradient(
-                    listOf(
-                        Color.White.copy(alpha = 0.8f),
-                        Color.White.copy(alpha = 0.5f),
-                        Color.White.copy(alpha = 0.1f),
-                    ),
-                ),
-            ),
-    )
-}
-
-@Composable
 fun ShootingStar(
     modifier: Modifier = Modifier,
     tailLength: Dp,
     size: Dp,
 ) {
-    // Allow resume on rotation
     var currentRotation by remember { mutableStateOf(0f) }
-
     val rotation = remember { Animatable(currentRotation) }
 
     LaunchedEffect(Unit) {
-        // Infinite repeatable rotation when is playing
         rotation.animateTo(
             targetValue = currentRotation + 360f,
             animationSpec = infiniteRepeatable(
@@ -130,9 +97,9 @@ fun ShootingStar(
                 .width(size)
                 .height(size)
                 .clip(starShape)
-                .background(ThereminTheme.color.star)
+                .background(ThereminTheme.color.star),
 
-        )
+            )
         Tail(
             modifier = Modifier
                 .padding(start = size / 2f)
@@ -141,6 +108,36 @@ fun ShootingStar(
             length = tailLength,
         )
     }
+}
+
+@Composable
+private fun Tail(
+    width: Dp,
+    length: Dp,
+    modifier: Modifier = Modifier,
+) {
+    val tailShape = GenericShape { size, _ ->
+        moveTo(0f, 0f)
+        lineTo(size.width, size.height * 0.15f)
+        lineTo(size.width, size.height * 0.85f)
+        lineTo(0f, size.height)
+        close()
+    }
+    Box(
+        modifier = modifier
+            .width(length)
+            .height(width)
+            .clip(tailShape)
+            .background(
+                Brush.horizontalGradient(
+                    listOf(
+                        Color.White.copy(alpha = 0.8f),
+                        Color.White.copy(alpha = 0.5f),
+                        Color.White.copy(alpha = 0.1f),
+                    ),
+                ),
+            ),
+    )
 }
 
 @Preview

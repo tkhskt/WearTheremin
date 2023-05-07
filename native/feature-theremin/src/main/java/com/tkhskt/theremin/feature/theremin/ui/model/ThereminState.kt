@@ -8,8 +8,7 @@ data class ThereminState(
     val cameraStarted: Boolean,
     val watchConnected: Boolean,
     val appSoundEnabled: Boolean,
-    val browserSoundEnabled: Boolean,
-    val shaked: Boolean,
+    val shook: Boolean,
 ) {
     companion object {
         val INITIAL = ThereminState(
@@ -18,8 +17,7 @@ data class ThereminState(
             cameraStarted = false,
             watchConnected = false,
             appSoundEnabled = false,
-            browserSoundEnabled = false,
-            shaked = false,
+            shook = false,
         )
     }
 
@@ -30,7 +28,6 @@ data class ThereminState(
         note = NoteMapper.mapFromFrequency(frequency).note,
         watchConnected = watchConnected,
         appSoundEnabled = appSoundEnabled,
-        browserSoundEnabled = browserSoundEnabled,
-        showMeteor = shaked,
+        showMeteor = shook,
     )
 }

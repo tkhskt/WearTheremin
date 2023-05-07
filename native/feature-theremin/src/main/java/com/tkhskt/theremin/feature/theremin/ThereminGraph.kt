@@ -4,7 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.tkhskt.theremin.feature.theremin.ui.HandTracker
 import com.tkhskt.theremin.feature.theremin.ui.OscillatorController
-import com.tkhskt.theremin.feature.theremin.ui.ThereminScreen
+import com.tkhskt.theremin.feature.theremin.ui.ThereminRoute
 import com.tkhskt.theremin.feature.theremin.ui.ThereminViewModel
 
 object ThereminDestination {
@@ -20,7 +20,7 @@ fun NavGraphBuilder.thereminGraph(
     composable(
         route = ThereminDestination.route,
     ) {
-        ThereminScreen(
+        ThereminRoute(
             viewModel = viewModel,
             oscillatorController = oscillatorController,
             handTracker = handTracker,

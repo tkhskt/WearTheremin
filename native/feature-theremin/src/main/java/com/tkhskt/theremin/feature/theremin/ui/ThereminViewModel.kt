@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.tkhskt.theremin.domain.audio.usecase.CalcFrequencyUseCase
 import com.tkhskt.theremin.domain.audio.usecase.CalcVolumeUseCase
 import com.tkhskt.theremin.domain.audio.usecase.GetGravityUseCase
-import com.tkhskt.theremin.domain.audio.usecase.SendThereminParametersUseCase
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminAction
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminEffect
 import com.tkhskt.theremin.feature.theremin.ui.model.ThereminState
@@ -29,7 +28,6 @@ import javax.inject.Inject
 @HiltViewModel
 class ThereminViewModel @Inject constructor(
     getGravityUseCase: GetGravityUseCase,
-    private val sendThereminParametersUseCase: SendThereminParametersUseCase,
     private val calcFrequencyUseCase: CalcFrequencyUseCase,
     private val calcVolumeUseCase: CalcVolumeUseCase,
 ) : ViewModel() {
@@ -56,16 +54,13 @@ class ThereminViewModel @Inject constructor(
     fun dispatch(action: ThereminAction) {
         viewModelScope.launch {
             when (action) {
-
                 is ThereminAction.ChangeGravity -> {
                     val frequency = calcFrequencyUseCase(action.gravity)
-                    sendThereminParametersUseCase(_state.value.frequency, _state.value.volume)
                     _state.update { it.copy(frequency = frequency) }
                 }
 
                 is ThereminAction.ChangeDistance -> {
                     val volume = calcVolumeUseCase(action.distance)
-                    sendThereminParametersUseCase(_state.value.frequency, volume)
                     _state.update { it.copy(volume = volume) }
                 }
 
@@ -82,9 +77,9 @@ class ThereminViewModel @Inject constructor(
                 }
 
                 is ThereminAction.Shake -> {
-                   _state.update { it.copy(shaked = true) }
+                    _state.update { it.copy(shook = true) }
                     delay(100)
-                    _state.update { it.copy(shaked = false) }
+                    _state.update { it.copy(shook = false) }
                 }
 
                 else -> {

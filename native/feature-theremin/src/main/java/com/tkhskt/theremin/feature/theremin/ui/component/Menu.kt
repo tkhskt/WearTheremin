@@ -38,9 +38,9 @@ fun Menu(
             .defaultMinSize(minWidth = 180.dp)
             .width(IntrinsicSize.Max)
     ) {
-//        DeviceSection(
-//            watchConnected = watchConnected,
-//        )
+        DeviceSection(
+            watchConnected = watchConnected,
+        )
         Spacer(modifier = Modifier.size(sectionSpace))
         SoundSection(
             appSoundEnabled = appSoundEnabled,

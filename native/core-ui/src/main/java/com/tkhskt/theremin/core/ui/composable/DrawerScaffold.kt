@@ -20,6 +20,7 @@ import androidx.compose.material.SwipeableState
 import androidx.compose.material.swipeable
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -81,7 +82,9 @@ fun ThereminScaffold(
     val configuration = LocalConfiguration.current
     val screenWidth = LocalDensity.current.run { configuration.screenWidthDp.dp.toPx() }
     var drawerContentWidth by remember { mutableStateOf(0) }
-    val maxOffset = max(screenWidth * 0.4f, drawerContentWidth * 0.9f)
+    val maxOffset by remember {
+        derivedStateOf { max(screenWidth * 0.4f, drawerContentWidth * 0.9f) }
+    }
     var progress by remember { mutableStateOf(0f) }
 
     Surface(color = backgroundColor) {
