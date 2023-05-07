@@ -15,7 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -29,6 +32,7 @@ import com.tkhskt.theremin.core.ui.ThereminTheme
 import com.tkhskt.theremin.core.ui.composable.MenuIcon
 import com.tkhskt.theremin.core.ui.composable.ThereminScaffold
 import com.tkhskt.theremin.core.ui.composable.rememberThereminScaffoldState
+import com.tkhskt.theremin.core.ui.debounce
 import com.tkhskt.theremin.feature.theremin.ui.component.Menu
 import com.tkhskt.theremin.feature.theremin.ui.component.NoteText
 import com.tkhskt.theremin.feature.theremin.ui.component.StarryBackground
@@ -94,10 +98,16 @@ fun ThereminScreen(
 ) {
     val scaffoldState = rememberThereminScaffoldState()
     val scope = rememberCoroutineScope()
+    var backgroundColor by remember {
+        mutableStateOf(uiState.backgroundGradientColors)
+    }
+    debounce(uiState.backgroundGradientColors) {
+        backgroundColor = uiState.backgroundGradientColors
+    }
 
     ThereminScaffold(
         backgroundColor = ThereminTheme.color.menuBackground,
-        mainContentGradientColors = uiState.backgroundGradientColors,
+        mainContentGradientColors = backgroundColor,
         scaffoldState = scaffoldState,
         titleContent = {
             Image(
@@ -139,7 +149,7 @@ fun ThereminScreen(
                         animate = uiState.appSoundEnabled || uiState.browserSoundEnabled,
                     )
                     MenuIcon(
-                        color = uiState.backgroundGradientColors[1],
+                        color = backgroundColor[1],
                         onClick = {
                             scope.launch {
                                 scaffoldState.drawerState.open()
