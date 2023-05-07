@@ -2,18 +2,10 @@ package com.tkhskt.theremin.wear.theremin.di
 
 import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.NodeClient
-import com.tkhskt.theremin.redux.Store
-import com.tkhskt.theremin.redux.createStore
 import com.tkhskt.theremin.wear.domain.SendGravityUseCase
 import com.tkhskt.theremin.wear.domain.SendGravityUseCaseImpl
 import com.tkhskt.theremin.wear.theremin.data.repository.ThereminRepository
 import com.tkhskt.theremin.wear.theremin.data.repository.ThereminRepositoryImpl
-import com.tkhskt.theremin.wear.theremin.ui.middleware.NetworkMiddleware
-import com.tkhskt.theremin.wear.theremin.ui.middleware.SensorMiddleware
-import com.tkhskt.theremin.wear.theremin.ui.model.MainAction
-import com.tkhskt.theremin.wear.theremin.ui.model.MainEffect
-import com.tkhskt.theremin.wear.theremin.ui.model.MainState
-import com.tkhskt.theremin.wear.theremin.ui.reducer.MainReducer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,28 +28,4 @@ object MainViewModelModule {
     fun provideSendGravityUseCase(
         thereminRepository: ThereminRepository,
     ): SendGravityUseCase = SendGravityUseCaseImpl(thereminRepository)
-
-    @Provides
-    fun provideReducer(): MainReducer = MainReducer()
-
-    @Provides
-    fun provideNetworkMiddleware(
-        sendGravityUseCase: SendGravityUseCase,
-    ): NetworkMiddleware = NetworkMiddleware(
-        sendGravityUseCase = sendGravityUseCase,
-    )
-
-    @Provides
-    fun provideSensorMiddleware(): SensorMiddleware = SensorMiddleware()
-
-    @Provides
-    fun provideStore(
-        reducer: MainReducer,
-        networkMiddleware: NetworkMiddleware,
-        sensorMiddleware: SensorMiddleware,
-    ): Store<MainAction, MainState, MainEffect> = createStore(
-        reducer = reducer,
-        initialState = MainState.INITIAL,
-        middlewares = listOf(networkMiddleware, sensorMiddleware),
-    )
 }

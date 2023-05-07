@@ -46,7 +46,6 @@ android {
 apply(from = "$rootDir/gradle/ktlint.gradle")
 
 dependencies {
-    implementation(project(":redux"))
     implementation(project(":core-ui"))
 
     implementation(libs.play.services.wearable)

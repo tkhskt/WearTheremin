@@ -7,8 +7,6 @@ import com.tkhskt.theremin.domain.audio.usecase.CalcVolumeUseCase
 import com.tkhskt.theremin.domain.audio.usecase.CalcVolumeUseCaseImpl
 import com.tkhskt.theremin.domain.audio.usecase.GetGravityUseCase
 import com.tkhskt.theremin.domain.audio.usecase.GetGravityUseCaseImpl
-import com.tkhskt.theremin.domain.audio.usecase.SendThereminParametersUseCase
-import com.tkhskt.theremin.domain.audio.usecase.SendThereminParametersUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,9 +27,4 @@ object ThereminViewModelModule {
 
     @Provides
     fun provideCalcVolumeUseCase(): CalcVolumeUseCase = CalcVolumeUseCaseImpl()
-
-    @Provides
-    fun provideSendThereminParametersUseCase(
-        audioRepository: AudioRepository,
-    ): SendThereminParametersUseCase = SendThereminParametersUseCaseImpl(audioRepository)
 }

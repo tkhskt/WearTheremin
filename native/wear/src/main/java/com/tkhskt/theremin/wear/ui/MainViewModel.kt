@@ -1,33 +1,35 @@
 package com.tkhskt.theremin.wear.ui
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tkhskt.theremin.redux.ReduxViewModel
-import com.tkhskt.theremin.redux.Store
+import com.tkhskt.theremin.wear.domain.SendGravityUseCase
 import com.tkhskt.theremin.wear.theremin.ui.model.MainAction
 import com.tkhskt.theremin.wear.theremin.ui.model.MainEffect
 import com.tkhskt.theremin.wear.theremin.ui.model.MainState
 import com.tkhskt.theremin.wear.theremin.ui.model.MainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val store: Store<MainAction, MainState, MainEffect>,
-) : ReduxViewModel<MainAction, MainUiState, MainEffect>() {
+    private val sendGravityUseCase: SendGravityUseCase,
+) : ViewModel() {
 
-    override val sideEffect: SharedFlow<MainEffect> = store.sideEffect.shareIn(
-        scope = viewModelScope,
-        started = SharingStarted.Lazily,
-    )
+    private val _sideEffect = MutableSharedFlow<MainEffect>()
+    val sideEffect: SharedFlow<MainEffect> = _sideEffect.asSharedFlow()
 
-    override val uiState: StateFlow<MainUiState> = store.state.map {
+    private val state = MutableStateFlow(MainState.INITIAL)
+    val uiState: StateFlow<MainUiState> = state.map {
         MainUiState(
             started = it.started,
         )
@@ -37,9 +39,27 @@ class MainViewModel @Inject constructor(
         started = SharingStarted.Lazily,
     )
 
-    override fun dispatch(action: MainAction) {
+    fun dispatch(action: MainAction) {
         viewModelScope.launch {
-            val b: Unit = store.dispatch(action)
+            when (action) {
+                is MainAction.StartSensor -> {
+                    _sideEffect.emit(MainEffect.StartSensor)
+                }
+
+                is MainAction.ChangeGravity -> {
+                    if (state.value.started) {
+                        sendGravityUseCase(action.gravity)
+                    }
+                }
+
+                is MainAction.ClickStartButton -> {
+                    state.update { it.copy(started = true) }
+                }
+
+                is MainAction.ClickStopButton -> {
+                    state.update { it.copy(started = false) }
+                }
+            }
         }
     }
 }

@@ -18,7 +18,6 @@ dependencyResolutionManagement {
 rootProject.name = "Theremin"
 include(":mobile")
 include(":wear")
-include(":redux")
 include(":feature-theremin")
 include(":core-ui")
 include(":feature-tutorial")
